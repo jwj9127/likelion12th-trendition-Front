@@ -1,0 +1,115 @@
+@font-face {
+    font-family: "TTHakgyoansimJiugaeR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimJiugaeR.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.LoginBox {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #1e293b;
+}
+
+.title-login {
+    margin: 13vh auto 0vh auto;
+    font-size: 35px;
+    font-family: "TTHakgyoansimJiugaeR";
+}
+
+.inputBox-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 96vw;
+    margin: 7vh 2vw 0vh 2vw;
+    text-align: left;
+}
+
+.label-text {
+    display: block;
+    margin-bottom: 3vh;
+}
+
+.label-text div {
+    margin-bottom: 10px;
+}
+
+.input-text {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-text:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-text::placeholder {
+    color: #94a3b8;
+}
+
+.label-pwd div {
+    margin-bottom: 10px;
+}
+
+.input-pwd {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-pwd:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-pwd::placeholder {
+    color: #94a3b8;
+}
+
+.pwd-message {
+    display: none; /* 비번 일치 시 flex */
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.pwd-message img {
+    width: 20px;
+    margin: 0px 5px;
+}
+
+.pwd-message span {
+    color: #d12e34;
+}
+
+.loginBtn {
+    background-color: #5e47d2;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin: 9vh auto 0vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.toSignUp {
+    margin: 10vh auto 0vh auto;
+    color: #687684;
+    text-decoration: none;
+}

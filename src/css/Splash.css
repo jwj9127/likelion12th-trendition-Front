@@ -1,0 +1,87 @@
+@font-face {
+    font-family: "TTHakgyoansimJiugaeR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimJiugaeR.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.SplashBox {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #1e293b;
+    font-family: "TTHakgyoansimJiugaeR";
+}
+
+.logoBox {
+    margin: 0 auto;
+    margin-top: 24vh;
+    margin-bottom: 8vh;
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 18px;
+    animation: fadeInUp 3s;
+    animation-delay: 0.4s;
+}
+
+.name {
+    color: #5e47d2;
+    font-size: 32px;
+    letter-spacing: 3px;
+    margin-bottom: 3px;
+    animation: fadeInUp 3s;
+    animation-delay: 0.5s;
+}
+
+.slogun {
+    color: #687684;
+    font-size: 12px;
+    margin-bottom: 15px;
+    animation: fadeInUp 3s;
+    animation-delay: 0.5s;
+}
+.slogun2 {
+    color: #687684;
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 3px;
+    animation: fadeInUp 3s;
+    animation-delay: 0.6s;
+}
+.slogun3 {
+    color: #687684;
+    font-size: 20px;
+    letter-spacing: 2px;
+    animation: fadeInUp 3s;
+    animation-delay: 0.7s;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+
+.top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 170px;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 330px;
+}

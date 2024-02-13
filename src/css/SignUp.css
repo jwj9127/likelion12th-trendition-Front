@@ -1,0 +1,243 @@
+@font-face {
+    font-family: "TTHakgyoansimJiugaeR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimJiugaeR.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.SignUpBox {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #1e293b;
+}
+
+.back {
+    position: fixed;
+    top: 5vh;
+    left: 6vw;
+}
+
+.back-img {
+    width: 35px;
+}
+
+.title-signup {
+    margin: 9vh auto 3vh auto;
+    font-size: 35px;
+    font-family: "TTHakgyoansimJiugaeR";
+}
+
+.profileBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 96vw;
+    margin: 3vh 2vw 0vh 2vw;
+    text-align: left;
+}
+
+.label-email {
+    display: block;
+    margin-bottom: 3vh;
+}
+
+.label-email div {
+    margin-bottom: 10px;
+}
+
+.input-email {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-email:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-email::placeholder {
+    color: #94a3b8;
+}
+
+/*아이디*/
+
+.label-text {
+    display: block;
+    margin-bottom: 3vh;
+}
+
+.label-text div {
+    margin-bottom: 10px;
+}
+
+.input-text {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-text:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-text::placeholder {
+    color: #94a3b8;
+}
+
+/*전화번호*/
+
+.label-tel div {
+    margin-bottom: 10px;
+}
+
+.input-tel {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-tel:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-tel::placeholder {
+    color: #94a3b8;
+}
+
+/*비번*/
+
+.label-pwd div {
+    margin-bottom: 10px;
+}
+
+.input-pwd {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-pwd:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-pwd::placeholder {
+    color: #94a3b8;
+}
+
+.pwd-condition {
+    font-size: smaller;
+    margin-left: 5px;
+    margin-top: 5px;
+    color: #94a3b8;
+}
+
+/*비번 확인*/
+
+.label-pwd2 div {
+    margin-bottom: 10px;
+}
+
+.input-pwd2 {
+    width: 330px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+}
+
+.input-pwd2:focus {
+    border-color: #5e47d2;
+    outline: none;
+}
+
+.input-pwd2::placeholder {
+    color: #94a3b8;
+}
+
+.pwd-message {
+    display: none; /* 비번 일치 시 flex */
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.pwd-message img {
+    width: 20px;
+    margin: 0px 5px;
+}
+
+.pwd-message span {
+    color: #d12e34;
+}
+
+.Privacy {
+    font-size: small;
+    color: #94a3b8;
+    margin-top: 10vh;
+    position: fixed;
+    bottom: 12vh;
+    left: 0;
+    right: 0;
+}
+
+.ToNextSignUp {
+    background-color: #5e47d2;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin: 2vh auto 0vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    position: fixed;
+    bottom: 4vh;
+    left: 0;
+    right: 0;
+}
+
+.SignUpBtn {
+    background-color: #5e47d2;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin: 2vh auto 0vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    position: fixed;
+    bottom: 4vh;
+    left: 0;
+    right: 0;
+}
