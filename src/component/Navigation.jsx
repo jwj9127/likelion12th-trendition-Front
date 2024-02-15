@@ -16,10 +16,10 @@ const Navigation = () => {
                 <Link to="/">
                     <FontAwesomeIcon icon={faList} size="2x" />
                 </Link>
-                <Link to="/">
+                <Link to="/search">
                     <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
                 </Link>
-                <Link to="/">
+                <Link to="/mypage">
                     <FontAwesomeIcon icon={faUser} size="2x" />
                 </Link>
             </div>
