@@ -7,6 +7,8 @@ import Splash from "./pages/Splash.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignUpNext from "./pages/SignUpNext.jsx";
+import Search from "./pages/Search.jsx";
+import Mypage from "./pages/Mypage.jsx";
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/signup/next" element={<SignUpNext />} />
                 <Route path="/main" element={<Main />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/mypage" element={<Mypage />} />
             </Routes>
         </div>
     );

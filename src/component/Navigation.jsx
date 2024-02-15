@@ -19,7 +19,7 @@ const Navigation = () => {
                 <Link to="/main">
                     <img className="home-icon" src={homePurple}></img>
                 </Link>
-                <Link to="/my">
+                <Link to="/mypage">
                     <img className="my-icon" src={myGray}></img>
                 </Link>
             </div>

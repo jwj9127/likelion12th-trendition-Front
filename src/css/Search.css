@@ -1,0 +1,100 @@
+@font-face {
+    font-family: "TTHakgyoansimJiugaeR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimJiugaeR.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.search_bigBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search_logoBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e293b;
+    font-family: "TTHakgyoansimJiugaeR";
+    margin-top: 5%;
+}
+
+.logoBox_logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 18px;
+}
+
+.logoBox_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logoBox_name {
+    color: #5e47d2;
+    font-size: 32px;
+    letter-spacing: 3px;
+    margin-bottom: 3px;
+}
+
+.logoBox_slogun {
+    color: #687684;
+    font-size: 12px;
+}
+
+.search_searchBox{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    background-color: #eeeeee;
+    border-radius: 1rem;
+    padding: 13px;
+}
+
+.search_searchBox>input{
+    width: 95%;
+    border: none;
+    outline: none;
+    background-color: #eeeeee;
+}
+
+.search_account{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0dbfa;
+    color: #5e47d2;
+    padding: 10px 50px 10px 50px;
+    margin: 15px;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.search_account_titles{
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+}
+
+.search_account_titles_main{
+    display: flex;
+    align-items: center;
+    width: 80vw;
+    height: 10vh;
+}
+
+.search_account_titles_main>div>p{
+    color: #747474;
+    margin: 0;
+}
+
+.search_account_titles_main_img{
+    width: 20%;
+    height: 90%;
+    border-radius: 50%;
+    background-image: url('../imgs/main_back.png');
+    margin-right: 5%;
+}
