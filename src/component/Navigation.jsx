@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "../css/Navigation.css";
 import { Link, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faList,
-    faMagnifyingGlass,
-    faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import searchGray from "../imgs/search_g.png";
+import searchPurple from "../imgs/search_p.png";
+import homeGray from "../imgs/home_g.png";
+import homePurple from "../imgs/home_p.png";
+import myGray from "../imgs/my_g.png";
+import myPurple from "../imgs/my_p.png";
 
 const Navigation = () => {
     return (
-        <div className="app_main_img">
-            <div className="app_navigation_margin"></div>
-            <div className="app_navigation">
-                <Link to="/">
-                    <FontAwesomeIcon icon={faList} size="2x" />
+        <div className="Nav">
+            <hr className="navLine"></hr>
+            <div className="icons">
+                <Link to="/search">
+                    <img className="search-icon" src={searchGray}></img>
                 </Link>
-                <Link to="/">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
+                <Link to="/main">
+                    <img className="home-icon" src={homePurple}></img>
                 </Link>
-                <Link to="/">
-                    <FontAwesomeIcon icon={faUser} size="2x" />
+                <Link to="/my">
+                    <img className="my-icon" src={myGray}></img>
                 </Link>
             </div>
         </div>

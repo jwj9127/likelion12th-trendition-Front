@@ -1,0 +1,136 @@
+@font-face {
+    font-family: "TTHakgyoansimJiugaeR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimJiugaeR.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.TopBar {
+    background-image: url("../imgs/main_back.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width: 100vw;
+    height: 20vh;
+    position: sticky;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    font-family: "TTHakgyoansimJiugaeR";
+    display: flex;
+    flex-direction: column;
+}
+
+.sublogo {
+    margin: 3vh 0vw 0.5vh 4vw;
+    display: flex;
+    align-items: center;
+}
+
+.logo2 {
+    width: 28px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logo2-name {
+    margin: 0;
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.state {
+    margin: 1vh auto;
+    text-align: center;
+}
+
+.state-category {
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+}
+
+.state-achiev {
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+}
+
+.HexagonGraphBox {
+    margin-top: -2vh;
+    height: 37vh;
+    color: #1e293b;
+}
+
+.subGoal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 8px 0;
+}
+
+.subGoal-check {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #694df9;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 12px 10px 12px 0px;
+}
+
+.subGoal-check:checked {
+    content: "";
+    background-color: #694df9;
+    border-color: #694df9;
+}
+
+.subGoal-text {
+    color: #1e293b;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    width: 320px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: small;
+}
+
+.Goals {
+    width: 100vw;
+}
+
+.mainGoal {
+    background-color: #5e47d2;
+    height: 40px;
+    padding: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    padding: 0 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mainGoal-text {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    font-weight: lighter;
+    font-size: small;
+}
+
+.mainGoal-set {
+    background: url("../imgs/up.png") no-repeat center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
