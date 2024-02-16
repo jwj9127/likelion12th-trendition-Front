@@ -1,0 +1,72 @@
+.mypage_top_setting{
+    background-image: url("../imgs/main_back.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 100vw;
+    height: 20vh;
+    color: #ffffff;
+    font-family: "TTHakgyoansimJiugaeR";
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage_top_setting_flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.mypage_top_setting_flex>div{
+    display: flex;
+    align-items: center;
+}
+
+.mypage_top_setting_flex>p{
+    margin-right: 7%;
+}
+
+.mypage_top_setting_flex>a{
+    color: white;
+    margin-right: 3%;
+}
+
+.mypage_logoBox_logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 7px;
+}
+
+.mypage_main_profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+}
+
+.mypage_main_img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-image: url('../imgs/main_back.png');
+    border: solid 4px white;
+}
+
+.mypage_followBox{
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #e0dbfa;
+    margin-top: 20vh;
+}
+
+.mypage_followBox>p{
+    width: 25%;
+}
+
+.mypage_followBox>p>i{
+    margin-left: 5%;
+    color: #747474;
+    font-style: normal;
+    opacity: 0.5;
+}
