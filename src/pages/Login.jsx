@@ -2,6 +2,7 @@ import { React } from "react";
 import { Link } from "react-router-dom";
 import "../css/Login.css";
 import pwdErrorImage from "../imgs/pwd_error.png";
+import Swal from "sweetalert2";
 
 function Title() {
     return <div className="title-login">로그인</div>;

@@ -6,6 +6,24 @@
     font-style: normal;
 }
 
+.swal2-input{
+    width: 280px;
+    margin: 0;
+    font-size: medium;
+    border: none;
+    background-color: #eeeeee;
+}
+
+.swal2-input::placeholder{
+    color: #747474;
+}
+
+.spec-modal , .spec-content, .swal2-input{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
 .TopBar {
     background-image: url("../imgs/main_back.png");
     background-repeat: no-repeat;
