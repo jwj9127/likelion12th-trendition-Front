@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import "../css/Follow.css";
 import backIcon from "../imgs/backIcon.png";
 import { Link } from "react-router-dom";
+import ProfileImg from "../imgs/profile.png";
 
 const Follower = () => {
-  const [data, setData] = useState([{username: "이름", avatar_url: "이미지", following: false, name: "아이디", login: "사람 이름"},{username: "이름1", avatar_url: "이미지", following: true, name: "아이디1", login: "사람 이름 1"}]);
+  const [data, setData] = useState([{username: "이름", avatar_url: ProfileImg, following: false, name: "아이디", login: "사람 이름"},{username: "이름1", avatar_url: ProfileImg, following: true, name: "아이디1", login: "사람 이름 1"}]);
 
   // useEffect(() => {
   //   fetch('https://api.github.com/users/이름/following')
@@ -40,7 +41,7 @@ const Follower = () => {
           <li key={item.username} className="list-item">
             <img className="profile-image" src={item.avatar_url} alt="" />
             <div className="info">
-              <h3 className="name">{item.login}</h3>
+              <h3>{item.login}</h3>
               <p className="username">{item.name}</p>
             </div>
             <button className="button" onClick={() => handleFollow(item.username)}>

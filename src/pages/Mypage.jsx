@@ -26,7 +26,7 @@ export default function Mypage() {
             </div>
             <div className="mypage_followBox">
                 <p>220<Link to="/follow" className="font-gray">
-                    Followers
+                    Follow
                 </Link></p>
                 <p>150<Link to="/follower" className="font-gray">
                     Followers

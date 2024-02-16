@@ -12,6 +12,8 @@ import Mypage from "./pages/Mypage.jsx";
 import Follow from "./pages/Follow.jsx";
 import Follower from "./pages/Follower.jsx";
 import Setting from "./pages/Setting.jsx";
+import Notification from "./pages/setting/Notification.jsx";
+import Push_Alarm from "./pages/setting/Push_Alarm.jsx";
 
 function App() {
     return (
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/follow" element={<Follow />} />
                 <Route path="/follower" element={<Follower />} />
                 <Route path="/setting" element={<Setting />} />
+                <Route path="/setting/notification" element={<Notification />} />
+                <Route path="/setting/push" element={<Push_Alarm />} />
             </Routes>
         </div>
     );
