@@ -2,9 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../css/Follow.css";
 import backIcon from "../imgs/backIcon.png";
+import { Link } from "react-router-dom";
 
 const Follow = () => {
-  const [data, setData] = useState([{username: "이름", avatar_url: "이미지", following: false, name: "아이디", login: "사람 이름"},{username: "이름1", avatar_url: "이미지", following: true, name: "아이디1", login: "사람 이름 1"}]);
+  const [data, setData] = useState([{ username: "이름", avatar_url: "이미지", following: false, name: "아이디", login: "사람 이름" }, { username: "이름1", avatar_url: "이미지", following: true, name: "아이디1", login: "사람 이름 1" }]);
 
   // useEffect(() => {
   //   fetch('https://api.github.com/users/이름/following')
@@ -15,9 +16,9 @@ const Follow = () => {
   const handleFollow = (username) => {
     setData(data.map((i) => {
       if (i.username === username) {
-        if (i.following === false){
+        if (i.following === false) {
           i.following = true;
-        }else{
+        } else {
           i.following = false;
         }
       }
@@ -28,7 +29,9 @@ const Follow = () => {
   return (
     <div className="main">
       <div className="top-nav">
-        <img src={backIcon} alt="뒤로가기" />
+        <Link to="/mypage" className="font-gray">
+          <img src={backIcon} alt="뒤로가기" />
+        </Link>
         <h2 className="title">팔로우</h2>
         <div></div>
       </div>

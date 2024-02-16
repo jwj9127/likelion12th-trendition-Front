@@ -27,7 +27,6 @@ body {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
   }
   
   /* 프로필 사진 스타일 */

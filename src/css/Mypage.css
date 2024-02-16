@@ -70,3 +70,9 @@
     font-style: normal;
     opacity: 0.5;
 }
+
+.font-gray{
+    margin-left: 5px;
+    color: gray;
+    text-decoration-line: none;
+}
