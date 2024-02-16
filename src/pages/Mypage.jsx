@@ -17,7 +17,7 @@ export default function Mypage() {
                         <p>마라톤</p>
                     </div>
                     <p>@brunopham</p>
-                    <Link to={'/follow'}><FontAwesomeIcon icon={faGear} size="2x" /></Link>
+                    <Link to={'/Setting'}><FontAwesomeIcon icon={faGear} size="2x" /></Link>
                 </div>
                 <div className="mypage_main_profile">
                     <div className="mypage_main_img"></div>

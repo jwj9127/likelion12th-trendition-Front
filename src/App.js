@@ -11,6 +11,7 @@ import Search from "./pages/Search.jsx";
 import Mypage from "./pages/Mypage.jsx";
 import Follow from "./pages/Follow.jsx";
 import Follower from "./pages/Follower.jsx";
+import Setting from "./pages/Setting.jsx";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/follow" element={<Follow />} />
                 <Route path="/follower" element={<Follower />} />
+                <Route path="/setting" element={<Setting />} />
             </Routes>
         </div>
     );
