@@ -9,6 +9,8 @@ import SignUp from "./pages/SignUp.jsx";
 import SignUpNext from "./pages/SignUpNext.jsx";
 import Search from "./pages/Search.jsx";
 import Mypage from "./pages/Mypage.jsx";
+import Follow from "./pages/Follow.jsx";
+import Follower from "./pages/Follower.jsx";
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                 <Route path="/main" element={<Main />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/mypage" element={<Mypage />} />
+                <Route path="/follow" element={<Follow />} />
+                <Route path="/follower" element={<Follower />} />
             </Routes>
         </div>
     );
