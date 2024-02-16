@@ -8,6 +8,7 @@ import {
     faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../imgs/logo.png";
+import Navigation from "../component/Navigation";
 
 export default function Search() {
     return (
@@ -27,23 +28,13 @@ export default function Search() {
             <div className="search_account_titles">
                 <div className="search_account_titles_main">
                     <div className="search_account_titles_main_img"></div>
-                    <div>
+                    <div className="search_account_titles_main_name">
                         <div>Joshua Rain</div>
                         <p>@joshua_I</p>
                     </div>
                 </div>
             </div>
-            <div className="app_navigation">
-                <Link to="/">
-                    <FontAwesomeIcon icon={faList} size="2x" />
-                </Link>
-                <Link to="/search">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
-                </Link>
-                <Link to="/mypage">
-                    <FontAwesomeIcon icon={faUser} size="2x" />
-                </Link>
-            </div>
+            <Navigation></Navigation>
         </div>
     );
 }

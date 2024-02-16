@@ -6,6 +6,14 @@
     font-style: normal;
 }
 
+/* 여기가 sawl인풋박스 css입니다 */
+
+.swal2-input {
+    width: 100px;
+    height: 30px;
+}
+/* 설정 끝 */
+
 .TopBar {
     background-image: url("../imgs/main_back.png");
     background-repeat: no-repeat;

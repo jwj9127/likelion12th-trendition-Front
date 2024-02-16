@@ -76,14 +76,14 @@
 .search_account_titles{
     display: flex;
     flex-direction: column;
-    height: 70vh;
+    height: 60vh;
 }
 
 .search_account_titles_main{
     display: flex;
     align-items: center;
     width: 80vw;
-    height: 10vh;
+    height: 10%;
 }
 
 .search_account_titles_main>div>p{
@@ -91,9 +91,13 @@
     margin: 0;
 }
 
+.search_account_titles_main_name{
+    width: 80%;
+}
+
 .search_account_titles_main_img{
-    width: 20%;
-    height: 90%;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background-image: url('../imgs/main_back.png');
     margin-right: 5%;
