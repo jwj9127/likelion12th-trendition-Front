@@ -14,7 +14,7 @@ function Logo() {
     return (
         <div className="logoBox">
             <img className="logo" src={logo} alt="logo"></img>
-            <div className="name">식스펙</div>
+            <div className="logoBox-name">식스펙</div>
             <div className="slogun">SIXPEC</div>
             <div className="slogun2">나다움을 찾기 위한</div>
             <div className="slogun3">건강한 스펙 쌓기</div>

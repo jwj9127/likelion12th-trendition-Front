@@ -6,22 +6,46 @@
     font-style: normal;
 }
 
-.swal2-input{
-    width: 280px;
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+        format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.swal2-input {
+    width: 310px;
     margin: 0;
     font-size: medium;
-    border: none;
-    background-color: #eeeeee;
+    border: 20px;
+    background-color: #f5f5f5;
+    outline: none;
 }
 
-.swal2-input::placeholder{
-    color: #747474;
+.swal2-input::placeholder {
+    color: #687684;
+    font-weight: lighter;
 }
 
-.spec-modal , .spec-content, .swal2-input{
+.swal2-input:focus {
+    border-color: #5e47d2 !important;
+    outline: none !important;
+}
+
+.spec-modal,
+.spec-content,
+.swal2-input {
     display: flex;
     flex-direction: column;
     align-items: start;
+    font-family: "Pretendard-Regular";
+}
+
+.spec-content h3 {
+    color: #212121;
+    font-weight: bolder;
+    margin-bottom: 10px;
 }
 
 .TopBar {
@@ -147,7 +171,7 @@
 }
 
 .mainGoal-set {
-    background: url("../imgs/up.png") no-repeat center;
+    background: url("../imgs/down.png") no-repeat center;
     border: none;
     outline: none;
     cursor: pointer;

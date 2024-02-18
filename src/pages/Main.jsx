@@ -2,12 +2,12 @@ import { React, useState } from "react";
 import "../css/Main.css";
 import Navigation from "../component/Navigation";
 import HexagonGraph from "../component/HexagonGraph";
+import BeforeSet from "../component/BeforeSet";
 import logo2 from "../imgs/logo2.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
-function TopBar() {
+function TopBar({ goalCount }) {
+    const achievementRate = goalCount * 20;
     return (
         <div className="TopBar">
             <div className="sublogo">
@@ -16,21 +16,19 @@ function TopBar() {
             </div>
             <div className="state">
                 <div className="state-category">OOO님의 마라톤 목표</div>
-                <div className="state-achiev">달성도는 52%입니다</div>
+                <div className="state-achiev">
+                    달성도는 {achievementRate}%입니다
+                </div>
             </div>
         </div>
     );
-}
-
-function HexagonGraphBox() {
-    return <div className="HexagonGraphBox"></div>;
 }
 
 function GoalCheck() {
     return (
         <div className="subGoal">
             <input className="subGoal-check" type="checkbox"></input>
-            <div className="subGoal-text">A - 1 : OOO하기</div>
+            <div className="subGoal-text">Lv - 1 : 목표설정</div>
         </div>
     );
 }
@@ -41,7 +39,7 @@ function Goals() {
     return (
         <div className="Goals">
             <div className="mainGoal">
-                <div className="mainGoal-text">GOAL A : OOO을 OOO하기</div>
+                <div className="mainGoal-text">스펙 1 : 마라톤</div>
                 <button className="mainGoal-set" onClick={openModal}></button>
             </div>
             <GoalCheck></GoalCheck>
@@ -58,25 +56,25 @@ function TargetTag() {
         html: `
         <div class="spec-modal">
             <div class="spec-header">
-                <div class="title" style="color: #694df9; font-size: 24px;">스펙 입력 (6개)</div>
+                <div class="title" style="color: #5E47D2; font-size: 24px; font-weight: bolder; margin-top:30px">스펙 입력 (6개)</div>
             </div>
             <div class="spec-content">
-                <h2>스펙 1</h2>
-                <input id="stack" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <h3>스펙 1</h3>
+                <input id="stack" class="swal2-input" style="outline: none;" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-                <h2>스펙 2</h2>
+                <h3>스펙 2</h3>
                 <input id="time" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-                <h2>스펙 3</h2>
+                <h3>스펙 3</h3>
                 <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-                <h2>스펙 4</h2>
+                <h3>스펙 4</h3>
                 <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
                 
-                <h2>스펙 5</h2>
+                <h3>스펙 5</h3>
                 <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
                 
-                <h2>스펙 6</h2>
+                <h3>스펙 6</h3>
                 <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
             </div>
         </div>
@@ -84,16 +82,26 @@ function TargetTag() {
         showCancelButton: true,
         confirmButtonText: "저장",
         cancelButtonText: "취소",
-        allowOutsideClick: false
+        allowOutsideClick: false,
     });
+}
+
+function HexagonGraphBox() {
+    return (
+        <div className="HexagonGraphBox">
+            {/*설정 전 헥사곤 그래프 대체 이미지*/}
+            <BeforeSet onClick={TargetTag} />
+            {/*설정 후 헥사곤 그래프*/}
+            {/*<HexagonGraph></HexagonGraph>*/}
+        </div>
+    );
 }
 
 export default function Main() {
     return (
         <div>
-            <TopBar></TopBar>
+            <TopBar goalCount={4}></TopBar>
             <HexagonGraphBox></HexagonGraphBox>
-            <FontAwesomeIcon icon={faGear} size="2x" onClick={TargetTag}/>
             <Goals></Goals>
             <Navigation></Navigation>
         </div>
