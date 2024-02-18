@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../css/HexagonGraph.css";
 
 function HexagonGraph() {
     const [graphData, setGraphData] = useState([60, 60, 60, 40, 60, 80]);
@@ -9,7 +8,7 @@ function HexagonGraph() {
     }, []);
 
     const drawGraph = () => {
-        const CANVAS_SIZE = 280;
+        const CANVAS_SIZE = 100;
         const CANVAS_CENTER = CANVAS_SIZE / 2;
         const MAX_VALUE = 100;
         const TAG_RADIUS = 5; // 꼭짓점 표시 점의 반지름
@@ -24,7 +23,7 @@ function HexagonGraph() {
 
         // 회색 원 그리기
         ctx.beginPath();
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.strokeStyle = "#D9D9D9";
         for (let i = 0; i < STEPS.length; i++) {
             const radius = ((CANVAS_SIZE * STEPS[i]) / MAX_VALUE) * 0.4;
@@ -96,24 +95,15 @@ function HexagonGraph() {
         ctx.fill();
     };
 
-    // 버튼의 선택 여부를 추적하는 상태
-    const [selectedSpec, setSelectedSpec] = useState(null);
-
-    // 버튼 클릭 시 호출되는 함수
-    const handleSpecClick = (index) => {
-        // 클릭된 버튼의 인덱스를 선택된 상태로 설정
-        setSelectedSpec(index);
-    };
-
     return (
         <div
             className="graph"
-            style={{ position: "relative", width: "100vw", height: "38vh" }}
+            style={{ position: "relative", width: "600px", height: "500px" }}
         >
             <canvas
                 id="canvas"
-                width="280"
-                height="280"
+                width="100"
+                height="100"
                 style={{
                     position: "absolute",
                     top: "0",
@@ -124,23 +114,21 @@ function HexagonGraph() {
                 }}
             ></canvas>
             <button
-                className={`spec ${selectedSpec === 1 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(1)}
+                className="spec"
                 style={{
                     position: "absolute",
                     left: "50%",
-                    top: "3%",
+                    top: "2%",
                     transform: "translateX(-50%)",
                 }}
             >
                 스펙 1
             </button>
             <button
-                className={`spec ${selectedSpec === 2 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(2)}
+                className="spec"
                 style={{
                     position: "absolute",
-                    left: "85%",
+                    left: "88%",
                     top: "25%",
                     transform: "translateX(-50%)",
                 }}
@@ -148,11 +136,10 @@ function HexagonGraph() {
                 스펙 2
             </button>
             <button
-                className={`spec ${selectedSpec === 3 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(3)}
+                className="spec"
                 style={{
                     position: "absolute",
-                    left: "85%",
+                    left: "88%",
                     top: "70%",
                     transform: "translateX(-50%)",
                 }}
@@ -161,20 +148,18 @@ function HexagonGraph() {
             </button>
 
             <button
-                className={`spec ${selectedSpec === 4 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(4)}
+                className="spec"
                 style={{
                     position: "absolute",
                     left: "50%",
-                    bottom: "3%",
+                    bottom: "2%",
                     transform: "translateX(-50%)",
                 }}
             >
                 스펙 4
             </button>
             <button
-                className={`spec ${selectedSpec === 5 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(5)}
+                className="spec"
                 style={{
                     position: "absolute",
                     left: "12%",
@@ -185,8 +170,7 @@ function HexagonGraph() {
                 스펙 5
             </button>
             <button
-                className={`spec ${selectedSpec === 6 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(6)}
+                className="spec"
                 style={{
                     position: "absolute",
                     left: "12%",

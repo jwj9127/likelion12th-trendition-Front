@@ -6,14 +6,23 @@ import BeforeSet from "../component/BeforeSet";
 import logo2 from "../imgs/logo2.png";
 import pencil from "../imgs/pencil.png";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 
 function TopBar({ goalCount }) {
     const achievementRate = goalCount * 20;
     return (
         <div className="TopBar">
-            <div className="sublogo">
-                <img className="logo2" src={logo2}></img>
-                <div className="logo2-name">식스펙</div>
+            <div className="TopBar-top">
+                <div className="sublogo">
+                    <img className="logo2" src={logo2}></img>
+                    <div className="logo2-name">식스펙</div>
+                </div>
+                <FontAwesomeIcon
+                    icon={faGear}
+                    style={{ fontSize: "25px", margin: "3vh 4vw 0.5vh 0vw" }}
+                    onClick={TargetTag}
+                />
             </div>
             <div className="state">
                 <div className="state-category">OOO님의 마라톤 목표</div>
@@ -25,12 +34,17 @@ function TopBar({ goalCount }) {
     );
 }
 
-function GoalCheck({level}) {
+function GoalCheck({ level }) {
     return (
         <div className="subGoal">
             <input className="subGoal-check" type="checkbox"></input>
-            <div className="subGoal-text">{`Lv - ${level} : 목표설정`}
-            <img className="subGoal-pencil" src={pencil} onClick={TargetGoals}/>
+            <div className="subGoal-text">
+                {`Lv - ${level} : 목표설정`}
+                <img
+                    className="subGoal-pencil"
+                    src={pencil}
+                    onClick={TargetGoals}
+                />
             </div>
         </div>
     );
@@ -46,22 +60,22 @@ function TargetGoals() {
     </div>
         `,
         showCancelButton: true,
-        confirmButtonText: '목표 설정',
-        cancelButtonText: '취소',
-    })
+        confirmButtonText: "목표 설정",
+        cancelButtonText: "취소",
+    });
 }
 
 function Goals() {
     return (
         <div className="Goals">
-                <select className="mainGoal-text">
-                    <option>스펙 1 : 마라톤</option>
-                    <option>스펙 2 : 필라테스</option>
-                    <option>스펙 3 : 블로그 운영</option>
-                    <option>스펙 4 : 영어 회화</option>
-                    <option>스펙 5 : 요리</option>
-                    <option>스펙 6 : 수영</option>
-                </select>
+            <select className="mainGoal-text">
+                <option>스펙 1 : 마라톤</option>
+                <option>스펙 2 : 필라테스</option>
+                <option>스펙 3 : 블로그 운영</option>
+                <option>스펙 4 : 영어 회화</option>
+                <option>스펙 5 : 요리</option>
+                <option>스펙 6 : 수영</option>
+            </select>
             {[1, 2, 3, 4, 5].map((level) => (
                 <GoalCheck key={level} level={level}></GoalCheck>
             ))}
@@ -102,7 +116,8 @@ function TargetTag() {
         cancelButtonText: "취소",
         allowOutsideClick: false,
     }).then(() => {
-        document.querySelector(".HexagonGraphBox").innerHTML = "<HexagonGraph></HexagonGraph>";
+        document.querySelector(".HexagonGraphBox").innerHTML =
+            "<HexagonGraph></HexagonGraph>";
     });
 }
 
@@ -110,7 +125,9 @@ function HexagonGraphBox() {
     return (
         <div className="HexagonGraphBox">
             {/*설정 전 헥사곤 그래프 대체 이미지*/}
-            <BeforeSet onClick={TargetTag} />
+            {/*<BeforeSet onClick={TargetTag} />*/}
+            {/*설정 후 헥사곤 그래프*/}
+            <HexagonGraph />
         </div>
     );
 }
