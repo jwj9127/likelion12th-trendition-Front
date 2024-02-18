@@ -29,7 +29,7 @@ const Setting = () => {
                         <img src={rightIcon} alt="오른쪽 화살표"/>
                     </div>
                 </Link>
-                <Link className="Link">
+                <Link className="Link" to="/setting/privacy">
                     <div className="li-block">
                         <li className="list-item">개인정보 보호</li>
                         <img src={rightIcon} alt="오른쪽 화살표"/>

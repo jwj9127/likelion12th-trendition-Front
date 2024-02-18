@@ -14,6 +14,8 @@ import Follower from "./pages/Follower.jsx";
 import Setting from "./pages/Setting.jsx";
 import Notification from "./pages/setting/Notification.jsx";
 import Push_Alarm from "./pages/setting/Push_Alarm.jsx";
+import Privacy from "./pages/setting/Privacy.jsx";
+import Block from "./pages/setting/Block.jsx";
 import Test from "./pages/test.jsx";
 
 function App() {
@@ -35,7 +37,10 @@ function App() {
                     element={<Notification />}
                 />
                 <Route path="/setting/push" element={<Push_Alarm />} />
+                <Route path="/setting/privacy" element={<Privacy />} />
+                <Route path="/setting/block" element={<Block />} />
                 <Route path="/test" element={<Test />} />
+
             </Routes>
         </div>
     );
