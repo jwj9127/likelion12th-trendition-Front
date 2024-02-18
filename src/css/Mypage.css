@@ -14,6 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin-top: 1.4vh;
 }
 
 .mypage_top_setting_flex>div{
@@ -22,18 +23,12 @@
 }
 
 .mypage_top_setting_flex>p{
-    margin-right: 7%;
+    margin-right: 10%;
 }
 
 .mypage_top_setting_flex>a{
     color: white;
     margin-right: 3%;
-}
-
-.mypage_logoBox_logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 7px;
 }
 
 .mypage_main_profile{

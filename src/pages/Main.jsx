@@ -4,6 +4,7 @@ import Navigation from "../component/Navigation";
 import HexagonGraph from "../component/HexagonGraph";
 import BeforeSet from "../component/BeforeSet";
 import logo2 from "../imgs/logo2.png";
+import pencil from "../imgs/pencil.png";
 import Swal from "sweetalert2";
 
 function TopBar({ goalCount }) {
@@ -24,29 +25,46 @@ function TopBar({ goalCount }) {
     );
 }
 
-function GoalCheck() {
+function GoalCheck({level}) {
     return (
         <div className="subGoal">
             <input className="subGoal-check" type="checkbox"></input>
-            <div className="subGoal-text">Lv - 1 : 목표설정</div>
+            <div className="subGoal-text">{`Lv - ${level} : 목표설정`}
+            <img className="subGoal-pencil" src={pencil} onClick={TargetGoals}/>
+            </div>
         </div>
     );
 }
 
+function TargetGoals() {
+    Swal.fire({
+        html: `
+        <div class="spec-modal">
+        <div class="spec-content">
+            <input id="stack1" class="swal2-input" style="outline: none;" placeholder="목표를 설정해주세요">
+        </div>
+    </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: '목표 설정',
+        cancelButtonText: '취소',
+    })
+}
+
 function Goals() {
-    const setModalOpen = useState(false);
-    const openModal = () => setModalOpen(true);
     return (
         <div className="Goals">
-            <div className="mainGoal">
-                <div className="mainGoal-text">스펙 1 : 마라톤</div>
-                <button className="mainGoal-set" onClick={openModal}></button>
-            </div>
-            <GoalCheck></GoalCheck>
-            <GoalCheck></GoalCheck>
-            <GoalCheck></GoalCheck>
-            <GoalCheck></GoalCheck>
-            <GoalCheck></GoalCheck>
+                <select className="mainGoal-text">
+                    <option>스펙 1 : 마라톤</option>
+                    <option>스펙 2 : 필라테스</option>
+                    <option>스펙 3 : 블로그 운영</option>
+                    <option>스펙 4 : 영어 회화</option>
+                    <option>스펙 5 : 요리</option>
+                    <option>스펙 6 : 수영</option>
+                </select>
+            {[1, 2, 3, 4, 5].map((level) => (
+                <GoalCheck key={level} level={level}></GoalCheck>
+            ))}
         </div>
     );
 }
@@ -60,22 +78,22 @@ function TargetTag() {
             </div>
             <div class="spec-content">
                 <h3>스펙 1</h3>
-                <input id="stack" class="swal2-input" style="outline: none;" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack1" class="swal-input" style="outline: none;" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
                 <h3>스펙 2</h3>
-                <input id="time" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack2" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
                 <h3>스펙 3</h3>
-                <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack3" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
                 <h3>스펙 4</h3>
-                <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack4" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
                 
                 <h3>스펙 5</h3>
-                <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack5" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
                 
                 <h3>스펙 6</h3>
-                <input id="comment" class="swal2-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                <input id="stack6" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
             </div>
         </div>
     `,
@@ -83,6 +101,8 @@ function TargetTag() {
         confirmButtonText: "저장",
         cancelButtonText: "취소",
         allowOutsideClick: false,
+    }).then(() => {
+        document.querySelector(".HexagonGraphBox").innerHTML = "<HexagonGraph></HexagonGraph>";
     });
 }
 
@@ -91,8 +111,6 @@ function HexagonGraphBox() {
         <div className="HexagonGraphBox">
             {/*설정 전 헥사곤 그래프 대체 이미지*/}
             <BeforeSet onClick={TargetTag} />
-            {/*설정 후 헥사곤 그래프*/}
-            {/*<HexagonGraph></HexagonGraph>*/}
         </div>
     );
 }

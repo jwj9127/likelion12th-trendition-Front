@@ -10,8 +10,29 @@ import {
 import logo2 from "../imgs/logo2.png";
 import send from "../imgs/Send.png";
 import Navigation from "../component/Navigation";
+import axios from "axios";
 
 export default function Search() {
+    // const follow = window.localStorage.getItem('follow')
+    // const follower = window.localStorage.getItem('follower')
+    // const username = window.localStorage.getItem('username')
+    const search_username = document.getElementById("search_username");
+    function Search() {
+        try{
+            axios({
+                method: 'post',
+                url: '/search/?keyword=',
+                data: search_username
+            }).then((result) => {
+                window.localStorage.setItem('username', result.data.username)
+                window.localStorage.setItem('follow', result.data.follow)
+                window.localStorage.setItem('follower', result.data.follower)
+            })
+        }catch(err){
+            console.error(err);
+        }
+    }
+
     return (
         <div className="search_bigBox">
             <div className="search_topBox">
@@ -20,10 +41,10 @@ export default function Search() {
                     <div className="logoBox_name">식스펙</div>
                 </div>
                 <div className="search_SMBox">
-                    <div className="search_searchBox">
+                    <form className="search_searchBox" onSubmit={Search}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} color="#5e47d2"/>
-                        <input type="text" placeholder="검색"/>
-                    </div>
+                        <input id="search_username" type="text" placeholder="검색"/>
+                    </form>
                     <div className="search_messageBox">
                         <img className="search_message_img" src={send} alt="send"/>
                     </div>
