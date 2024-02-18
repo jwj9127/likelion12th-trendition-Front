@@ -44,10 +44,11 @@
 }
 
 .mypage_main_img{
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background-image: url('../imgs/main_back.png');
+    background-image: url('../imgs/profile.png');
+    background-repeat: no-repeat;
     border: solid 4px white;
 }
 
@@ -75,4 +76,18 @@
     margin-left: 5px;
     color: gray;
     text-decoration-line: none;
+}
+
+.mypage_doneBtn{
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    background-color: #e0dbfa;
+    color: #5e47d2;
+    font-weight: bold;
+    font-size: large;
+    border: none;
 }

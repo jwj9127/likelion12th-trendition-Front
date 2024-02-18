@@ -32,6 +32,9 @@ export default function Mypage() {
                     Followers
                 </Link></p>
             </div>
+            <div>
+                <button className="mypage_doneBtn">15 done</button>
+            </div>
         </div>
     );
 }

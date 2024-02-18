@@ -12,6 +12,11 @@
     align-items: center;
 }
 
+.search_topBox{
+    width: 100%;
+    background-color: #5e47d2;
+}
+
 .search_logoBox {
     display: flex;
     align-items: center;
@@ -19,56 +24,88 @@
     color: #1e293b;
     font-family: "TTHakgyoansimJiugaeR";
     margin-top: 5%;
-}
-
-.logoBox_logo {
-    width: 70px;
-    height: 70px;
     margin-bottom: 18px;
 }
 
-.logoBox_content{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.logoBox_logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 }
 
 .logoBox_name {
-    color: #5e47d2;
+    color: white;
     font-size: 32px;
     letter-spacing: 3px;
-    margin-bottom: 3px;
 }
 
-.logoBox_slogun {
-    color: #687684;
-    font-size: 12px;
+.search_SMBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 15px;
 }
 
 .search_searchBox{
-    width: 80%;
+    width: 65%;
     display: flex;
     align-items: center;
-    background-color: #eeeeee;
+    background-color: white;
     border-radius: 1rem;
     padding: 13px;
+}
+
+.search_messageBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 7px;
+}
+
+.search_message_img{
+    width: 30px;
+    height: 30px;    
 }
 
 .search_searchBox>input{
     width: 95%;
     border: none;
     outline: none;
-    background-color: #eeeeee;
+    background-color: white;
+}
+
+.search_navBox{
+    width: 100vw;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .search_account{
+    width: 40%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #e0dbfa;
     color: #5e47d2;
-    padding: 10px 50px 10px 50px;
-    margin: 15px;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.search_post, .search_data{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #687684;
     border-radius: 0.5rem;
     font-weight: bold;
 }
@@ -99,6 +136,8 @@
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    background-image: url('../imgs/main_back.png');
+    background-size: 100%;
+    background-image: url('../imgs/profile.png');
+    background-repeat: no-repeat;
     margin-right: 5%;
 }
