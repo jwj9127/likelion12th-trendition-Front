@@ -183,7 +183,7 @@
 }
 
 .pwd-message {
-    display: none; /* 비번 일치 시 flex */
+    display: flex;
     flex-direction: row;
     align-items: center;
     margin-top: 10px;

@@ -8,6 +8,7 @@ import pencil from "../imgs/pencil.png";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 function TopBar({ goalCount }) {
     const achievementRate = goalCount * 20;

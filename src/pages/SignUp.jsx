@@ -1,10 +1,7 @@
-import { React } from "react";
-import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { React, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/SignUp.css";
-import pwdErrorImage from "../imgs/pwd_error.png";
 import backImage from "../imgs/back.png";
-import profileImage from "../imgs/profile.png";
 
 function Back() {
     return (
@@ -18,7 +15,7 @@ function Title() {
     return <div className="title-signup">회원가입</div>;
 }
 
-function InputBox() {
+function InputBox({ email, setEmail, phoneNumber, setPhoneNumber }) {
     return (
         <div className="inputBox">
             <label htmlFor="email" className="label-email">
@@ -27,6 +24,8 @@ function InputBox() {
                     type="email"
                     className="input-email"
                     placeholder="이메일을 입력해주세요."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </label>
             <label htmlFor="phone" className="label-tel">
@@ -35,6 +34,8 @@ function InputBox() {
                     type="tel"
                     className="input-tel"
                     placeholder="전화번호 입력해주세요."
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                 />
             </label>
         </div>
@@ -49,22 +50,51 @@ function Privacy() {
     );
 }
 
-function ToNextSignUp() {
+function ToNextSignUp({ email, phoneNumber, handleNext }) {
+    const handleClick = (event) => {
+        event.preventDefault();
+        if (!email || !phoneNumber) {
+            alert("이메일과 전화번호를 입력해주세요.");
+            window.location.href = "/signup";
+        } else {
+            console.log("Next button clicked");
+            handleNext();
+        }
+    };
+
     return (
-        <Link to="/signup/next" className="ToNextSignUp">
+        <Link className="ToNextSignUp" onClick={handleClick}>
             다음
         </Link>
     );
 }
 
-export default function Login() {
+export default function Register() {
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const navigate = useNavigate();
+
+    const handleNext = () => {
+        console.log("Next button clicked - handleNext");
+        navigate("/signup/next", { state: { email, phoneNumber } });
+    };
+
     return (
         <div className="LoginBox">
             <Back></Back>
             <Title></Title>
-            <InputBox></InputBox>
+            <InputBox
+                email={email}
+                setEmail={setEmail}
+                phoneNumber={phoneNumber}
+                setPhoneNumber={setPhoneNumber}
+            ></InputBox>
             <Privacy></Privacy>
-            <ToNextSignUp></ToNextSignUp>
+            <ToNextSignUp
+                email={email}
+                phoneNumber={phoneNumber}
+                handleNext={handleNext}
+            ></ToNextSignUp>
         </div>
     );
 }

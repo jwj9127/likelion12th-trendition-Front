@@ -1,10 +1,12 @@
 import { React } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "../css/SignUp.css";
 import pwdErrorImage from "../imgs/pwd_error.png";
 import backImage from "../imgs/back.png";
-import profileImage from "../imgs/profile.png";
+import DefaultImage from "../imgs/profile.png";
+import axios from "axios";
 
 function Back() {
     return (
@@ -18,9 +20,7 @@ function Title() {
     return <div className="title-signup">회원가입</div>;
 }
 
-function Profile() {
-    // 기본 이미지 설정
-    const [selectedImage, setSelectedImage] = useState(profileImage);
+function Profile({ profileImage, handleImageChange }) {
     const fileInputRef = useRef(null);
     // 입력할 이미지 선택
     const handleImageClick = () => {
@@ -32,7 +32,7 @@ function Profile() {
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setSelectedImage(reader.result);
+                handleImageChange(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -53,7 +53,7 @@ function Profile() {
                     height: "100px",
                     borderRadius: "50%",
                     backgroundColor: "#ccc",
-                    backgroundImage: `url(${selectedImage})`,
+                    backgroundImage: `url(${profileImage})`,
                     backgroundSize: "cover",
                     cursor: "pointer",
                 }}
@@ -64,7 +64,14 @@ function Profile() {
     );
 }
 
-function InputBox() {
+function InputBox({
+    username,
+    setUsername,
+    password,
+    setPassword,
+    passwordConfirm,
+    setPasswordConfirm,
+}) {
     return (
         <div className="inputBox">
             <label htmlFor="text" className="label-text">
@@ -73,6 +80,8 @@ function InputBox() {
                     type="text"
                     className="input-text"
                     placeholder="아이디를 입력해주세요."
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
             </label>
             <label htmlFor="password" className="label-pwd">
@@ -81,6 +90,8 @@ function InputBox() {
                     type="password"
                     className="input-pwd"
                     placeholder="비밀번호를 입력해주세요."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="pwd-condition">8글자 이상, 특수기호 포함</div>
             </label>
@@ -90,11 +101,17 @@ function InputBox() {
                     type="password"
                     className="input-pwd2"
                     placeholder="위와 동일한 비밀번호를 입력해주세요."
+                    value={passwordConfirm}
+                    onChange={(e) => {
+                        setPasswordConfirm(e.target.value);
+                    }}
                 />
-                <div className="pwd-message">
-                    <img src={pwdErrorImage} alt="error icon" />
-                    <span>비밀번호를 다시 확인해주세요.</span>
-                </div>
+                {passwordConfirm !== password && (
+                    <div className="pwd-message">
+                        <img src={pwdErrorImage} alt="error icon" />
+                        <span>비밀번호를 다시 확인해주세요.</span>
+                    </div>
+                )}
             </label>
         </div>
     );
@@ -108,23 +125,85 @@ function Privacy() {
     );
 }
 
-function SignUpBtn() {
+function SignUpBtn({ password, passwordConfirm, handleSignUp }) {
+    const handleClick = (event) => {
+        event.preventDefault();
+        if (password === passwordConfirm) {
+            handleSignUp();
+        } else {
+            alert("비밀번호를 다시 확인해주세요.");
+            window.location.href = "/signup";
+        }
+    };
+
     return (
-        <Link to="/login" className="SignUpBtn">
+        <Link to="" className="SignUpBtn" onClick={handleClick}>
             계정 만들기
         </Link>
     );
 }
 
 export default function SignUpBox() {
+    const { state } = useLocation();
+    const { email, phoneNumber } = state || { email: "", phoneNumber: "" };
+    console.log(email, phoneNumber);
+
+    const [profileImage, setSelectedImage] = useState(DefaultImage);
+    const handleImageChange = (image) => {
+        setSelectedImage(image);
+    };
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
+
+    const handleSignUp = () => {
+        axios
+            .post("http://127.0.0.1:8000/join/register/", {
+                email: email,
+                phonenumber: phoneNumber,
+                username: username,
+                password: password,
+                profileImage: profileImage,
+            })
+            .then(function (response) {
+                window.location.href = "/login";
+            })
+            .catch(function (error) {
+                console.log(
+                    email,
+                    phoneNumber,
+                    username,
+                    password,
+                    profileImage
+                );
+                alert("양식에 맞춰 정확히 입력해주세요.");
+                window.location.href = "/signup";
+            });
+    };
+
     return (
         <div className="SignUpBox">
             <Back></Back>
             <Title></Title>
-            <Profile></Profile>
-            <InputBox></InputBox>
+            <Profile
+                profileImage={profileImage}
+                handleImageChange={handleImageChange}
+            ></Profile>
+            <InputBox
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                passwordConfirm={passwordConfirm}
+                setPasswordConfirm={setPasswordConfirm}
+            ></InputBox>
             <Privacy></Privacy>
-            <SignUpBtn></SignUpBtn>
+            <SignUpBtn
+                password={password}
+                passwordConfirm={passwordConfirm}
+                handleSignUp={handleSignUp}
+            ></SignUpBtn>
         </div>
     );
 }
