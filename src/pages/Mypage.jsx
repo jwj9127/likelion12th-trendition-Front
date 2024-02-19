@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import Navigation from "../component/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Mypage() {
+    const [data, setData] = useState([]);
     // const img = window.localStorage.getItem('img')
     // const username = window.localStorage.getItem('username')
     // const name = window.localStorage.getItem('name')
@@ -33,6 +34,27 @@ export default function Mypage() {
     // }
     // }, [])
 
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/join/mypage/', {
+          headers: {
+            Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+            setData(data);
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+      }, []);
+
     return (
         <div>
             <Navigation></Navigation>
@@ -52,20 +74,20 @@ export default function Mypage() {
                 </div>
                 <div className="mypage_main_profile">
                     <div className="mypage_main_img"></div>
-                    <p>Bruno Pham</p>
+                    <p>{data.username}</p>
                 </div>
             </div>
             <div className="mypage_followBox">
                 <p>
-                    220
-                    <Link to="/follow" className="font-gray">
-                        Follow
+                    {data.followers}
+                    <Link to="/followers" className="font-gray">
+                        Followers
                     </Link>
                 </p>
                 <p>
-                    150
-                    <Link to="/follower" className="font-gray">
-                        Followers
+                    {data.followings}
+                    <Link to="/following" className="font-gray">
+                        Following
                     </Link>
                 </p>
             </div>

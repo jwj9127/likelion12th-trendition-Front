@@ -9,8 +9,8 @@ import SignUp from "./pages/SignUp.jsx";
 import SignUpNext from "./pages/SignUpNext.jsx";
 import Search from "./pages/Search.jsx";
 import Mypage from "./pages/Mypage.jsx";
-import Follow from "./pages/Follow.jsx";
-import Follower from "./pages/Follower.jsx";
+import Followers from "./pages/Followers.jsx";
+import Following from "./pages/Following.jsx";  
 import Setting from "./pages/Setting.jsx";
 import Notification from "./pages/setting/Notification.jsx";
 import Push_Alarm from "./pages/setting/Push_Alarm.jsx";
@@ -29,8 +29,8 @@ function App() {
                 <Route path="/main" element={<Main />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/mypage" element={<Mypage />} />
-                <Route path="/follow" element={<Follow />} />
-                <Route path="/follower" element={<Follower />} />
+                <Route path="/followers" element={<Followers />} />
+                <Route path="/following" element={<Following />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route
                     path="/setting/notification"
