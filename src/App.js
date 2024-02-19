@@ -2,18 +2,20 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
 import Main from "./pages/Main.jsx";
-import Navigation from "./component/Navigation.jsx";
+import Profile from "./pages/Profile.jsx";
 import Splash from "./pages/Splash.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignUpNext from "./pages/SignUpNext.jsx";
 import Search from "./pages/Search.jsx";
 import Mypage from "./pages/Mypage.jsx";
-import Follow from "./pages/Follow.jsx";
-import Follower from "./pages/Follower.jsx";
+import Followers from "./pages/Followers.jsx";
+import Following from "./pages/Following.jsx";  
 import Setting from "./pages/Setting.jsx";
 import Notification from "./pages/setting/Notification.jsx";
 import Push_Alarm from "./pages/setting/Push_Alarm.jsx";
+import Privacy from "./pages/setting/Privacy.jsx";
+import Block from "./pages/setting/Block.jsx";
 import Test from "./pages/test.jsx";
 
 function App() {
@@ -26,16 +28,20 @@ function App() {
                 <Route path="/signup/next" element={<SignUpNext />} />
                 <Route path="/main" element={<Main />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/mypage" element={<Mypage />} />
-                <Route path="/follow" element={<Follow />} />
-                <Route path="/follower" element={<Follower />} />
+                <Route path="/followers" element={<Followers />} />
+                <Route path="/following" element={<Following />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route
                     path="/setting/notification"
                     element={<Notification />}
                 />
                 <Route path="/setting/push" element={<Push_Alarm />} />
+                <Route path="/setting/privacy" element={<Privacy />} />
+                <Route path="/setting/block" element={<Block />} />
                 <Route path="/test" element={<Test />} />
+
             </Routes>
         </div>
     );

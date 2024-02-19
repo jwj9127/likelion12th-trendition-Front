@@ -12,7 +12,7 @@ const Navigation = () => {
     const location = useLocation();
     const searchIconSrc = location.pathname === '/search' ? searchPurple : searchGray;
     const homeIconSrc = location.pathname === '/main' ? homePurple : homeGray;
-    const myIconSrc = location.pathname === '/mypage' ? myPurple : myGray;
+    const myIconSrc = location.pathname === '/mypage' || location.pathname === '/profile' ? myPurple : myGray;
 
     return (
         <div className="Nav">

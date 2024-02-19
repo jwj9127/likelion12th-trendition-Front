@@ -146,7 +146,7 @@
     margin: 12px 10px 12px 0px;
 }
 
-.subGoal-check:checked {
+.subGoal-check-checked {
     background-image: url("../imgs/Click.png");
     background-repeat: no-repeat;
     background-size: 100%;
@@ -168,6 +168,11 @@
 
 .subGoal-pencil {
     margin-left: 60%;
+}
+
+.subGoal-garbage{
+    margin-right: 3%;
+    margin-left: 3%;
 }
 
 .Goals {

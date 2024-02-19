@@ -4,6 +4,11 @@ body {
     padding: 0;
 }
 
+li{
+    font-weight: bold;
+    list-style: none;
+}
+
 .top-nav{
     padding: 10px 20px;
     display: flex;
@@ -34,4 +39,74 @@ body {
 .li-block>img{
     width: 7px;
     height: 13px;
+}
+
+.push__li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+
+/* 버튼 */
+.switch-button {
+    position: relative;
+    margin-top: -30px;
+    margin-right: 10px;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+    display: flex;
+    margin-left: auto;
+}
+
+.switch-button input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.onoff-switch {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius:20px;
+    background-color: #ccc;
+}
+
+.onoff-switch:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    -webkit-transition: .1s;
+    border-radius:20px;
+}
+
+.switch-button input:checked + .onoff-switch {
+    background-color: #02C75A;
+}
+
+.switch-button input:checked + .onoff-switch:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+/*  */
+
+.push__Btn{
+    margin-top: 40px;
+}
+
+.block_slash{
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
 }

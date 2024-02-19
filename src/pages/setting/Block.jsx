@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import "../css/Follow.css";
-import backIcon from "../imgs/backIcon.png";
+import "../../css/Follow.css";
+import backIcon from "../../imgs/backIcon.png";
 import { Link } from "react-router-dom";
-import ProfileImg from "../imgs/profile.png";
+import ProfileImg from "../../imgs/profile.png";
+import slashIcon from "../../imgs/slash-circle.png"
 
-const Follow = () => {
-  const [data, setData] = useState([{ username: "이름", avatar_url: ProfileImg, following: false, name: "아이디", login: "사람 이름" }, { username: "이름1", avatar_url: ProfileImg, following: true, name: "아이디1", login: "사람 이름 1" }]);
+const Block = () => {
+  const [data, setData] = useState([{username: "이름", avatar_url: ProfileImg, block: false, name: "아이디", login: "사람 이름"},{username: "이름1", avatar_url: ProfileImg, block: true, name: "아이디1", login: "사람 이름 1"}]);
 
   // useEffect(() => {
   //   fetch('https://api.github.com/users/이름/following')
@@ -14,23 +15,10 @@ const Follow = () => {
   //     .then((json) => setData(json));
   // }, []);
 
-  const handleFollow = (username) => {
-    setData(data.map((i) => {
-      if (i.username === username) {
-        if (i.following === false) {
-          i.following = true;
-        } else {
-          i.following = false;
-        }
-      }
-      return i;
-    }));
-  };
-
   return (
     <div className="main">
       <div className="top-nav">
-        <Link to="/mypage" className="font-gray">
+        <Link to="/setting/privacy" className="font-gray">
           <img src={backIcon} alt="뒤로가기" />
         </Link>
         <h2 className="title">팔로우</h2>
@@ -44,9 +32,7 @@ const Follow = () => {
               <h3>{item.login}</h3>
               <p className="username">{item.name}</p>
             </div>
-            <button className="button" onClick={() => handleFollow(item.username)}>
-              {item.following ? '팔로잉' : '팔로워'}
-            </button>
+            <img className="block_slash" src={slashIcon} alt="" />
           </li>
         ))}
       </ul>
@@ -54,4 +40,4 @@ const Follow = () => {
   );
 };
 
-export default Follow;
+export default Block;

@@ -10,25 +10,21 @@
     flex-direction: column;
 }
 
-.mypage_top_setting_flex{
+.profile_top_setting_flex{
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 1.4vh;
 }
 
-.mypage_top_setting_flex>div{
+.profile_top_setting_flex>div{
     display: flex;
     align-items: center;
 }
 
-.mypage_top_setting_flex>p{
-    margin-right: 10%;
-}
-
-.mypage_top_setting_flex>a{
-    color: white;
-    margin-right: 3%;
+.profile_top_setting_flex>p{
+    margin-right: 33%;
+    margin-left: 10%;
 }
 
 .mypage_main_profile{
@@ -45,6 +41,43 @@
     background-image: url('../imgs/profile.png');
     background-repeat: no-repeat;
     border: solid 4px white;
+}
+
+.profile_middle_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile_message_img{
+    width: 20px;
+    height: 20px;
+    color: #5E47D2;
+    border: solid 1px #5E47D2;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.profile_button_follow{
+    cursor: pointer;
+    background-color: #5E47D2;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 30px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.profile_button{
+    cursor: pointer;
+    background-color: white;
+    color: #5e47d2;
+    padding: 10px 15px;
+    border: solid 1px #5E47D2;
+    border-radius: 30px;
+    margin-left: 10px;
+    font-weight: bold;
 }
 
 .mypage_followBox{
