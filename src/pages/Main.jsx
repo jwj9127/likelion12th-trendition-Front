@@ -54,6 +54,9 @@ function GoalCheck({ level }) {
                     axios({
                         method: 'post',
                         url: '/home/goal/create',
+                        headers: {
+                            Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                        },
                         data: { completed: true }
                     }).then(() => {
                         setIsChecked(true);

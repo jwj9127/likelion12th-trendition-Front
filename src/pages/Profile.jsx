@@ -86,6 +86,21 @@ export default function Profile() {
                 console.log(result.data);
                 setData(result.data[0]);
             })
+            axios({
+                method: 'get',
+                url: `http://127.0.0.1:8000/join/follow/${username}/`,
+                headers: {
+                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                  }
+            }).then((result) => {
+                console.log(result.data)
+                if(result.data === '팔로우 상태입니다.'){
+                    setFollow(true);
+                }
+                if(result.data === '언팔로우 상태입니다.'){
+                    setFollow(false);
+                }
+            })
         }catch(err){
             console.error(err);
         }
