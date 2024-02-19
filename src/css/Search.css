@@ -62,12 +62,13 @@
     background-color: white;
     border: none;
     border-radius: 50%;
-    padding: 7px;
+    padding: 13px;
+    color: #5e47d2;
 }
 
 .search_message_img{
-    width: 30px;
-    height: 30px;    
+    width: 20px;
+    height: 20px;
 }
 
 .search_searchBox>input{
@@ -121,6 +122,7 @@
     align-items: center;
     width: 80vw;
     height: 10%;
+    margin-bottom: 5%;
 }
 
 .search_account_titles_main>div>p{
@@ -140,4 +142,10 @@
     background-image: url('../imgs/profile.png');
     background-repeat: no-repeat;
     margin-right: 5%;
+}
+
+
+.search_account_titles_main_name>a{
+    color: black;
+    text-decoration: none;
 }

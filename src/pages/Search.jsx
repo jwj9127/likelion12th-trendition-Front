@@ -1,37 +1,61 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import "../css/Search.css";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faList,
     faMagnifyingGlass,
-    faUser,
+    faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import logo2 from "../imgs/logo2.png";
-import send from "../imgs/Send.png";
 import Navigation from "../component/Navigation";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Search() {
-    // const follow = window.localStorage.getItem('follow')
-    // const follower = window.localStorage.getItem('follower')
-    // const username = window.localStorage.getItem('username')
-    const search_username = document.getElementById("search_username");
-    function Search() {
-        try{
+    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
+    
+    function Search(e) {
+        e.preventDefault();
+        const username = document.getElementById('search_username').value;
+
+        try {
             axios({
-                method: 'post',
-                url: '/search/?keyword=',
-                data: search_username
-            }).then((result) => {
-                window.localStorage.setItem('username', result.data.username)
-                window.localStorage.setItem('follow', result.data.follow)
-                window.localStorage.setItem('follower', result.data.follower)
-            })
-        }catch(err){
+                method: 'get',
+                url: `http://localhost:8000/join/search_user/?keyword=${username}`,
+                headers: {
+                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                }
+            }).then(result => {
+                if(result.data.error === "검색어가 없습니다." || result.data.error == '해당 유저는 존재하지 않습니다.'){
+                    Swal.fire({
+                        title: '해당 회원은 존재하지 않습니다.'
+                    })
+                }
+                console.log(result.data);
+                setUser(result.data);
+            });
+        } catch(err) {
             console.error(err);
         }
     }
+
+    useEffect(() => {
+        try {
+            axios({
+                method: 'get',
+                url: 'http://localhost:8000/join/search',
+                headers: {
+                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                }
+            }).then(result => {
+                console.log(result.data)
+                setUsers(result.data);
+            });
+        } catch(err) {
+            console.error(err);
+        }
+    }, [])
 
     return (
         <div className="search_bigBox">
@@ -46,7 +70,7 @@ export default function Search() {
                         <input id="search_username" type="text" placeholder="검색"/>
                     </form>
                     <div className="search_messageBox">
-                        <img className="search_message_img" src={send} alt="send"/>
+                        <FontAwesomeIcon className="search_message_img" icon={faPaperPlane} />
                     </div>
                 </div>
             </div>
@@ -56,15 +80,33 @@ export default function Search() {
                 <div className="search_data">자료</div>
             </div>
             <div className="search_account_titles">
-                <div className="search_account_titles_main">
-                    <div className="search_account_titles_main_img"></div>
-                    <div className="search_account_titles_main_name">
-                        <div>Joshua Rain</div>
-                        <p>@joshua_I</p>
-                    </div>
-                </div>
+                {user.length > 0 ? 
+                    user.map((user, index) => (
+                        <div className="search_account_titles_main" key={index}>
+                            <div className="search_account_titles_main_img"></div>
+                            <div className="search_account_titles_main_name">
+                                <Link to={'/profile'} state={{ username: user.username }}>
+                                    <div>{user.username}</div>
+                                </Link>
+                                <p>@{user.username}</p>
+                            </div>
+                        </div>
+                    ))
+                : 
+                    users.map((user, index) => (
+                        <div className="search_account_titles_main" key={index}>
+                            <div className="search_account_titles_main_img"></div>
+                            <div className="search_account_titles_main_name">
+                                <Link to={'/profile'} state={{ username: user.username }}>
+                                    <div>{user.username}</div>
+                                </Link>
+                                <p>@{user.username}</p>
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
-            <Navigation></Navigation>
+            <Navigation/>
         </div>
     );
 }

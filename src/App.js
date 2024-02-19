@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
 import Main from "./pages/Main.jsx";
-import Navigation from "./component/Navigation.jsx";
+import Profile from "./pages/Profile.jsx";
 import Splash from "./pages/Splash.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
@@ -28,6 +28,7 @@ function App() {
                 <Route path="/signup/next" element={<SignUpNext />} />
                 <Route path="/main" element={<Main />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/followers" element={<Followers />} />
                 <Route path="/following" element={<Following />} />
