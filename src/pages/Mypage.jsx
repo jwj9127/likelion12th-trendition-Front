@@ -228,7 +228,6 @@ export default function Mypage() {
 
     return (
         <div>
-            <Navigation></Navigation>
             <div className="mypage_top_setting">
                 <div className="TopBar">
                     <div className="TopBar-top">
@@ -238,15 +237,14 @@ export default function Mypage() {
                         </div>
                         <p
                             style={{
-                                position: "fixed",
-                                top: "2.5vh",
-                                left: "0",
-                                right: "0",
+                                display: "flex",
+                                alignItems: "center",
                                 textAlign: "center",
                                 fontSize: "13px",
+                                marginTop: "4vh",
                             }}
                         >
-                            data.username
+                            {data.username}
                         </p>
                         <Link to={"/Setting"}>
                             <FontAwesomeIcon
@@ -254,7 +252,7 @@ export default function Mypage() {
                                 style={{
                                     fontSize: "25px",
                                     color: "#ffffff",
-                                    margin: "3vh 5vw 0.5vh 0vw",
+                                    margin: "3vh 20px 0.5vh 50px",
                                 }}
                             />
                         </Link>
@@ -282,6 +280,7 @@ export default function Mypage() {
                 <button className="mypage_doneBtn">15 done</button>
             </div>
             <Goals />
+            <Navigation></Navigation>
         </div>
     );
 }
