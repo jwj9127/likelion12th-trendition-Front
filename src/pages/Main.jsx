@@ -15,6 +15,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
     const [goals, setGoals] = useState([]);
     const [selectedGoal, setSelectedGoal] = useState([]);
     const [subgoals, setSubgoals] = useState([]);
+    const [subgoal, setSubgoal] = useState([]);
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -68,17 +69,17 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
     return (
         <div className="Goals">
             <select className="mainGoal-text" onChange={handleGoalChange}>
-                {goals.map((goal) => (
-                    <option key={goal.id} value={goal.id}>
-                        {`스펙 ${goal.id}: ${goal.title}`}
+                {goals.map((goal, index) => (
+                    <option key={index} value={index + 1}>
+                        {`SPEC ${index + 1} : ${goal.title}`}
                     </option>
                 ))}
             </select>
-            {subgoals
-                ? subgoals.map((subgoal) => (
-                      <GoalCheck subgoal={subgoal}></GoalCheck>
-                  ))
-                : null}
+            <GoalCheck key={1} level={1} subgoals={subgoals}></GoalCheck>
+            <GoalCheck key={2} level={2} subgoals={subgoals}></GoalCheck>
+            <GoalCheck key={3} level={3} subgoals={subgoals}></GoalCheck>
+            <GoalCheck key={4} level={4} subgoals={subgoals}></GoalCheck>
+            <GoalCheck key={5} level={5} subgoals={subgoals}></GoalCheck>
         </div>
     );
 }
@@ -113,11 +114,6 @@ function TopBar({ selectedGoalId }) {
                     <img className="logo2" src={logo2}></img>
                     <div className="logo2-name">식스펙</div>
                 </div>
-                <FontAwesomeIcon
-                    icon={faGear}
-                    style={{ fontSize: "25px", margin: "3vh 4vw 0.5vh 0vw" }}
-                    onClick={TargetTag}
-                />
             </div>
             <div className="state">
                 <div className="state-category">OOO님의 {goalTitle} 목표</div>
@@ -129,8 +125,9 @@ function TopBar({ selectedGoalId }) {
     );
 }
 
-function GoalCheck({ subgoal }) {
+function GoalCheck({ key, level, subgoals }) {
     const [isChecked, setIsChecked] = useState(false);
+    const subgoal = subgoals[level - 1]; // subgoal 가져오기
 
     const token = localStorage.getItem("token");
 
@@ -163,6 +160,37 @@ function GoalCheck({ subgoal }) {
         });
     };
 
+    if (!subgoal) {
+        return (
+            <div className="subGoal">
+                <input
+                    className={
+                        isChecked ? "subGoal-check-checked" : "subGoal-check"
+                    }
+                    type="checkbox"
+                    onClick={checkBox}
+                    disabled={isChecked}
+                ></input>
+                <div className="subGoal-text">
+                    <div key={key}>
+                        {`Lv - ${level} : 세부 목표를 설정해주세요`}
+                        <img
+                            className="subGoal-pencil"
+                            src={pencil}
+                            onClick={() => TargetGoals(subgoal.id)}
+                            style={{
+                                marginLeft: "25%",
+                                marginRight: "5%",
+                                width: "25px",
+                                height: "25px",
+                            }}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="subGoal">
             <input
@@ -174,23 +202,39 @@ function GoalCheck({ subgoal }) {
                 disabled={isChecked}
             ></input>
             <div className="subGoal-text">
-                <div key={subgoal.id}>
-                    {`Lv - ${parseInt(subgoal.id / 5)} : ${subgoal.title}`}
-                    <img
-                        className="subGoal-pencil"
-                        src={pencil}
-                        onClick={() => TargetGoals(subgoal)}
+                <div key={key}>
+                    {`Lv - ${level} : ${subgoal.title}`}
+                    <div
+                        className="subgoal_imgBtn"
                         style={{
-                            marginLeft: subgoal === undefined ? "60%" : "50%",
+                            width: "70px",
+                            height: "43px",
+                            marginRight: "3%",
                         }}
-                    />
-                    {subgoal && (
+                    >
                         <img
-                            className="subGoal-garbage"
-                            src={garbage}
-                            onClick={() => DeleteGoals(subgoal.id)}
+                            className="subGoal-pencil"
+                            src={pencil}
+                            onClick={() => TargetGoals(subgoal)}
+                            style={{
+                                marginLeft:
+                                    subgoal === undefined ? "60%" : "10%",
+                                width: "25px",
+                                height: "25px",
+                            }}
                         />
-                    )}
+                        {subgoal && (
+                            <img
+                                className="subGoal-garbage"
+                                src={garbage}
+                                onClick={() => DeleteGoals(subgoal.id)}
+                                style={{
+                                    width: "25px",
+                                    height: "25px",
+                                }}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,10 +249,14 @@ function DeleteGoals(id) {
         cancelButtonText: "취소",
     }).then((result) => {
         if (result.isConfirmed) {
+            const token = localStorage.getItem("token");
             try {
                 axios({
                     method: "delete",
-                    url: "http://127.0.0.1:8000/home/subgoal/delete/${id}",
+                    url: `http://127.0.0.1:8000/home/subgoal/delete/${id}`,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                     data: id,
                 }).then((result) => {
                     console.log(result);
@@ -235,11 +283,15 @@ function TargetGoals(subgoal) {
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
+                const token = localStorage.getItem("token");
                 const stack = document.getElementById("stack").value;
                 try {
                     axios({
                         method: "put",
-                        url: "http://127.0.0.1:8000/home/subgoal/update/",
+                        url: `http://localhost:8000/home/subgoal/update/`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                         data: stack,
                     });
                 } catch (err) {
@@ -263,11 +315,15 @@ function TargetGoals(subgoal) {
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
+                const token = localStorage.getItem("token");
                 const stack = document.getElementById("stack").value;
                 try {
                     axios({
                         method: "post",
-                        url: "http://localhost:8000/home/subgoal/create/",
+                        url: `http://localhost:8000/home/subgoal/create/`, //${goal_id}
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                         data: stack,
                     });
                 } catch (err) {
@@ -318,22 +374,20 @@ function TargetTag() {
             const title4 = document.getElementById("stack4").value;
             const title5 = document.getElementById("stack5").value;
             const title6 = document.getElementById("stack6").value;
-            const GoalForm = {};
-
-            GoalForm[title1] = title1;
-            GoalForm[title2] = title2;
-            GoalForm[title3] = title3;
-            GoalForm[title4] = title4;
-            GoalForm[title5] = title5;
-            GoalForm[title6] = title6;
+            const title = { title1, title2, title3, title4, title5, title6 };
 
             try {
+                const token = localStorage.getItem("token");
+                console.log(token);
                 axios({
                     method: "post",
-                    url: "http://127.0.0.1:8000/home/goal/create",
-                    data: { GoalForm: GoalForm },
+                    url: "http://127.0.0.1:8000/home/goal/createall/",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    data: title,
                 }).then((result) => {
-                    console.log(result);
+                    window.location.reload();
                 });
             } catch (err) {
                 console.error(err);

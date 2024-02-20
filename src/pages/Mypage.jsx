@@ -12,35 +12,37 @@ import axios from "axios";
 
 function GoalCheck({ level }) {
     const [isChecked, setIsChecked] = useState(false);
-    const subgoals = window.localStorage.getItem('subgoals');
+    const subgoals = window.localStorage.getItem("subgoals");
 
-    const checkBox = () =>{
-        const completed = document.getElementById('subGoal-check-completed').value;
+    const checkBox = () => {
+        const completed = document.getElementById(
+            "subGoal-check-completed"
+        ).value;
 
         Swal.fire({
-            title: '목표 완료',
+            title: "목표 완료",
             showCancelButton: true,
             confirmButtonText: "잠굼",
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
-                try{
+                try {
                     axios({
-                        method: 'post',
-                        url: '/home/goal/create',
-                        data: { completed: true }
+                        method: "post",
+                        url: "/home/goal/create",
+                        data: { completed: true },
                     }).then(() => {
                         setIsChecked(true);
-                    })
-                }catch (err) {
+                    });
+                } catch (err) {
                     console.error(err);
                 }
             }
-            if (!(result.isConfirmed)){
+            if (!result.isConfirmed) {
                 setIsChecked(false);
             }
-        })
-    }
+        });
+    };
 
     // try{
     //     axios({
@@ -54,14 +56,22 @@ function GoalCheck({ level }) {
     // }
     return (
         <div className="subGoal">
-            <input id="subGoal-check-completed" className={isChecked ? "subGoal-check-checked" : "subGoal-check"} type="checkbox" onClick={checkBox} disabled={isChecked}></input>
+            <input
+                id="subGoal-check-completed"
+                className={
+                    isChecked ? "subGoal-check-checked" : "subGoal-check"
+                }
+                type="checkbox"
+                onClick={checkBox}
+                disabled={isChecked}
+            ></input>
             <div className="subGoal-text">
                 {`Lv - ${level} : ${subgoals ? subgoals.detail : "목표 설정"}`}
                 <img
                     className="subGoal-pencil"
                     src={pencil}
                     onClick={TargetGoals}
-                    style={{ marginLeft: subgoals===null ? "60%" : "50%" }}
+                    style={{ marginLeft: subgoals === null ? "60%" : "50%" }}
                 />
                 {subgoals && (
                     <img
@@ -76,31 +86,31 @@ function GoalCheck({ level }) {
 }
 
 function DeleteGoals() {
-    const subgoals = window.localStorage.getItem('subgoals');
+    const subgoals = window.localStorage.getItem("subgoals");
     Swal.fire({
-        title: '삭제 하시겠습니까?',
+        title: "삭제 하시겠습니까?",
         showCancelButton: true,
         confirmButtonText: "삭제",
         cancelButtonText: "취소",
     }).then((result) => {
         if (result.isConfirmed) {
-            try{
+            try {
                 axios({
-                    method: 'post',
-                    url: '/home/subgoal/delete',
-                    data: subgoals.subgoal_id
-                })
-            }catch (err) {
+                    method: "post",
+                    url: "/home/subgoal/delete",
+                    data: subgoals.subgoal_id,
+                });
+            } catch (err) {
                 console.error(err);
             }
         }
-    })
+    });
 }
 
 function TargetGoals() {
-    const subgoals = window.localStorage.getItem('subgoals');
+    const subgoals = window.localStorage.getItem("subgoals");
 
-    if(subgoals){
+    if (subgoals) {
         Swal.fire({
             html: `
             <div class="spec-modal">
@@ -114,21 +124,21 @@ function TargetGoals() {
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
-                const stack = document.getElementById('stack').value;
-                try{
+                const stack = document.getElementById("stack").value;
+                try {
                     axios({
-                        method: 'put',
-                        url: '/home/subgoal/update/',
-                        data: stack
-                    })
-                }catch (err) {
+                        method: "put",
+                        url: "/home/subgoal/update/",
+                        data: stack,
+                    });
+                } catch (err) {
                     console.error(err);
                 }
             }
         });
     }
 
-    if(!subgoals){
+    if (!subgoals) {
         Swal.fire({
             html: `
             <div class="spec-modal">
@@ -142,15 +152,15 @@ function TargetGoals() {
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
-                const stack = document.getElementById('stack').value;
-    
-                try{
+                const stack = document.getElementById("stack").value;
+
+                try {
                     axios({
-                        method: 'post',
-                        url: '/home/subgoal/create/',
-                        data: stack
-                    })
-                }catch (err) {
+                        method: "post",
+                        url: "/home/subgoal/create/",
+                        data: stack,
+                    });
+                } catch (err) {
                     console.error(err);
                 }
             }
@@ -159,8 +169,8 @@ function TargetGoals() {
 }
 
 function Goals() {
-    const id = window.localStorage.getItem('id');
-    const title = window.localStorage.getItem('title');
+    const id = window.localStorage.getItem("id");
+    const title = window.localStorage.getItem("title");
     // try{
     //     axios({
     //         method: 'get',
@@ -193,46 +203,65 @@ export default function Mypage() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/join/mypage/', {
-          headers: {
-            Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
-          }
+        fetch("http://127.0.0.1:8000/join/mypage/", {
+            headers: {
+                Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`,
+            },
         })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data);
-            setData(data);
-          })
-          .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-          });
-      }, []);
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setData(data);
+            })
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }, []);
 
     return (
         <div>
             <Navigation></Navigation>
             <div className="mypage_top_setting">
-                <div className="mypage_top_setting_flex">
-                    <div>
-                        <img className="logo2" src={logo2} alt="logo"></img>
-                        <p className="logo2-name">식스펙</p>
+                <div className="TopBar">
+                    <div className="TopBar-top">
+                        <div className="sublogo">
+                            <img className="logo2" src={logo2}></img>
+                            <div className="logo2-name">식스펙</div>
+                        </div>
+                        <p
+                            style={{
+                                position: "fixed",
+                                top: "2.5vh",
+                                left: "0",
+                                right: "0",
+                                textAlign: "center",
+                                fontSize: "13px",
+                            }}
+                        >
+                            data.username
+                        </p>
+                        <Link to={"/Setting"}>
+                            <FontAwesomeIcon
+                                icon={faGear}
+                                style={{
+                                    fontSize: "25px",
+                                    color: "#ffffff",
+                                    margin: "3vh 5vw 0.5vh 0vw",
+                                }}
+                            />
+                        </Link>
                     </div>
-                    <p style={{ fontSize: "15px" }}>@brunopham</p>
-                    <Link to={"/Setting"}>
-                        <FontAwesomeIcon
-                            icon={faGear}
-                            style={{ fontSize: "25px" }}
-                        />
-                    </Link>
                 </div>
                 <div className="mypage_main_profile">
                     <div className="mypage_main_img"></div>
-                    <p>{data.username}</p>
                 </div>
             </div>
             <div className="mypage_followBox">

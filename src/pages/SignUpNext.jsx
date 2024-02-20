@@ -22,19 +22,31 @@ function Title() {
 
 function Profile({ profileImage, handleImageChange }) {
     const fileInputRef = useRef(null);
+    const [profileImageURL, setProfileImageURL] = useState(DefaultImage);
+
     // 입력할 이미지 선택
     const handleImageClick = () => {
         fileInputRef.current.click();
     };
-    // 선택 파일 가져오기
+
+    const handleImage = () => {
+        fileInputRef.current.click();
+    };
+
+    // 선택 파일 가져오기 및 파일 전달
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            // 파일 자체를 전달
+            handleImageChange(file);
+
+            // 미리보기 설정
             const reader = new FileReader();
             reader.onload = () => {
-                handleImageChange(reader.result);
+                const imageDataUrl = reader.result;
+                setProfileImageURL(imageDataUrl);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file); // 파일을 읽어와서 미리보기 설정
         }
     };
 
@@ -53,7 +65,7 @@ function Profile({ profileImage, handleImageChange }) {
                     height: "100px",
                     borderRadius: "50%",
                     backgroundColor: "#ccc",
-                    backgroundImage: `url(${profileImage})`,
+                    backgroundImage: `url(${profileImageURL})`,
                     backgroundSize: "cover",
                     cursor: "pointer",
                 }}
@@ -157,29 +169,22 @@ export default function SignUpBox() {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
-    const handleSignUp = () => {
-        axios
-            .post("http://127.0.0.1:8000/join/register/", {
-                email: email,
-                phonenumber: phoneNumber,
-                username: username,
-                password: password,
-                profileImage: profileImage,
-            })
-            .then(function (response) {
-                window.location.href = "/login";
-            })
-            .catch(function (error) {
-                console.log(
-                    email,
-                    phoneNumber,
-                    username,
-                    password,
-                    profileImage
-                );
-                alert("양식에 맞춰 정확히 입력해주세요.");
-                window.location.href = "/signup";
-            });
+    const handleSignUp = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("phonenumber", phoneNumber);
+            formData.append("username", username);
+            formData.append("password", password);
+            formData.append("profileImage", profileImage);
+
+            await axios.post("http://127.0.0.1:8000/join/register/", formData);
+            window.location.href = "/login";
+        } catch (error) {
+            console.error(email, phoneNumber, username, password, profileImage);
+            alert("양식에 맞춰 정확히 입력해주세요.");
+            window.location.href = "/signup";
+        }
     };
 
     return (

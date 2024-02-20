@@ -1,5 +1,4 @@
-.mypage_top_setting{
-    background-image: url("../imgs/main_back.png");
+.mypage_top_setting {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 100vw;
@@ -10,44 +9,44 @@
     flex-direction: column;
 }
 
-.mypage_top_setting_flex{
+.mypage_top_setting_flex {
     display: flex;
     align-items: center;
     justify-content: space-around;
     margin-top: 1.4vh;
 }
 
-.mypage_top_setting_flex>div{
+.mypage_top_setting_flex > div {
     display: flex;
     align-items: center;
 }
 
-.mypage_top_setting_flex>p{
+.mypage_top_setting_flex > p {
     margin-right: 10%;
 }
 
-.mypage_top_setting_flex>a{
+.mypage_top_setting_flex > a {
     color: white;
     margin-right: 3%;
 }
 
-.mypage_main_profile{
+.mypage_main_profile {
     display: flex;
     flex-direction: column;
     align-items: center;
     color: black;
 }
 
-.mypage_main_img{
+.mypage_main_img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-image: url('../imgs/profile.png');
+    background-image: url("../imgs/profile.png");
     background-repeat: no-repeat;
     border: solid 4px white;
 }
 
-.mypage_followBox{
+.mypage_followBox {
     width: 100vw;
     display: flex;
     align-items: center;
@@ -56,24 +55,24 @@
     margin-top: 20vh;
 }
 
-.mypage_followBox>p{
+.mypage_followBox > p {
     width: 25%;
 }
 
-.mypage_followBox>p>i{
+.mypage_followBox > p > i {
     margin-left: 5%;
     color: #747474;
     font-style: normal;
     opacity: 0.5;
 }
 
-.font-gray{
+.font-gray {
     margin-left: 5px;
     color: gray;
     text-decoration-line: none;
 }
 
-.mypage_doneBtn{
+.mypage_doneBtn {
     width: 100%;
     height: 8vh;
     display: flex;
