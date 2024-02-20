@@ -4,7 +4,6 @@ import { useState } from "react";
 import "../css/Login.css";
 import pwdErrorImage from "../imgs/pwd_error.png";
 import axios from "axios";
-import "../component/Token";
 
 function Title() {
     return <div className="title-login">로그인</div>;
@@ -57,6 +56,13 @@ function LoginBtn({ username, password, setPasswordError }) {
                 password: password,
             })
             .then((response) => {
+                // 로그인 성공 시 토큰 추출
+                const token = response.data.token;
+                console.log("서버에서 받은 토큰:", token);
+                localStorage.setItem("token", token);
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Token ${token}`;
                 window.location.href = "/main";
             })
             .catch((error) => {

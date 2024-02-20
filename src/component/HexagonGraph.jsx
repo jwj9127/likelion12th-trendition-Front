@@ -1,12 +1,41 @@
 import React, { useState, useEffect } from "react";
 import "../css/HexagonGraph.css";
+import axios from "axios";
 
 function HexagonGraph() {
-    const [graphData, setGraphData] = useState([60, 60, 60, 40, 60, 80]);
+    const [achievements, setAchievements] = useState([]);
+    const [goalTitles, setGoalTitles] = useState([]);
+    const [graphData, setGraphData] = useState([]);
 
     useEffect(() => {
-        drawGraph();
+        const fetchGoals = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Token ${token}`;
+
+                const response = await axios.get("http://127.0.0.1:8000/home/");
+                setGoalTitles(response.data.map((goal) => goal.title));
+                setAchievements(
+                    response.data.map((goal) => goal.completion_rate)
+                );
+            } catch (error) {
+                console.error(
+                    "그래프에서 데이터를 가져오는 중 에러 발생:",
+                    error
+                );
+            }
+        };
+
+        fetchGoals();
     }, []);
+
+    useEffect(() => {
+        const data = achievements.map((achievement) => parseInt(achievement));
+        setGraphData(data);
+        drawGraph();
+    }, [achievements]);
 
     const drawGraph = () => {
         const CANVAS_SIZE = 280;
@@ -133,7 +162,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 1
+                {goalTitles[0]}
             </button>
             <button
                 className={`spec ${selectedSpec === 2 ? "selected" : ""}`}
@@ -145,7 +174,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 2
+                {goalTitles[1]}
             </button>
             <button
                 className={`spec ${selectedSpec === 3 ? "selected" : ""}`}
@@ -157,7 +186,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 3
+                {goalTitles[2]}
             </button>
 
             <button
@@ -170,7 +199,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 4
+                {goalTitles[3]}
             </button>
             <button
                 className={`spec ${selectedSpec === 5 ? "selected" : ""}`}
@@ -182,7 +211,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 5
+                {goalTitles[4]}
             </button>
             <button
                 className={`spec ${selectedSpec === 6 ? "selected" : ""}`}
@@ -194,7 +223,7 @@ function HexagonGraph() {
                     transform: "translateX(-50%)",
                 }}
             >
-                스펙 6
+                {goalTitles[5]}
             </button>
         </div>
     );
