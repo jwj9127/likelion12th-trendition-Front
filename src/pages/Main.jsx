@@ -87,6 +87,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
 function TopBar({ selectedGoalId }) {
     const [goalTitle, setGoalTitle] = useState("");
     const [achievement, setAchievement] = useState("");
+    const username = localStorage.getItem("username");
     useEffect(() => {
         const GetGoalData = () => {
             axios
@@ -116,7 +117,9 @@ function TopBar({ selectedGoalId }) {
                 </div>
             </div>
             <div className="state">
-                <div className="state-category">OOO님의 {goalTitle} 목표</div>
+                <div className="state-category">
+                    {username}님의 {goalTitle} 목표
+                </div>
                 <div className="state-achiev">
                     달성도는 {achievement}%입니다
                 </div>

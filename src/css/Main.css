@@ -68,7 +68,7 @@
     background-position: center;
     width: 100vw;
     height: 20vh;
-    position: sticky;
+    position: relative;
     top: 0;
     left: 0;
     color: #ffffff;
