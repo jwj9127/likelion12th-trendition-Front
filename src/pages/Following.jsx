@@ -32,7 +32,7 @@ const Following = () => {
 
 
   const onFollow = (username) => {
-    fetch(`http://127.0.0.1:8000/join/follow/${username}/`, {
+    fetch(`http://localhost:8000/join/follow/${username}/`, {
       method: 'POST', // 요청을 POST 메소드로 변경
       headers: {
         'Authorization': 'Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee',

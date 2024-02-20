@@ -23,7 +23,7 @@ const Setting = () => {
                         <img src={rightIcon} alt="오른쪽 화살표"/>
                     </div>
                 </Link>
-                <Link className="Link">
+                <Link className="Link" to="/setting/Change">
                     <div className="li-block">
                         <li className="list-item">계정 설정</li>
                         <img src={rightIcon} alt="오른쪽 화살표"/>
