@@ -140,10 +140,18 @@ function Privacy() {
 function SignUpBtn({ password, passwordConfirm, handleSignUp }) {
     const handleClick = (event) => {
         event.preventDefault();
+        const passwordRegex =
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
         if (password === passwordConfirm) {
-            handleSignUp();
+            if (passwordRegex.test(password)) {
+                handleSignUp();
+            } else {
+                alert(
+                    "비밀번호는 8글자 이상이어야 하며, 특수문자를 포함해야 합니다."
+                );
+            }
         } else {
-            alert("비밀번호를 다시 확인해주세요.");
+            alert("비밀번호와 확인란이 일치해야 합니다.");
             window.location.href = "/signup";
         }
     };
@@ -178,7 +186,12 @@ export default function SignUpBox() {
             formData.append("phonenumber", phoneNumber);
             formData.append("username", username);
             formData.append("password", password);
-            formData.append("profileImage", profileImage);
+            if (profileImage) {
+                formData.append("profileImage", profileImage);
+            } else {
+                // 프로필 이미지가 없으면 기본 이미지 파일 추가
+                formData.append("profileImage", DefaultImage);
+            }
 
             await axios.post(awsIP + "/join/register/", formData);
             window.location.href = "/login";

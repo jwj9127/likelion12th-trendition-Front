@@ -50,12 +50,19 @@ function Privacy() {
     );
 }
 
+function validateEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+}
+
 function ToNextSignUp({ email, phoneNumber, handleNext }) {
     const handleClick = (event) => {
         event.preventDefault();
         if (!email || !phoneNumber) {
             alert("이메일과 전화번호를 입력해주세요.");
             window.location.href = "/signup";
+        } else if (!validateEmail(email)) {
+            alert("올바른 이메일 형식이 아닙니다.");
         } else {
             console.log("Next button clicked");
             handleNext();
