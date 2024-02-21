@@ -53,7 +53,7 @@ function LoginBtn({ username, password, setPasswordError }) {
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const handleLogin = () => {
         axios
-            .post(awsIP+"/join/login/", {
+            .post(awsIP + "/join/login/", {
                 username: username,
                 password: password,
             })

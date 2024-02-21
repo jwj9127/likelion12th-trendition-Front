@@ -65,6 +65,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
 
     const handleGoalChange = async (e) => {
         e.preventDefault();
+        setSelectedGoal(e.target.value);
         setSelectedGoalId(e.target.value);
         console.log("selected Spec id :", e.target.value);
     };
@@ -88,31 +89,31 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                 key={1}
                 level={1}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={2}
                 level={2}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={3}
                 level={3}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={4}
                 level={4}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={5}
                 level={5}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
         </div>
     );
@@ -166,11 +167,11 @@ function TopBar({ selectedGoalId }) {
 function GoalCheck({ key, level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals[level - 1]; // subgoal 가져오기
-    // const [cookies, setCookie] = useCookies(["titleIdMap"]);
-    // let goalId = undefined;
-    // if (goalTitle === cookies.titleIdMap) {
-    //     goalId = cookies.titleIdMap;
-    // }
+    const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    let goalId = undefined;
+    if (goalTitle === cookies.titleIdMap) {
+        goalId = cookies.titleIdMap;
+    }
 
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
@@ -316,7 +317,7 @@ function DeleteGoals(id) {
 }
 
 function TargetGoals(subgoal, goalTitle) {
-    // const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    const [cookies, setCookie] = useCookies(["titleIdMap"]);
 
     let goalId = undefined;
     // 쿠키 빼고 localstorage로 변경
@@ -397,15 +398,16 @@ function TargetGoals(subgoal, goalTitle) {
                         },
                         data: stack,
                     }).then((result) => {
-                        // const sub_cookies = new useCookies();
+                        const sub_titleIdMap = {
+                            title1: result.data.id[0],
+                            title2: result.data.id[1],
+                            title3: result.data.id[2],
+                            title4: result.data.id[3],
+                            title5: result.data.id[4],
+                            title6: result.data.id[5],
+                        };
 
-                        // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
-                        const sub_titleIdMap = {};
-
-                        // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
-                        result.data.forEach((item) => {
-                            sub_titleIdMap[item.title] = item.id;
-                        });
+                        // localstorage에 저장
 
                         localStorage.setItem(
                             "sub_titleIdMap",
