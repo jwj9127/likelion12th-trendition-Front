@@ -119,6 +119,7 @@ function TopBar({ selectedGoalId }) {
         const GetGoalData = () => {
             axios
                 .get(awsIP + "/home/", {})
+                .get(awsIP + "/home/", {})
                 .then(function (response) {
                     const selectedGoal = response.data[selectedGoalId - 1];
                     setGoalTitle(selectedGoal.title);
@@ -291,6 +292,7 @@ function DeleteGoals(id) {
             try {
                 axios({
                     method: "delete",
+                    url: awsIP + `/home/subgoal/delete/${id}`,
                     url: awsIP + `/home/subgoal/delete/${id}`,
                     headers: {
                         Authorization: `Bearer ${token}`,
