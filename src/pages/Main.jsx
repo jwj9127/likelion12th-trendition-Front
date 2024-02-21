@@ -7,9 +7,8 @@ import logo2 from "../imgs/logo2.png";
 import pencil from "../imgs/pencil.png";
 import garbage from "../imgs/garbage.png";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 function Goals({ selectedGoalId, setSelectedGoalId }) {
     const [goals, setGoals] = useState([]);
@@ -27,7 +26,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP+"/home/");
+                const response = await axios.get(awsIP + "/home/");
                 setGoals(response.data);
                 console.log("Goals", response.data);
             } catch (error) {
@@ -46,7 +45,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
             const token = localStorage.getItem("token");
             const awsIP = process.env.REACT_APP_BACKEND_URL;
             axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-            const response = await axios.get(awsIP+"/home/");
+            const response = await axios.get(awsIP + "/home/");
             const selectedGoal = response.data[selectedGoalId - 1];
             setSelectedGoal(selectedGoal);
             setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
@@ -77,11 +76,36 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                     </option>
                 ))}
             </select>
-            <GoalCheck key={1} level={1} subgoals={subgoals}></GoalCheck>
-            <GoalCheck key={2} level={2} subgoals={subgoals}></GoalCheck>
-            <GoalCheck key={3} level={3} subgoals={subgoals}></GoalCheck>
-            <GoalCheck key={4} level={4} subgoals={subgoals}></GoalCheck>
-            <GoalCheck key={5} level={5} subgoals={subgoals}></GoalCheck>
+            <GoalCheck
+                key={1}
+                level={1}
+                subgoals={subgoals}
+                goalTitle={selectedGoal.title}
+            ></GoalCheck>
+            <GoalCheck
+                key={2}
+                level={2}
+                subgoals={subgoals}
+                goalTitle={selectedGoal.title}
+            ></GoalCheck>
+            <GoalCheck
+                key={3}
+                level={3}
+                subgoals={subgoals}
+                goalTitle={selectedGoal.title}
+            ></GoalCheck>
+            <GoalCheck
+                key={4}
+                level={4}
+                subgoals={subgoals}
+                goalTitle={selectedGoal.title}
+            ></GoalCheck>
+            <GoalCheck
+                key={5}
+                level={5}
+                subgoals={subgoals}
+                goalTitle={selectedGoal.title}
+            ></GoalCheck>
         </div>
     );
 }
@@ -94,7 +118,7 @@ function TopBar({ selectedGoalId }) {
     useEffect(() => {
         const GetGoalData = () => {
             axios
-                .get(awsIP+"/home/", {})
+                .get(awsIP + "/home/", {})
                 .then(function (response) {
                     const selectedGoal = response.data[selectedGoalId - 1];
                     setGoalTitle(selectedGoal.title);
@@ -131,9 +155,14 @@ function TopBar({ selectedGoalId }) {
     );
 }
 
-function GoalCheck({ key, level, subgoals }) {
+function GoalCheck({ key, level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals[level - 1]; // subgoal 가져오기
+    const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    let goalId = undefined;
+    if (goalTitle === cookies.titleIdMap) {
+        goalId = cookies.titleIdMap;
+    }
 
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
@@ -148,7 +177,7 @@ function GoalCheck({ key, level, subgoals }) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP+"/home/goal/create",
+                        // url: awsIP+`/home/subgoal/update/${goalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -180,17 +209,19 @@ function GoalCheck({ key, level, subgoals }) {
                 <div className="subGoal-text">
                     <div key={key}>
                         {`Lv - ${level} : 세부 목표를 설정해주세요`}
-                        <img
-                            className="subGoal-pencil"
-                            src={pencil}
-                            onClick={() => TargetGoals(subgoal.id)}
-                            style={{
-                                marginLeft: "25%",
-                                marginRight: "5%",
-                                width: "25px",
-                                height: "25px",
-                            }}
-                        />
+                        {goalTitle && (
+                            <img
+                                className="subGoal-pencil"
+                                src={pencil}
+                                onClick={() => TargetGoals(subgoal, goalTitle)}
+                                style={{
+                                    marginLeft: "25%",
+                                    marginRight: "5%",
+                                    width: "25px",
+                                    height: "25px",
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -221,7 +252,7 @@ function GoalCheck({ key, level, subgoals }) {
                         <img
                             className="subGoal-pencil"
                             src={pencil}
-                            onClick={() => TargetGoals(subgoal)}
+                            onClick={() => TargetGoals(subgoal, goalTitle)}
                             style={{
                                 marginLeft:
                                     subgoal === undefined ? "60%" : "10%",
@@ -260,7 +291,7 @@ function DeleteGoals(id) {
             try {
                 axios({
                     method: "delete",
-                    url: awsIP+`/home/subgoal/delete/${id}`,
+                    url: awsIP + `/home/subgoal/delete/${id}`,
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -275,7 +306,19 @@ function DeleteGoals(id) {
     });
 }
 
-function TargetGoals(subgoal) {
+function TargetGoals(subgoal, goalTitle) {
+    const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    let goalId = undefined;
+    if (goalTitle === cookies.titleIdMap) {
+        goalId = cookies.titleIdMap;
+    }
+
+    const [subcookies, setSubCookies] = useCookies(["sub_titleIdMap"]);
+    let subGoalId = undefined;
+    if (subgoal === subcookies.sub_titleIdMap) {
+        subGoalId = subcookies.sub_titleIdMap;
+    }
+
     if (subgoal) {
         Swal.fire({
             html: `
@@ -296,7 +339,7 @@ function TargetGoals(subgoal) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP+`/home/subgoal/update/`,
+                        url: awsIP + `/home/subgoal/update/${subGoalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -329,11 +372,27 @@ function TargetGoals(subgoal) {
                 try {
                     axios({
                         method: "post",
-                        url: awsIP+`/home/subgoal/create/`, //${goal_id}
+                        url: awsIP + `/home/subgoal/create/${goalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                         data: stack,
+                    }).then((result) => {
+                        const sub_cookies = new useCookies();
+
+                        // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
+                        const sub_titleIdMap = {};
+
+                        // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
+                        result.data.forEach((item) => {
+                            sub_titleIdMap[item.title] = item.id;
+                        });
+                        sub_cookies.set(
+                            "sub_titleIdMap",
+                            JSON.stringify(sub_titleIdMap),
+                            { path: "/" }
+                        );
+                        window.location.reload();
                     });
                 } catch (err) {
                     console.error(err);
@@ -386,17 +445,28 @@ function TargetTag() {
             const title = { title1, title2, title3, title4, title5, title6 };
 
             try {
+                const cookies = new useCookies();
                 const token = localStorage.getItem("token");
                 const awsIP = process.env.REACT_APP_BACKEND_URL;
                 console.log(token);
                 axios({
                     method: "post",
-                    url: awsIP+"/home/goal/createall/",
+                    url: awsIP + "/home/goal/createall/",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                     data: title,
                 }).then((result) => {
+                    // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
+                    const titleIdMap = {};
+
+                    // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
+                    result.data.forEach((item) => {
+                        titleIdMap[item.title] = item.id;
+                    });
+                    cookies.set("titleIdMap", JSON.stringify(titleIdMap), {
+                        path: "/",
+                    });
                     window.location.reload();
                 });
             } catch (err) {
@@ -419,7 +489,7 @@ function HexagonGraphBox() {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP+"/home/");
+                const response = await axios.get(awsIP + "/home/");
                 setSpecs(response.data);
                 setIsSet(response.data.length > 0);
             } catch (error) {
