@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 export default function Search() {
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState([]);
+    const login_token = window.localStorage.getItem("token");
     
     function Search(e) {
         e.preventDefault();
@@ -24,7 +25,7 @@ export default function Search() {
                 method: 'get',
                 url: awsIP+`/join/search_user/?keyword=${username}`,
                 headers: {
-                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                    Authorization: `Bearer ${login_token}`
                 }
             }).then(result => {
                 if(result.data.error === "검색어가 없습니다." || result.data.error == '해당 유저는 존재하지 않습니다.'){
@@ -47,7 +48,7 @@ export default function Search() {
                 method: 'get',
                 url: awsIP+'/join/search',
                 headers: {
-                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                    Authorization: `Bearer ${login_token}`
                 }
             }).then(result => {
                 console.log(result.data)
