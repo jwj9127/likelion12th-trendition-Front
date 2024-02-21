@@ -51,11 +51,18 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                     Authorization: `Token ${token}`,
                 }
             }).then((result) => {
-                const result_selectedGoal = result.data[0].title;
-                if(!selectedGoal.length){
-                    setSelectedGoal(result_selectedGoal)
+                if(selectedGoal.length){
+                    const selectedIndex = selectedGoal;
+                    const selectedData = result.data[selectedIndex-1].subgoals;
+                    setSubgoals(selectedData);
                 }
-                setSubgoals(result_selectedGoal ? selectedGoal.subgoals : []);
+                const result_selectedGoal = result.data[0].title;
+                const result_selectedSubGoal = result.data[0].subgoals;
+
+                if(!selectedGoal.length){
+                    setSelectedGoal(result_selectedGoal);
+                    setSubgoals(result_selectedSubGoal);
+                }
             })
 
         } catch (error) {
@@ -66,6 +73,9 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
     const handleGoalChange = async (e) => {
         e.preventDefault();
         setSelectedGoal(e.target.value);
+        if(selectedGoal === 0){
+            
+        }
         setSelectedGoalId(e.target.value);
         console.log("selected Spec id :", e.target.value);
     };
@@ -167,12 +177,7 @@ function TopBar({ selectedGoalId }) {
 function GoalCheck({ key, level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-
-    let goalId = undefined;
-
-    if (goalTitle === localStorage.getItem("titleIdMap")) {
-        goalId = localStorage.getItem("titleIdMap");
-    }
+    const subGoalId = localStorage.getItem("sub_titleIdMap")
 
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
@@ -187,7 +192,7 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
                 try {
                     axios({
                         method: "put",
-                        // url: awsIP+`/home/subgoal/update/${goalId}`,
+                        url: awsIP+`/home/subgoal/update/${subGoalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -214,7 +219,6 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
                     }
                     type="checkbox"
                     onClick={checkBox}
-                    disabled={isChecked}
                 ></input>
                 <div className="subGoal-text">
                     <div key={key}>
@@ -307,8 +311,8 @@ function DeleteGoals(id) {
                         Authorization: `Bearer ${token}`,
                     },
                     data: id,
-                }).then((result) => {
-                    console.log(result);
+                }).then(() => {
+                    window.location.reload();
                 });
             } catch (err) {
                 console.error(err);
@@ -318,13 +322,8 @@ function DeleteGoals(id) {
 }
 
 function TargetGoals(subgoal, goalTitle) {
-    console.log(localStorage.getItem("titleIdMap"))
-    const TitleID = JSON.parse(localStorage.getItem("titleIdMap"))
-
-    
-
     let goalId = undefined;
-    // 쿠키 빼고 localstorage로 변경
+    const TitleID = JSON.parse(localStorage.getItem("titleIdMap"))
 
     for(let key in TitleID){
         console.log(key === goalTitle, TitleID[key], key , goalTitle)
@@ -332,27 +331,11 @@ function TargetGoals(subgoal, goalTitle) {
             goalId = TitleID[key]
         }
     }
-
-    console.log(goalId, "goalId")
-
-    // if (goalTitle === localStorage.getItem("titleIdMap")) {
-    //     goalId = localStorage.getItem("titleIdMap");
-    // }
-    // if (goalTitle === cookies.titleIdMap) {
-    //     goalId = cookies.titleIdMap;
-    // }
-
-    // const [subcookies, setSubCookies] = useCookies(["sub_titleIdMap"]);
     let subGoalId = undefined;
 
     if (subgoal === localStorage.getItem("sub_titleIdMap")) {
         subGoalId = localStorage.getItem("sub_titleIdMap");
     }
-
-
-    // if (subgoal === subcookies.sub_titleIdMap) {
-    //     subGoalId = subcookies.sub_titleIdMap;
-    // }
 
     if (subgoal) {
         Swal.fire({
@@ -379,6 +362,8 @@ function TargetGoals(subgoal, goalTitle) {
                             Authorization: `Bearer ${token}`,
                         },
                         data: stack,
+                    }).then(() => {
+                        window.location.reload();
                     });
                 } catch (err) {
                     console.error(err);
@@ -402,7 +387,7 @@ function TargetGoals(subgoal, goalTitle) {
         }).then((result) => {
             if (result.isConfirmed) {
                 const token = localStorage.getItem("token");
-                const stack = document.getElementById("stack").value;
+                const title = document.getElementById("stack").value;
                 const awsIP = process.env.REACT_APP_BACKEND_URL;
                 try {
                     axios({
@@ -411,27 +396,11 @@ function TargetGoals(subgoal, goalTitle) {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
-                        data: stack,
+                        data: {title},
                     }).then((result) => {
-
-                        const sub_titleIdMap = {
-                            title1: result.data.id[0],
-                            title2: result.data.id[1],
-                            title3: result.data.id[2],
-                            title4: result.data.id[3],
-                            title5: result.data.id[4],
-                            title6: result.data.id[5]
-                        };
-    
-                        // localstorage에 저장
-
-                        localStorage.setItem("sub_titleIdMap", JSON.stringify(sub_titleIdMap));
-
-                        // sub_cookies.set(
-                        //     "sub_titleIdMap",
-                        //     JSON.stringify(sub_titleIdMap),
-                        //     { path: "/" }
-                        // );
+                        const sub_titleIdMap = result.data.subgoal_id
+                        localStorage.setItem("sub_titleIdMap", sub_titleIdMap);
+                        console.log(sub_titleIdMap)
                         window.location.reload();
                     });
                 } catch (err) {
