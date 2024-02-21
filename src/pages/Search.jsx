@@ -18,11 +18,11 @@ export default function Search() {
     function Search(e) {
         e.preventDefault();
         const username = document.getElementById('search_username').value;
-
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
         try {
             axios({
                 method: 'get',
-                url: `http://localhost:8000/join/search_user/?keyword=${username}`,
+                url: awsIP+`/join/search_user/?keyword=${username}`,
                 headers: {
                     Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
                 }
@@ -41,10 +41,11 @@ export default function Search() {
     }
 
     useEffect(() => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
         try {
             axios({
                 method: 'get',
-                url: 'http://localhost:8000/join/search',
+                url: awsIP+'/join/search',
                 headers: {
                     Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
                 }

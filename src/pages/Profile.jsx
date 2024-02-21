@@ -73,12 +73,12 @@ export default function Profile() {
     const username = window.localStorage.getItem('username');
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
-    
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         try{
             axios({
                 method: 'get',
-                url: `http://localhost:8000/join/search_user/?keyword=${username}`,
+                url: awsIP+`/join/search_user/?keyword=${username}`,
                 headers: {
                     Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
               }
@@ -88,7 +88,7 @@ export default function Profile() {
             })
             axios({
                 method: 'get',
-                url: `http://127.0.0.1:8000/join/follow/${username}/`,
+                url: awsIP+`/join/follow/${username}/`,
                 headers: {
                     Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
                   }
@@ -107,10 +107,11 @@ export default function Profile() {
     },[])
     
     const handleFollow = (username) => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
         try{
             axios({
                 method: 'post',
-                url: `http://127.0.0.1:8000/join/follow/${username}/`,
+                url: awsIP+`/join/follow/${username}/`,
                 headers: {
                     Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
                   }

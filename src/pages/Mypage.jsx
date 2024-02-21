@@ -201,9 +201,10 @@ function Goals() {
 
 export default function Mypage() {
     const [data, setData] = useState([]);
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/join/mypage/", {
+        fetch(awsIP+"/join/mypage/", {
             headers: {
                 Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`,
             },

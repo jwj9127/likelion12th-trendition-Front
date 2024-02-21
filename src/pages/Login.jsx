@@ -48,15 +48,18 @@ function InputBox({
     );
 }
 
+
 function LoginBtn({ username, password, setPasswordError }) {
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
     const handleLogin = () => {
         axios
-            .post("http://127.0.0.1:8000/join/login/", {
+            .post(awsIP+"/join/login/", {
                 username: username,
                 password: password,
             })
             .then((response) => {
                 // 로그인 성공 시 토큰 추출
+                
                 const token = response.data.token;
                 console.log("서버에서 받은 토큰:", token);
                 localStorage.setItem("token", token);

@@ -11,11 +11,12 @@ function HexagonGraph() {
         const fetchGoals = async () => {
             try {
                 const token = localStorage.getItem("token");
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 axios.defaults.headers.common[
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get("http://127.0.0.1:8000/home/");
+                const response = await axios.get(awsIP+"/home/");
                 setGoalTitles(response.data.map((goal) => goal.title));
                 setAchievements(
                     response.data.map((goal) => goal.completion_rate)

@@ -9,12 +9,6 @@ import slashIcon from "../../imgs/slash-circle.png"
 const Block = () => {
   const [data, setData] = useState([{username: "이름", avatar_url: ProfileImg, block: false, name: "아이디", login: "사람 이름"},{username: "이름1", avatar_url: ProfileImg, block: true, name: "아이디1", login: "사람 이름 1"}]);
 
-  // useEffect(() => {
-  //   fetch('https://api.github.com/users/이름/following')
-  //     .then((response) => response.json())
-  //     .then((json) => setData(json));
-  // }, []);
-
   return (
     <div className="main">
       <div className="top-nav">

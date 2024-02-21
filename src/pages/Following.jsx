@@ -5,11 +5,13 @@ import backIcon from "../imgs/backIcon.png";
 import { Link } from "react-router-dom";
 import ProfileImg from "../imgs/profile.png";
 
+const awsIP = process.env.REACT_APP_BACKEND_URL;
+
 const Following = () => {
   const [data, setData] = useState([{ username: "이름", avatar_url: ProfileImg, following: false, name: "아이디", login: "사람 이름" }, { username: "이름1", avatar_url: ProfileImg, following: true, name: "아이디1", login: "사람 이름 1" }]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/join/following/', {
+    fetch(awsIP+'/join/following/', {
       headers: {
         Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
       }
@@ -32,7 +34,7 @@ const Following = () => {
 
 
   const onFollow = (username) => {
-    fetch(`http://localhost:8000/join/follow/${username}/`, {
+    fetch(awsIP+`/join/follow/${username}/`, {
       method: 'POST', // 요청을 POST 메소드로 변경
       headers: {
         'Authorization': 'Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee',

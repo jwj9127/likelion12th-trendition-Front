@@ -21,12 +21,13 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
         const fetchGoals = async () => {
             try {
                 // 토큰 가져오기
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 const token = localStorage.getItem("token");
                 axios.defaults.headers.common[
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get("http://127.0.0.1:8000/home/");
+                const response = await axios.get(awsIP+"/home/");
                 setGoals(response.data);
                 console.log("Goals", response.data);
             } catch (error) {
@@ -43,8 +44,9 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
     const GetSubgoals = async () => {
         try {
             const token = localStorage.getItem("token");
+            const awsIP = process.env.REACT_APP_BACKEND_URL;
             axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-            const response = await axios.get("http://127.0.0.1:8000/home/");
+            const response = await axios.get(awsIP+"/home/");
             const selectedGoal = response.data[selectedGoalId - 1];
             setSelectedGoal(selectedGoal);
             setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
@@ -88,10 +90,11 @@ function TopBar({ selectedGoalId }) {
     const [goalTitle, setGoalTitle] = useState("");
     const [achievement, setAchievement] = useState("");
     const username = localStorage.getItem("username");
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         const GetGoalData = () => {
             axios
-                .get("http://127.0.0.1:8000/home/", {})
+                .get(awsIP+"/home/", {})
                 .then(function (response) {
                     const selectedGoal = response.data[selectedGoalId - 1];
                     setGoalTitle(selectedGoal.title);
@@ -133,7 +136,7 @@ function GoalCheck({ key, level, subgoals }) {
     const subgoal = subgoals[level - 1]; // subgoal 가져오기
 
     const token = localStorage.getItem("token");
-
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
     const checkBox = () => {
         Swal.fire({
             title: "목표 완료",
@@ -145,7 +148,7 @@ function GoalCheck({ key, level, subgoals }) {
                 try {
                     axios({
                         method: "put",
-                        url: "http://127.0.0.1:8000/home/goal/create",
+                        url: awsIP+"/home/goal/create",
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -253,10 +256,11 @@ function DeleteGoals(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             const token = localStorage.getItem("token");
+            const awsIP = process.env.REACT_APP_BACKEND_URL;
             try {
                 axios({
                     method: "delete",
-                    url: `http://127.0.0.1:8000/home/subgoal/delete/${id}`,
+                    url: awsIP+`/home/subgoal/delete/${id}`,
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -288,10 +292,11 @@ function TargetGoals(subgoal) {
             if (result.isConfirmed) {
                 const token = localStorage.getItem("token");
                 const stack = document.getElementById("stack").value;
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 try {
                     axios({
                         method: "put",
-                        url: `http://localhost:8000/home/subgoal/update/`,
+                        url: awsIP+`/home/subgoal/update/`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -320,10 +325,11 @@ function TargetGoals(subgoal) {
             if (result.isConfirmed) {
                 const token = localStorage.getItem("token");
                 const stack = document.getElementById("stack").value;
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 try {
                     axios({
                         method: "post",
-                        url: `http://localhost:8000/home/subgoal/create/`, //${goal_id}
+                        url: awsIP+`/home/subgoal/create/`, //${goal_id}
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -381,10 +387,11 @@ function TargetTag() {
 
             try {
                 const token = localStorage.getItem("token");
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 console.log(token);
                 axios({
                     method: "post",
-                    url: "http://127.0.0.1:8000/home/goal/createall/",
+                    url: awsIP+"/home/goal/createall/",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -407,11 +414,12 @@ function HexagonGraphBox() {
         const fetchSpecs = async () => {
             try {
                 const token = localStorage.getItem("token");
+                const awsIP = process.env.REACT_APP_BACKEND_URL;
                 axios.defaults.headers.common[
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get("http://127.0.0.1:8000/home/");
+                const response = await axios.get(awsIP+"/home/");
                 setSpecs(response.data);
                 setIsSet(response.data.length > 0);
             } catch (error) {

@@ -5,10 +5,12 @@ import backIcon from "../imgs/backIcon.png";
 import { Link } from "react-router-dom";
 import ProfileImg from "../imgs/profile.png";
 
+const awsIP = process.env.REACT_APP_BACKEND_URL;
+
 const Followers = () => {
-  // const [data, setData] = useState([{ username: "이름", avatar_url: ProfileImg, following: false, name: "아이디", login: "사람 이름" }, { username: "이름1", avatar_url: ProfileImg, following: true, name: "아이디1", login: "사람 이름 1" }]);
   const [data, setData] = useState([]);
-  const [login_token, setLoginToken] = useState(localStorage.getItem('login_token') || '');
+  const [login_token, setLoginToken] = useState(localStorage.getItem('token') || '');
+
 
   // useEffect(() => {
   //   fetch('http://127.0.0.1:8000/join/following/')
@@ -21,9 +23,9 @@ const Followers = () => {
   // }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8000/join/follower/', {
+    fetch(`${awsIP}/join/follower/`, {
       headers: {
-        Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+        Authorization: `Bearer ${login_token}`
       }
     })
       .then(response => {
@@ -45,10 +47,10 @@ const Followers = () => {
 
   const onFollow = (username) => {
     console.log(username);
-    fetch(`http://127.0.0.1:8000/join/follow/${username}/`, {
+    fetch(awsIP+`/join/follow/${username}/`, {
       method: 'POST', // 요청을 POST 메소드로 변경
       headers: {
-        'Authorization': 'Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee',
+        'Authorization': `Bearer ${login_token}`,
         'Content-Type': 'application/json' // 요청 본문의 타입을 JSON으로 지정 (만약 JSON이 아니라면 적절한 타입으로 변경)
       },
       body: JSON.stringify({}) // POST 요청의 경우 필요한 경우에 요청 본문을 지정

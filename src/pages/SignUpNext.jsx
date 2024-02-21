@@ -169,6 +169,8 @@ export default function SignUpBox() {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
+
     const handleSignUp = async () => {
         try {
             const formData = new FormData();
@@ -178,7 +180,7 @@ export default function SignUpBox() {
             formData.append("password", password);
             formData.append("profileImage", profileImage);
 
-            await axios.post("http://127.0.0.1:8000/join/register/", formData);
+            await axios.post(awsIP+"/join/register/", formData);
             window.location.href = "/login";
         } catch (error) {
             console.error(email, phoneNumber, username, password, profileImage);
