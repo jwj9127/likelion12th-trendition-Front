@@ -193,7 +193,16 @@ export default function SignUpBox() {
                 formData.append("profileImage", DefaultImage);
             }
 
-            await axios.post(awsIP + "/join/register/", formData);
+            fetch(awsIP+"/join/register/", {
+                method: "POST",
+                body: formData,
+            }).then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            });
+            
             window.location.href = "/login";
         } catch (error) {
             console.error(email, phoneNumber, username, password, profileImage);
