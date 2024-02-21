@@ -16,7 +16,7 @@ function HexagonGraph() {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP+"/home/");
+                const response = await axios.get(awsIP + "/home/");
                 setGoalTitles(response.data.map((goal) => goal.title));
                 setAchievements(
                     response.data.map((goal) => goal.completion_rate)

@@ -27,7 +27,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP+"/home/");
+                const response = await axios.get(awsIP + "/home/");
                 setGoals(response.data);
                 console.log("Goals", response.data);
             } catch (error) {
@@ -46,7 +46,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
             const token = localStorage.getItem("token");
             const awsIP = process.env.REACT_APP_BACKEND_URL;
             axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-            const response = await axios.get(awsIP+"/home/");
+            const response = await axios.get(awsIP + "/home/");
             const selectedGoal = response.data[selectedGoalId - 1];
             setSelectedGoal(selectedGoal);
             setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
@@ -94,7 +94,7 @@ function TopBar({ selectedGoalId }) {
     useEffect(() => {
         const GetGoalData = () => {
             axios
-                .get(awsIP+"/home/", {})
+                .get(awsIP + "/home/", {})
                 .then(function (response) {
                     const selectedGoal = response.data[selectedGoalId - 1];
                     setGoalTitle(selectedGoal.title);
@@ -148,7 +148,7 @@ function GoalCheck({ key, level, subgoals }) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP+"/home/goal/create",
+                        url: awsIP + "/home/goal/create",
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -260,7 +260,7 @@ function DeleteGoals(id) {
             try {
                 axios({
                     method: "delete",
-                    url: awsIP+`/home/subgoal/delete/${id}`,
+                    url: awsIP + `/home/subgoal/delete/${id}`,
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -296,7 +296,7 @@ function TargetGoals(subgoal) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP+`/home/subgoal/update/`,
+                        url: awsIP + `/home/subgoal/update/`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -329,7 +329,7 @@ function TargetGoals(subgoal) {
                 try {
                     axios({
                         method: "post",
-                        url: awsIP+`/home/subgoal/create/`, //${goal_id}
+                        url: awsIP + `/home/subgoal/create/`, //${goal_id}
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -391,7 +391,7 @@ function TargetTag() {
                 console.log(token);
                 axios({
                     method: "post",
-                    url: awsIP+"/home/goal/createall/",
+                    url: awsIP + "/home/goal/createall/",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -419,7 +419,7 @@ function HexagonGraphBox() {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP+"/home/");
+                const response = await axios.get(awsIP + "/home/");
                 setSpecs(response.data);
                 setIsSet(response.data.length > 0);
             } catch (error) {

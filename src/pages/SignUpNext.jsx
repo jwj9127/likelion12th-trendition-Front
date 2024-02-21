@@ -180,7 +180,7 @@ export default function SignUpBox() {
             formData.append("password", password);
             formData.append("profileImage", profileImage);
 
-            await axios.post(awsIP+"/join/register/", formData);
+            await axios.post(awsIP + "/join/register/", formData);
             window.location.href = "/login";
         } catch (error) {
             console.error(email, phoneNumber, username, password, profileImage);
