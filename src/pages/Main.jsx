@@ -169,7 +169,7 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
 
     let goalId = undefined;
-    // 쿠키 빼고 localstorage로 변경
+
     if (goalTitle === localStorage.getItem("titleIdMap")) {
         goalId = localStorage.getItem("titleIdMap");
     }
@@ -319,12 +319,25 @@ function DeleteGoals(id) {
 
 function TargetGoals(subgoal, goalTitle) {
     console.log(localStorage.getItem("titleIdMap"))
+    const TitleID = JSON.parse(localStorage.getItem("titleIdMap"))
+
     
+
     let goalId = undefined;
     // 쿠키 빼고 localstorage로 변경
-    if (goalTitle === localStorage.getItem("titleIdMap")) {
-        goalId = localStorage.getItem("titleIdMap");
+
+    for(let key in TitleID){
+        console.log(key === goalTitle, TitleID[key], key , goalTitle)
+        if(key === goalTitle){
+            goalId = TitleID[key]
+        }
     }
+
+    console.log(goalId, "goalId")
+
+    // if (goalTitle === localStorage.getItem("titleIdMap")) {
+    //     goalId = localStorage.getItem("titleIdMap");
+    // }
     // if (goalTitle === cookies.titleIdMap) {
     //     goalId = cookies.titleIdMap;
     // }
