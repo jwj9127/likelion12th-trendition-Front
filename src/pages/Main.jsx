@@ -8,7 +8,6 @@ import pencil from "../imgs/pencil.png";
 import garbage from "../imgs/garbage.png";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 
 function Goals({ selectedGoalId, setSelectedGoalId }) {
     const [goals, setGoals] = useState([]);
@@ -52,12 +51,11 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                     Authorization: `Token ${token}`,
                 }
             }).then((result) => {
-                console.log(result.data, "result.data")
-                const selectedGoal = result.data[selectedGoalId - 1].title;
-                console.log(selectedGoal, "1111");
-                setSelectedGoal(selectedGoal);
-                setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
-                console.log(subgoals, "2222");
+                const result_selectedGoal = result.data[0].title;
+                if(!selectedGoal.length){
+                    setSelectedGoal(result_selectedGoal)
+                }
+                setSubgoals(result_selectedGoal ? selectedGoal.subgoals : []);
             })
 
         } catch (error) {
@@ -67,6 +65,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
 
     const handleGoalChange = async (e) => {
         e.preventDefault();
+        setSelectedGoal(e.target.value);
         setSelectedGoalId(e.target.value);
         console.log("selected Spec id :", e.target.value);
     };
@@ -90,31 +89,31 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                 key={1}
                 level={1}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={2}
                 level={2}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={3}
                 level={3}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={4}
                 level={4}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
             <GoalCheck
                 key={5}
                 level={5}
                 subgoals={subgoals}
-                goalTitle={goalIndex}
+                goalTitle={selectedGoal}
             ></GoalCheck>
         </div>
     );
@@ -167,11 +166,12 @@ function TopBar({ selectedGoalId }) {
 
 function GoalCheck({ key, level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
-    const subgoal = subgoals[level - 1]; // subgoal 가져오기
-    const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
+
     let goalId = undefined;
-    if (goalTitle === cookies.titleIdMap) {
-        goalId = cookies.titleIdMap;
+    // 쿠키 빼고 localstorage로 변경
+    if (goalTitle === localStorage.getItem("titleIdMap")) {
+        goalId = localStorage.getItem("titleIdMap");
     }
 
     const token = localStorage.getItem("token");
@@ -318,9 +318,7 @@ function DeleteGoals(id) {
 }
 
 function TargetGoals(subgoal, goalTitle) {
-    const [cookies, setCookie] = useCookies(["titleIdMap"]);
-    
-    
+    console.log(localStorage.getItem("titleIdMap"))
     
     let goalId = undefined;
     // 쿠키 빼고 localstorage로 변경
@@ -402,15 +400,17 @@ function TargetGoals(subgoal, goalTitle) {
                         },
                         data: stack,
                     }).then((result) => {
-                        // const sub_cookies = new useCookies();
 
-                        // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
-                        const sub_titleIdMap = {};
-
-                        // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
-                        result.data.forEach((item) => {
-                            sub_titleIdMap[item.title] = item.id;
-                        });
+                        const sub_titleIdMap = {
+                            title1: result.data.id[0],
+                            title2: result.data.id[1],
+                            title3: result.data.id[2],
+                            title4: result.data.id[3],
+                            title5: result.data.id[4],
+                            title6: result.data.id[5]
+                        };
+    
+                        // localstorage에 저장
 
                         localStorage.setItem("sub_titleIdMap", JSON.stringify(sub_titleIdMap));
 
