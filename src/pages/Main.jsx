@@ -477,59 +477,6 @@ function TargetTag() {
                 const awsIP = process.env.REACT_APP_BACKEND_URL;
                 console.log(token);
 
-                // fetch(awsIP + "/home/goal/createall/", {
-                //     method: "POST",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //         Authorization: `Bearer ${token}`,
-                //     },
-                //     body: JSON.stringify(title),
-                // }).then((response) => {
-                //     if (!response.ok) {
-                //         throw new Error("Network response was not ok");
-                //     }
-                //     result = response.json();
-
-                //     console.log(result, "result");
-                //     console.log(result.id, "result.id");
-
-                //     const titleIdMap = {
-                //         title1: result.id[0],
-                //         title2: result.id[1],
-                //         title3: result.id[2],
-                //         title4: result.id[3],
-                //         title5: result.id[4],
-                //         title6: result.id[5]
-                //     };
-
-                //     // result 
-
-                //     console.log(result.id, "11111")
-
-
-                //     // result.id => 배열임
-
-                //     localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
-
-
-                //     // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
-
-
-                //     // for(let i = 0; i < result.id.length; i++){
-                //     //     titleIdMap[result.id[i]] = result.id[i].id;
-                //     // }
-
-                //     // result.id.map((item) => {
-                //     //     titleIdMap[item.title] = item.id;
-                //     // });
-
-                //     // localstorage에 저장
-                    
-                   
-
-                //     window.location.reload();
-                // });
-
                 axios({
                     method: "post",
                     url: awsIP + "/home/goal/createall/",
@@ -538,20 +485,26 @@ function TargetTag() {
                     },
                     data: title,
                 }).then((result) => {
+                    const title1 = document.getElementById("stack1").value;
+                    const title2 = document.getElementById("stack2").value;
+                    const title3 = document.getElementById("stack3").value;
+                    const title4 = document.getElementById("stack4").value;
+                    const title5 = document.getElementById("stack5").value;
+                    const title6 = document.getElementById("stack6").value;
                     // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
                     console.log(result, "result");
                     console.log(result.data)
                     console.log(result.data.id, "result.id");
                     // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
 
-                    const titleIdMap = {
-                        title1: result.data.id[0],
-                        title2: result.data.id[1],
-                        title3: result.data.id[2],
-                        title4: result.data.id[3],
-                        title5: result.data.id[4],
-                        title6: result.data.id[5]
-                    };
+                    const titleIdMap = {};
+
+                    titleIdMap[title1] = result.data.id[0];
+                    titleIdMap[title2] = result.data.id[1];
+                    titleIdMap[title3] = result.data.id[2];
+                    titleIdMap[title4] = result.data.id[3];
+                    titleIdMap[title5] = result.data.id[4];
+                    titleIdMap[title6] = result.data.id[5];
 
                     // localstorage에 저장
                     
