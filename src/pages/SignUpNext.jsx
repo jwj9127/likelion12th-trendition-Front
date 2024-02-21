@@ -140,8 +140,7 @@ function Privacy() {
 function SignUpBtn({ password, passwordConfirm, handleSignUp }) {
     const handleClick = (event) => {
         event.preventDefault();
-        const passwordRegex =
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
         if (password === passwordConfirm) {
             if (passwordRegex.test(password)) {
                 handleSignUp();
@@ -168,7 +167,7 @@ export default function SignUpBox() {
     const { email, phoneNumber } = state || { email: "", phoneNumber: "" };
     console.log(email, phoneNumber);
 
-    const [profileImage, setSelectedImage] = useState(DefaultImage);
+    const [profileImage, setSelectedImage] = useState(null);
     const handleImageChange = (image) => {
         setSelectedImage(image);
     };
@@ -189,11 +188,19 @@ export default function SignUpBox() {
             if (profileImage) {
                 formData.append("profileImage", profileImage);
             } else {
-                // 프로필 이미지가 없으면 기본 이미지 파일 추가
-                formData.append("profileImage", DefaultImage);
+                const defaultImageBlob = new Blob([DefaultImage], {
+                    type: "image/png",
+                });
+                const defaultImageFile = new File(
+                    [defaultImageBlob],
+                    "default_image.png",
+                    { type: "image/png" }
+                );
+
+                formData.append("profileImage", defaultImageFile);
             }
 
-            fetch(awsIP+"/join/register/", {
+            fetch(awsIP + "/join/register/", {
                 method: "POST",
                 body: formData,
             }).then((response) => {
@@ -202,7 +209,7 @@ export default function SignUpBox() {
                 }
                 return response.json();
             });
-            
+
             window.location.href = "/login";
         } catch (error) {
             console.error(email, phoneNumber, username, password, profileImage);
