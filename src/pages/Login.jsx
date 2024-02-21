@@ -62,7 +62,7 @@ function LoginBtn({ username, password, setPasswordError }) {
                 
                 const token = response.data.token;
                 console.log("서버에서 받은 토큰:", token);
-                localStorage.clear();
+                // localStorage.clear();
                 localStorage.setItem("token", token);
                 axios.defaults.headers.common[
                     "Authorization"

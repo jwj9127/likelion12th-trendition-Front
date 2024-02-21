@@ -188,17 +188,31 @@ export default function SignUpBox() {
             if (profileImage) {
                 formData.append("profileImage", profileImage);
             } else {
-                const defaultImageBlob = new Blob([DefaultImage], {
-                    type: "image/png",
-                });
-                const defaultImageFile = new File(
-                    [defaultImageBlob],
-                    "default_image.png",
-                    { type: "image/png" }
-                );
+                const defaultImageFile = await fetch(DefaultImage)
+                    .then((res) => res.blob())
+                    .then(
+                        (blob) =>
+                            new File([blob], "default_image.png", {
+                                type: "image/png",
+                            })
+                    );
 
                 formData.append("profileImage", defaultImageFile);
             }
+
+            
+            // } else {
+            //     const defaultImageBlob = new Blob([DefaultImage], {
+            //         type: "image/png",
+            //     });
+            //     const defaultImageFile = new File(
+            //         [defaultImageBlob],
+            //         "default_image.png",
+            //         { type: "image/png" }
+            //     );
+
+            //     formData.append("profileImage", defaultImageFile);
+            // }
 
             fetch(awsIP + "/join/register/", {
                 method: "POST",

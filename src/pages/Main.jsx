@@ -15,6 +15,7 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
     const [selectedGoal, setSelectedGoal] = useState([]);
     const [subgoals, setSubgoals] = useState([]);
     const [subgoal, setSubgoal] = useState([]);
+    const [goalIndex, setGoalIndex] = useState(1);
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -44,12 +45,21 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
         try {
             const token = localStorage.getItem("token");
             const awsIP = process.env.REACT_APP_BACKEND_URL;
-            axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-            const response = await axios.get(awsIP + "/home/");
-            const selectedGoal = response.data[selectedGoalId - 1];
-            setSelectedGoal(selectedGoal);
-            setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
-            console.log(subgoals);
+            axios({
+                method: 'get',
+                url: awsIP+'/home',
+                headers: {
+                    Authorization: `Token ${token}`,
+                }
+            }).then((result) => {
+                console.log(result.data, "result.data")
+                const selectedGoal = result.data[selectedGoalId - 1].title;
+                console.log(selectedGoal, "1111");
+                setSelectedGoal(selectedGoal);
+                setSubgoals(selectedGoal ? selectedGoal.subgoals : []);
+                console.log(subgoals, "2222");
+            })
+
         } catch (error) {
             console.error("Goals에서 subgoals를 가져오는 중 에러 발생:", error);
         }
@@ -80,31 +90,31 @@ function Goals({ selectedGoalId, setSelectedGoalId }) {
                 key={1}
                 level={1}
                 subgoals={subgoals}
-                goalTitle={selectedGoal.title}
+                goalTitle={goalIndex}
             ></GoalCheck>
             <GoalCheck
                 key={2}
                 level={2}
                 subgoals={subgoals}
-                goalTitle={selectedGoal.title}
+                goalTitle={goalIndex}
             ></GoalCheck>
             <GoalCheck
                 key={3}
                 level={3}
                 subgoals={subgoals}
-                goalTitle={selectedGoal.title}
+                goalTitle={goalIndex}
             ></GoalCheck>
             <GoalCheck
                 key={4}
                 level={4}
                 subgoals={subgoals}
-                goalTitle={selectedGoal.title}
+                goalTitle={goalIndex}
             ></GoalCheck>
             <GoalCheck
                 key={5}
                 level={5}
                 subgoals={subgoals}
-                goalTitle={selectedGoal.title}
+                goalTitle={goalIndex}
             ></GoalCheck>
         </div>
     );
@@ -118,7 +128,6 @@ function TopBar({ selectedGoalId }) {
     useEffect(() => {
         const GetGoalData = () => {
             axios
-                .get(awsIP + "/home/", {})
                 .get(awsIP + "/home/", {})
                 .then(function (response) {
                     const selectedGoal = response.data[selectedGoalId - 1];
@@ -310,16 +319,29 @@ function DeleteGoals(id) {
 
 function TargetGoals(subgoal, goalTitle) {
     const [cookies, setCookie] = useCookies(["titleIdMap"]);
+    
+    
+    
     let goalId = undefined;
-    if (goalTitle === cookies.titleIdMap) {
-        goalId = cookies.titleIdMap;
+    // 쿠키 빼고 localstorage로 변경
+    if (goalTitle === localStorage.getItem("titleIdMap")) {
+        goalId = localStorage.getItem("titleIdMap");
+    }
+    // if (goalTitle === cookies.titleIdMap) {
+    //     goalId = cookies.titleIdMap;
+    // }
+
+    // const [subcookies, setSubCookies] = useCookies(["sub_titleIdMap"]);
+    let subGoalId = undefined;
+
+    if (subgoal === localStorage.getItem("sub_titleIdMap")) {
+        subGoalId = localStorage.getItem("sub_titleIdMap");
     }
 
-    const [subcookies, setSubCookies] = useCookies(["sub_titleIdMap"]);
-    let subGoalId = undefined;
-    if (subgoal === subcookies.sub_titleIdMap) {
-        subGoalId = subcookies.sub_titleIdMap;
-    }
+
+    // if (subgoal === subcookies.sub_titleIdMap) {
+    //     subGoalId = subcookies.sub_titleIdMap;
+    // }
 
     if (subgoal) {
         Swal.fire({
@@ -380,7 +402,7 @@ function TargetGoals(subgoal, goalTitle) {
                         },
                         data: stack,
                     }).then((result) => {
-                        const sub_cookies = new useCookies();
+                        // const sub_cookies = new useCookies();
 
                         // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
                         const sub_titleIdMap = {};
@@ -389,11 +411,14 @@ function TargetGoals(subgoal, goalTitle) {
                         result.data.forEach((item) => {
                             sub_titleIdMap[item.title] = item.id;
                         });
-                        sub_cookies.set(
-                            "sub_titleIdMap",
-                            JSON.stringify(sub_titleIdMap),
-                            { path: "/" }
-                        );
+
+                        localStorage.setItem("sub_titleIdMap", JSON.stringify(sub_titleIdMap));
+
+                        // sub_cookies.set(
+                        //     "sub_titleIdMap",
+                        //     JSON.stringify(sub_titleIdMap),
+                        //     { path: "/" }
+                        // );
                         window.location.reload();
                     });
                 } catch (err) {
@@ -447,10 +472,64 @@ function TargetTag() {
             const title = { title1, title2, title3, title4, title5, title6 };
 
             try {
-                const cookies = new useCookies();
+                // const cookies = new useCookies();
                 const token = localStorage.getItem("token");
                 const awsIP = process.env.REACT_APP_BACKEND_URL;
                 console.log(token);
+
+                // fetch(awsIP + "/home/goal/createall/", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                //     body: JSON.stringify(title),
+                // }).then((response) => {
+                //     if (!response.ok) {
+                //         throw new Error("Network response was not ok");
+                //     }
+                //     result = response.json();
+
+                //     console.log(result, "result");
+                //     console.log(result.id, "result.id");
+
+                //     const titleIdMap = {
+                //         title1: result.id[0],
+                //         title2: result.id[1],
+                //         title3: result.id[2],
+                //         title4: result.id[3],
+                //         title5: result.id[4],
+                //         title6: result.id[5]
+                //     };
+
+                //     // result 
+
+                //     console.log(result.id, "11111")
+
+
+                //     // result.id => 배열임
+
+                //     localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
+
+
+                //     // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
+
+
+                //     // for(let i = 0; i < result.id.length; i++){
+                //     //     titleIdMap[result.id[i]] = result.id[i].id;
+                //     // }
+
+                //     // result.id.map((item) => {
+                //     //     titleIdMap[item.title] = item.id;
+                //     // });
+
+                //     // localstorage에 저장
+                    
+                   
+
+                //     window.location.reload();
+                // });
+
                 axios({
                     method: "post",
                     url: awsIP + "/home/goal/createall/",
@@ -460,15 +539,27 @@ function TargetTag() {
                     data: title,
                 }).then((result) => {
                     // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
-                    const titleIdMap = {};
-
+                    console.log(result, "result");
+                    console.log(result.data)
+                    console.log(result.data.id, "result.id");
                     // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
-                    result.data.forEach((item) => {
-                        titleIdMap[item.title] = item.id;
-                    });
-                    cookies.set("titleIdMap", JSON.stringify(titleIdMap), {
-                        path: "/",
-                    });
+
+                    const titleIdMap = {
+                        title1: result.data.id[0],
+                        title2: result.data.id[1],
+                        title3: result.data.id[2],
+                        title4: result.data.id[3],
+                        title5: result.data.id[4],
+                        title6: result.data.id[5]
+                    };
+
+                    // localstorage에 저장
+                    
+                    localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
+
+                    // cookies.set("titleIdMap", JSON.stringify(titleIdMap), {
+                    //     path: "/",
+                    // });
                     window.location.reload();
                 });
             } catch (err) {
