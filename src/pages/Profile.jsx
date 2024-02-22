@@ -69,8 +69,8 @@ function Goals() {
 
 export default function Profile() {
     const location = useLocation();
-    window.localStorage.setItem('username', location.state.username);
-    const username = window.localStorage.getItem('username');
+    window.localStorage.setItem('usernameProfile', location.state.username);
+    const username = window.localStorage.getItem('usernameProfile');
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
     const awsIP = process.env.REACT_APP_BACKEND_URL;
@@ -132,7 +132,6 @@ export default function Profile() {
 
     return (
         <div>
-            <Navigation></Navigation>
             <div className="mypage_top_setting">
                 <div className="profile_top_setting_flex">
                     <div>
@@ -170,6 +169,7 @@ export default function Profile() {
                 <button className="mypage_doneBtn">15 done</button>
             </div>
             <Goals />
+            <Navigation></Navigation>
         </div>
     );
 }

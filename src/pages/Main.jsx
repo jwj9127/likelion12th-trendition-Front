@@ -20,6 +20,25 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     };
 
     useEffect(() => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
+        const token = localStorage.getItem("token");
+
+        axios({
+            method: 'get',
+            url: awsIP+'/home/',
+            headers: {
+                Authorization: `Token ${token}`,
+            }
+        }).then((result) => {
+            const result_selectedGoal = result.data[0].title;
+            const result_subGoal = result.data[0].subgoals;
+            
+            if(!selectedGoalTitle.length){
+                setSelectedGoalTitle(result_selectedGoal);
+                setSubGoals(result_subGoal);
+            }
+        })
+
         if (selectedGoalId || selectedGoalId === 0) {
             setSelectedGoalTitle(goals[selectedGoalId].title);
             setSubGoals(goals[selectedGoalId].subgoals);
@@ -70,6 +89,24 @@ function TopBar({ goals, selectedGoalId, username }) {
     const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
     const [achievement, setAchievement] = useState("");
     useEffect(() => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
+        const token = localStorage.getItem("token");
+
+        axios({
+            method: 'get',
+            url: awsIP+'/home/',
+            headers: {
+                Authorization: `Token ${token}`,
+            }
+        }).then((result) => {
+            const result_selectedGoal = result.data[0].title;
+            
+            if(!selectedGoalTitle.length){
+                setSelectedGoalTitle(result_selectedGoal);
+                setAchievement(0);
+            }
+        })
+
         if (selectedGoalId || selectedGoalId === 0) {
             setSelectedGoalTitle(goals[selectedGoalId].title);
             setAchievement(goals[selectedGoalId].completion_rate);
@@ -108,11 +145,10 @@ function TopBar({ goals, selectedGoalId, username }) {
 function GoalCheck({ level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-    const subGoalId = localStorage.getItem("sub_titleIdMap");
 
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
-    const checkBox = () => {
+    const checkBox = (level) => {
         Swal.fire({
             title: "목표 완료",
             showCancelButton: true,
@@ -120,6 +156,7 @@ function GoalCheck({ level, subgoals, goalTitle }) {
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
+                const subGoalId = subgoals[level - 1].id;
                 try {
                     axios({
                         method: "put",
@@ -130,6 +167,7 @@ function GoalCheck({ level, subgoals, goalTitle }) {
                         data: { is_completed: true },
                     }).then(() => {
                         setIsChecked(true);
+                        window.location.reload();
                     });
                 } catch (err) {
                     console.error(err);
@@ -144,13 +182,6 @@ function GoalCheck({ level, subgoals, goalTitle }) {
     if (!subgoal) {
         return (
             <div className="subGoal">
-                <input
-                    className={
-                        isChecked ? "subGoal-check-checked" : "subGoal-check"
-                    }
-                    type="checkbox"
-                    onClick={checkBox}
-                ></input>
                 <div className="subGoal-text">
                     <div key={level}>
                         {`Lv - ${level} : 세부 목표를 설정해주세요`}
@@ -180,7 +211,7 @@ function GoalCheck({ level, subgoals, goalTitle }) {
                     isChecked ? "subGoal-check-checked" : "subGoal-check"
                 }
                 type="checkbox"
-                onClick={checkBox}
+                onClick={() => checkBox(level , goalTitle)}
                 disabled={isChecked}
             ></input>
             <div className="subGoal-text">
@@ -254,20 +285,24 @@ function DeleteGoals(id) {
 function TargetGoals(subgoal, goalTitle) {
     let goalId = undefined;
     const TitleID = JSON.parse(localStorage.getItem("titleIdMap"));
-
+    
     for (let key in TitleID) {
         console.log(key === goalTitle, TitleID[key], key, goalTitle);
         if (key === goalTitle) {
             goalId = TitleID[key];
         }
     }
-    let subGoalId = undefined;
-
-    if (subgoal === localStorage.getItem("sub_titleIdMap")) {
-        subGoalId = localStorage.getItem("sub_titleIdMap");
-    }
-
+    
+    
     if (subgoal) {
+        let subGoalId = undefined;
+        const sub_titleId = JSON.parse(localStorage.getItem("sub_titleIdMap"));
+        for (let key in sub_titleId) {
+            console.log(key === subgoal.title, sub_titleId[key], key, subgoal.title);
+            if (key === subgoal.title) {
+                subGoalId = sub_titleId[key];
+            }
+        }
         Swal.fire({
             html: `
             <div class="spec-modal">
@@ -282,7 +317,7 @@ function TargetGoals(subgoal, goalTitle) {
         }).then((result) => {
             if (result.isConfirmed) {
                 const token = localStorage.getItem("token");
-                const stack = document.getElementById("stack").value;
+                const title = document.getElementById("stack").value;
                 const awsIP = process.env.REACT_APP_BACKEND_URL;
                 try {
                     axios({
@@ -291,7 +326,7 @@ function TargetGoals(subgoal, goalTitle) {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
-                        data: stack,
+                        data: {title},
                     }).then(() => {
                         window.location.reload();
                     });
@@ -303,6 +338,7 @@ function TargetGoals(subgoal, goalTitle) {
     }
 
     if (!subgoal) {
+        let sub_title;
         Swal.fire({
             html: `
             <div class="spec-modal">
@@ -314,6 +350,9 @@ function TargetGoals(subgoal, goalTitle) {
             showCancelButton: true,
             confirmButtonText: "목표 설정",
             cancelButtonText: "취소",
+            preConfirm: () => {
+                sub_title = document.getElementById('stack').value;
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 const token = localStorage.getItem("token");
@@ -328,8 +367,12 @@ function TargetGoals(subgoal, goalTitle) {
                         },
                         data: { title },
                     }).then((result) => {
-                        const sub_titleIdMap = result.data.subgoal_id;
-                        localStorage.setItem("sub_titleIdMap", sub_titleIdMap);
+                        const sub_titleIdMap = JSON.parse(localStorage.getItem("sub_titleIdMap")) || {}; // 기존 데이터 가져오기
+                        sub_titleIdMap[sub_title] = result.data.subgoal_id; // 새로운 데이터 추가
+                        localStorage.setItem( // 업데이트된 데이터 저장
+                            "sub_titleIdMap",
+                            JSON.stringify(sub_titleIdMap)
+                        );
                         console.log(sub_titleIdMap);
                         window.location.reload();
                     });
@@ -341,98 +384,90 @@ function TargetGoals(subgoal, goalTitle) {
     }
 }
 
-function TargetTag() {
-    Swal.fire({
-        html: `
-        <div class="spec-modal">
-            <div class="spec-header">
-                <div class="title" style="color: #5E47D2; font-size: 24px; font-weight: bolder; margin-top:30px">스펙 입력 (6개)</div>
-            </div>
-            <div class="spec-content">
-                <h3>스펙 1</h3>
-                <input id="stack1" class="swal-input" style="outline: none;" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+const TargetTag = () => {
+    let title1, title2, title3, title4, title5, title6;
 
-                <h3>스펙 2</h3>
-                <input id="stack2" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+        Swal.fire({
+            html: `
+            <div class="spec-modal">
+                <div class="spec-header">
+                    <div class="title" style="color: #5E47D2; font-size: 24px; font-weight: bolder; margin-top:30px">스펙 입력 (6개)</div>
+                </div>
+                <div class="spec-content">
+                    <h3>스펙 1</h3>
+                    <input id="stack1" class="swal-input" style="outline: none;" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-                <h3>스펙 3</h3>
-                <input id="stack3" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                    <h3>스펙 2</h3>
+                    <input id="stack2" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-                <h3>스펙 4</h3>
-                <input id="stack4" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
-                
-                <h3>스펙 5</h3>
-                <input id="stack5" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
-                
-                <h3>스펙 6</h3>
-                <input id="stack6" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
-            </div>
-        </div>
-    `,
-        showCancelButton: true,
-        confirmButtonText: "저장",
-        cancelButtonText: "취소",
-        allowOutsideClick: false,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const title1 = document.getElementById("stack1").value;
-            const title2 = document.getElementById("stack2").value;
-            const title3 = document.getElementById("stack3").value;
-            const title4 = document.getElementById("stack4").value;
-            const title5 = document.getElementById("stack5").value;
-            const title6 = document.getElementById("stack6").value;
-            const title = { title1, title2, title3, title4, title5, title6 };
+                    <h3>스펙 3</h3>
+                    <input id="stack3" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
 
-            try {
-                const token = localStorage.getItem("token");
-                const awsIP = process.env.REACT_APP_BACKEND_URL;
-                console.log(token);
-
-                axios({
-                    method: "post",
-                    url: awsIP + "/home/goal/createall/",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    data: title,
-                }).then((result) => {
-                    const title1 = document.getElementById("stack1").value;
-                    const title2 = document.getElementById("stack2").value;
-                    const title3 = document.getElementById("stack3").value;
-                    const title4 = document.getElementById("stack4").value;
-                    const title5 = document.getElementById("stack5").value;
-                    const title6 = document.getElementById("stack6").value;
-                    // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
-                    console.log(result, "result");
-                    console.log(result.data);
-                    console.log(result.data.id, "result.id");
-                    // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
-
-                    const titleIdMap = {};
-
-                    titleIdMap[title1] = result.data.id[0];
-                    titleIdMap[title2] = result.data.id[1];
-                    titleIdMap[title3] = result.data.id[2];
-                    titleIdMap[title4] = result.data.id[3];
-                    titleIdMap[title5] = result.data.id[4];
-                    titleIdMap[title6] = result.data.id[5];
-
-                    // localstorage에 저장
-
-                    localStorage.setItem(
-                        "titleIdMap",
-                        JSON.stringify(titleIdMap)
-                    );
-
+                    <h3>스펙 4</h3>
+                    <input id="stack4" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
                     
-                    window.location.reload();
-                });
-            } catch (err) {
-                console.error(err);
+                    <h3>스펙 5</h3>
+                    <input id="stack5" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                    
+                    <h3>스펙 6</h3>
+                    <input id="stack6" class="swal-input" placeholder="쌓고 싶은 스펙을 입력해주세요.">
+                </div>
+            </div>
+        `,
+            showCancelButton: true,
+            confirmButtonText: "저장",
+            cancelButtonText: "취소",
+            allowOutsideClick: false,
+            preConfirm: () => {
+                title1 = document.getElementById('stack1').value;
+                title2 = document.getElementById('stack2').value;
+                title3 = document.getElementById('stack3').value;
+                title4 = document.getElementById('stack4').value;
+                title5 = document.getElementById('stack5').value;
+                title6 = document.getElementById('stack6').value;
             }
-        }
-    });
-}
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const title = { title1, title2, title3, title4, title5, title6 };
+
+                try {
+                    const token = localStorage.getItem("token");
+                    const awsIP = process.env.REACT_APP_BACKEND_URL;
+                    console.log(token);
+
+                    axios({
+                        method: "post",
+                        url: awsIP + "/home/goal/createall/",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        data: title,
+                    }).then((result) => {
+                        const titleIdMap = {};
+
+                        titleIdMap[title1] = result.data.id[0];
+                        titleIdMap[title2] = result.data.id[1];
+                        titleIdMap[title3] = result.data.id[2];
+                        titleIdMap[title4] = result.data.id[3];
+                        titleIdMap[title5] = result.data.id[4];
+                        titleIdMap[title6] = result.data.id[5];
+
+                        // localstorage에 저장
+
+                        localStorage.setItem(
+                            "titleIdMap",
+                            JSON.stringify(titleIdMap)
+                        );
+
+                        
+                        window.location.reload();
+                    });
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        })
+};
 
 function HexagonGraphBox() {
     const [isSet, setIsSet] = useState(false);
