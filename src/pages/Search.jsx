@@ -46,7 +46,7 @@ export default function Search() {
         try {
             axios({
                 method: 'get',
-                url: awsIP+'/join/search',
+                url: awsIP+'join/search/',
                 headers: {
                     Authorization: `Bearer ${login_token}`
                 }

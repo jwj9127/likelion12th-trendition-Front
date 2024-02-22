@@ -61,9 +61,11 @@ function LoginBtn({ username, password, setPasswordError }) {
                 // 로그인 성공 시 토큰 추출
                 
                 const token = response.data.token;
+                const username = response.data.username;
                 console.log("서버에서 받은 토큰:", token);
                 // localStorage.clear();
                 localStorage.setItem("token", token);
+                localStorage.setItem("username", username);
                 axios.defaults.headers.common[
                     "Authorization"
                 ] = `Token ${token}`;
