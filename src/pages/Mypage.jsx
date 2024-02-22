@@ -205,7 +205,7 @@ export default function Mypage() {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-        fetch(awsIP+"/join/mypage/", {
+        fetch(awsIP + "/join/mypage/", {
             headers: {
                 Authorization: `Bearer  ${token}`,
             },
@@ -219,6 +219,7 @@ export default function Mypage() {
             .then((data) => {
                 console.log(data);
                 setData(data);
+                console.log(data.profileImage);
             })
             .catch((error) => {
                 console.error(
@@ -246,7 +247,7 @@ export default function Mypage() {
                                 marginTop: "4vh",
                             }}
                         >
-                            {data.username}
+                            @{data.username}
                         </p>
                         <Link to={"/Setting"}>
                             <FontAwesomeIcon
@@ -261,7 +262,10 @@ export default function Mypage() {
                     </div>
                 </div>
                 <div className="mypage_main_profile">
-                    <div className="mypage_main_img"></div>
+                    <img
+                        className="mypage_main_img"
+                        src={data.profileImage}
+                    ></img>
                 </div>
             </div>
             <div className="mypage_followBox">

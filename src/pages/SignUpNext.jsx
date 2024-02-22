@@ -29,10 +29,6 @@ function Profile({ profileImage, handleImageChange }) {
         fileInputRef.current.click();
     };
 
-    const handleImage = () => {
-        fileInputRef.current.click();
-    };
-
     // 선택 파일 가져오기 및 파일 전달
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -187,22 +183,24 @@ export default function SignUpBox() {
             formData.append("password", password);
             if (profileImage) {
                 formData.append("profileImage", profileImage);
-            }else{
-                var base64Image = DefaultImage
+            } else {
+                var base64Image = DefaultImage;
                 // Base64 문자열을 Blob 객체로 변환
-                var byteCharacters = atob(base64Image.split(',')[1]);
+                var byteCharacters = atob(base64Image.split(",")[1]);
                 var byteNumbers = new Array(byteCharacters.length);
                 for (var i = 0; i < byteCharacters.length; i++) {
                     byteNumbers[i] = byteCharacters.charCodeAt(i);
                 }
                 var byteArray = new Uint8Array(byteNumbers);
-                var blob = new Blob([byteArray], { type: 'image/png' });
-    
+                var blob = new Blob([byteArray], { type: "image/png" });
+
                 // Blob 객체를 File 객체로 변환
-                var file = new File([blob], 'image.png', { type: 'image/png', lastModified: Date.now() });
+                var file = new File([blob], "image.png", {
+                    type: "image/png",
+                    lastModified: Date.now(),
+                });
                 formData.append("profileImage", file);
             }
- 
 
             fetch(awsIP + "/join/register/", {
                 method: "POST",

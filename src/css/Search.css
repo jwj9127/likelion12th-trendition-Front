@@ -6,13 +6,15 @@
     font-style: normal;
 }
 
-.search_bigBox{
+.search_bigBox {
+    min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.search_topBox{
+.search_topBox {
     width: 100%;
     background-color: #5e47d2;
 }
@@ -23,30 +25,30 @@
     justify-content: center;
     color: #1e293b;
     font-family: "TTHakgyoansimJiugaeR";
-    margin-top: 5%;
+    margin-top: 7%;
     margin-bottom: 18px;
 }
 
 .logoBox_logo {
-    width: 40px;
-    height: 40px;
+    width: 30px;
     margin-right: 10px;
 }
 
 .logoBox_name {
     color: white;
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: 3px;
+    padding-top: 5px;
 }
 
-.search_SMBox{
+.search_SMBox {
     display: flex;
     align-items: center;
     justify-content: space-around;
     margin-bottom: 15px;
 }
 
-.search_searchBox{
+.search_searchBox {
     width: 65%;
     display: flex;
     align-items: center;
@@ -55,7 +57,7 @@
     padding: 13px;
 }
 
-.search_messageBox{
+.search_messageBox {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,29 +68,28 @@
     color: #5e47d2;
 }
 
-.search_message_img{
+.search_message_img {
     width: 20px;
     height: 20px;
 }
 
-.search_searchBox>input{
+.search_searchBox > input {
     width: 95%;
     border: none;
     outline: none;
     background-color: white;
 }
 
-.search_navBox{
+.search_navBox {
     width: 100vw;
     height: 7vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.search_account{
+.search_account {
     width: 40%;
     height: 100%;
     display: flex;
@@ -96,56 +97,55 @@
     justify-content: center;
     background-color: #e0dbfa;
     color: #5e47d2;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     font-weight: bold;
 }
 
-.search_post, .search_data{
+.search_post,
+.search_data {
     width: 40%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #687684;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     font-weight: bold;
 }
 
-.search_account_titles{
+.search_account_titles {
     display: flex;
     flex-direction: column;
-    height: 60vh;
+    height: 63.8vh;
+    margin-bottom: 1.53vh;
 }
 
-.search_account_titles_main{
+.search_account_titles_main {
     display: flex;
     align-items: center;
     width: 80vw;
     height: 10%;
-    margin-bottom: 5%;
+    margin-bottom: 7%;
 }
 
-.search_account_titles_main>div>p{
+.search_account_titles_main > div > p {
     color: #747474;
     margin: 0;
 }
 
-.search_account_titles_main_name{
+.search_account_titles_main_name {
     width: 80%;
 }
 
-.search_account_titles_main_img{
+.search_account_titles_main_img {
     width: 55px;
     height: 55px;
     border-radius: 50%;
     background-size: 100%;
-    background-image: url('../imgs/profile.png');
-    background-repeat: no-repeat;
     margin-right: 5%;
 }
 
-
-.search_account_titles_main_name>a{
+.search_account_titles_main_name > a {
     color: black;
     text-decoration: none;
 }
