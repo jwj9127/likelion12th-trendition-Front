@@ -11,17 +11,6 @@ const Followers = () => {
   const [data, setData] = useState([]);
   const [login_token, setLoginToken] = useState(localStorage.getItem('token') || '');
 
-
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:8000/join/following/')
-  //     .then((response) => {
-  //       console.log(response,"1111");
-  //       response.json()
-  //     })
-  //     .then((json) => setData(json));
-  //     console.log(data);
-  // }, []);
-
   useEffect(() => {
     fetch(`${awsIP}/join/follower/`, {
       headers: {
