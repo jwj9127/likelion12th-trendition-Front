@@ -9,58 +9,24 @@ import garbage from "../imgs/garbage.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-function Goals() {
-    const [goals, setGoals] = useState([]);
-    const [selectedGoal, setSelectedGoal] = useState([]);
-    const [subgoals, setSubgoals] = useState([]);
-
-    useEffect(() =>{
-        try {
-                const token = localStorage.getItem("token");
-                const awsIP = process.env.REACT_APP_BACKEND_URL;
-                axios({
-                    method: 'get',
-                    url: awsIP+'home/',
-                    headers: {
-                        Authorization: `Token ${token}`,
-                    }
-                }).then((result) => {
-                    setGoals(result.data);
-                    const result_selectedGoal = result.data[0].title;
-                    const result_selectedSubGoal = result.data[0].subgoals;
-    
-                    if(!selectedGoal.length){
-                        setSelectedGoal(result_selectedGoal);
-                        setSubgoals(result_selectedSubGoal);
-                    }
-                })
-    
-            } catch (error) {
-                console.error(error);
-            }
-    }, [])
+function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
+    const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
+    const [subgoals, setSubGoals] = useState([]);
 
     const handleGoalChange = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem("token");
-        const awsIP = process.env.REACT_APP_BACKEND_URL;
-        axios({
-            method: 'get',
-            url: awsIP+'home/',
-            headers: {
-                Authorization: `Token ${token}`,
-            }
-        }).then((result) => {
-            const result_selectedGoal = result.data[e.target.value].title;
-            const selectedData = result.data[e.target.value].subgoals;
-                setSelectedGoal(result_selectedGoal);
-                setSubgoals(selectedData);
-        })
-        if(selectedGoal === 0){
-            
-        }
+        setSelectedGoalId(e.target.value - 1);
         console.log("selected Spec id :", e.target.value);
     };
+
+    useEffect(() => {
+        if (selectedGoalId || selectedGoalId === 0) {
+            setSelectedGoalTitle(goals[selectedGoalId].title);
+            setSubGoals(goals[selectedGoalId].subgoals);
+            console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+            console.log("Goals - subgoals", subgoals);
+        }
+    }, [selectedGoalId]);
 
     return (
         <div className="Goals">
@@ -72,59 +38,44 @@ function Goals() {
                 ))}
             </select>
             <GoalCheck
-                key={1}
                 level={1}
                 subgoals={subgoals}
-                goalTitle={selectedGoal}
+                goalTitle={selectedGoalTitle}
             ></GoalCheck>
             <GoalCheck
-                key={2}
                 level={2}
                 subgoals={subgoals}
-                goalTitle={selectedGoal}
+                goalTitle={selectedGoalTitle}
             ></GoalCheck>
             <GoalCheck
-                key={3}
                 level={3}
                 subgoals={subgoals}
-                goalTitle={selectedGoal}
+                goalTitle={selectedGoalTitle}
             ></GoalCheck>
             <GoalCheck
-                key={4}
                 level={4}
                 subgoals={subgoals}
-                goalTitle={selectedGoal}
+                goalTitle={selectedGoalTitle}
             ></GoalCheck>
             <GoalCheck
-                key={5}
                 level={5}
                 subgoals={subgoals}
-                goalTitle={selectedGoal}
+                goalTitle={selectedGoalTitle}
             ></GoalCheck>
         </div>
     );
 }
 
-function TopBar() {
-    const [goalTitle, setGoalTitle] = useState("");
+function TopBar({ goals, selectedGoalId, username }) {
+    const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
     const [achievement, setAchievement] = useState("");
-    const username = localStorage.getItem("username");
-    const token = localStorage.getItem("token");
-    const awsIP = process.env.REACT_APP_BACKEND_URL;
-
-            axios({
-            method: 'get',
-            url: awsIP+'home/',
-            headers: {
-                Authorization: `Token ${token}`,
-            }
-        }).then((result) => {
-            console.log(result.data)
-            const selectedGoal = result.data;
-            setGoalTitle(selectedGoal.title);
-            setAchievement(selectedGoal.completion_rate);
-        })
-
+    useEffect(() => {
+        if (selectedGoalId || selectedGoalId === 0) {
+            setSelectedGoalTitle(goals[selectedGoalId].title);
+            setAchievement(goals[selectedGoalId].completion_rate);
+            console.log("TopBar - achievement changed:", achievement);
+        }
+    }, [selectedGoalId]);
     return (
         <div className="TopBar">
             <div className="TopBar-top">
@@ -133,22 +84,31 @@ function TopBar() {
                     <div className="logo2-name">식스펙</div>
                 </div>
             </div>
-            <div className="state">
-                <div className="state-category">
-                    {username}님의 {goalTitle}
+            {selectedGoalTitle ? (
+                <div className="state">
+                    <div className="state-category">
+                        {username}님의 {selectedGoalTitle}
+                    </div>
+                    <div className="state-achiev">
+                        달성도는 {achievement}%입니다
+                    </div>
                 </div>
-                <div className="state-achiev">
-                    달성도는 {achievement}%입니다
+            ) : (
+                <div className="state">
+                    <div className="state-category">
+                        환영해요, {username}님!
+                    </div>
+                    <div className="state-achiev">스펙을 설정해주세요</div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
 
-function GoalCheck({ key, level, subgoals, goalTitle }) {
+function GoalCheck({ level, subgoals, goalTitle }) {
     const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-    const subGoalId = localStorage.getItem("sub_titleIdMap")
+    const subGoalId = localStorage.getItem("sub_titleIdMap");
 
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
@@ -163,7 +123,7 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP+`home/subgoal/update/${subGoalId}`,
+                        url: awsIP + `/home/subgoal/update/${subGoalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -192,7 +152,7 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
                     onClick={checkBox}
                 ></input>
                 <div className="subGoal-text">
-                    <div key={key}>
+                    <div key={level}>
                         {`Lv - ${level} : 세부 목표를 설정해주세요`}
                         {goalTitle.length > 0 && (
                             <img
@@ -224,7 +184,7 @@ function GoalCheck({ key, level, subgoals, goalTitle }) {
                 disabled={isChecked}
             ></input>
             <div className="subGoal-text">
-                <div key={key}>
+                <div key={level}>
                     {`Lv - ${level} : ${subgoal.title}`}
                     <div
                         className="subgoal_imgBtn"
@@ -276,8 +236,7 @@ function DeleteGoals(id) {
             try {
                 axios({
                     method: "delete",
-                    url: awsIP + `home/subgoal/delete/${id}`,
-                    url: awsIP + `home/subgoal/delete/${id}`,
+                    url: awsIP + `/home/subgoal/delete/${id}`,
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -294,12 +253,12 @@ function DeleteGoals(id) {
 
 function TargetGoals(subgoal, goalTitle) {
     let goalId = undefined;
-    const TitleID = JSON.parse(localStorage.getItem("titleIdMap"))
+    const TitleID = JSON.parse(localStorage.getItem("titleIdMap"));
 
-    for(let key in TitleID){
-        console.log(key === goalTitle, TitleID[key], key , goalTitle)
-        if(key === goalTitle){
-            goalId = TitleID[key]
+    for (let key in TitleID) {
+        console.log(key === goalTitle, TitleID[key], key, goalTitle);
+        if (key === goalTitle) {
+            goalId = TitleID[key];
         }
     }
     let subGoalId = undefined;
@@ -328,7 +287,7 @@ function TargetGoals(subgoal, goalTitle) {
                 try {
                     axios({
                         method: "put",
-                        url: awsIP + `home/subgoal/update/${subGoalId}`,
+                        url: awsIP + `/home/subgoal/update/${subGoalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -363,15 +322,15 @@ function TargetGoals(subgoal, goalTitle) {
                 try {
                     axios({
                         method: "post",
-                        url: awsIP + `home/subgoal/create/${goalId}`,
+                        url: awsIP + `/home/subgoal/create/${goalId}`,
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
-                        data: {title},
+                        data: { title },
                     }).then((result) => {
-                        const sub_titleIdMap = result.data.subgoal_id
+                        const sub_titleIdMap = result.data.subgoal_id;
                         localStorage.setItem("sub_titleIdMap", sub_titleIdMap);
-                        console.log(sub_titleIdMap)
+                        console.log(sub_titleIdMap);
                         window.location.reload();
                     });
                 } catch (err) {
@@ -431,7 +390,7 @@ function TargetTag() {
 
                 axios({
                     method: "post",
-                    url: awsIP + "home/goal/createall/",
+                    url: awsIP + "/home/goal/createall/",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -445,7 +404,7 @@ function TargetTag() {
                     const title6 = document.getElementById("stack6").value;
                     // 결과 데이터에서 각 타이틀에 해당하는 ID를 저장하는 객체 생성
                     console.log(result, "result");
-                    console.log(result.data)
+                    console.log(result.data);
                     console.log(result.data.id, "result.id");
                     // 결과 데이터 반복하여 타이틀과 해당하는 ID를 추출하여 객체에 저장
 
@@ -459,8 +418,11 @@ function TargetTag() {
                     titleIdMap[title6] = result.data.id[5];
 
                     // localstorage에 저장
-                    
-                    localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
+
+                    localStorage.setItem(
+                        "titleIdMap",
+                        JSON.stringify(titleIdMap)
+                    );
 
                     // cookies.set("titleIdMap", JSON.stringify(titleIdMap), {
                     //     path: "/",
@@ -486,7 +448,7 @@ function HexagonGraphBox() {
                     "Authorization"
                 ] = `Token ${token}`;
 
-                const response = await axios.get(awsIP + "home/");
+                const response = await axios.get(awsIP + "/home/");
                 setIsSet(response.data.length > 0);
             } catch (error) {
                 console.error("스펙 작성 여부 불러오기 에러:", error);
@@ -505,11 +467,54 @@ function HexagonGraphBox() {
 }
 
 export default function Main() {
+    // 골 전체
+    const [goals, setGoals] = useState([]);
+    // 선택된 골, 아이디
+    const [selectedGoal, setSelectedGoal] = useState([]);
+    const [selectedGoalId, setSelectedGoalId] = useState("");
+    // 유저 네임
+    const username = localStorage.getItem("username");
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem("token");
+            const awsIP = process.env.REACT_APP_BACKEND_URL;
+            axios({
+                method: "get",
+                url: awsIP + "/home/",
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            }).then((result) => {
+                if (result.data && result.data.length > 0) {
+                    setGoals(result.data);
+                    console.log("goals", goals);
+                    if (selectedGoalId) {
+                        setSelectedGoal(goals[selectedGoalId]);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }, [selectedGoalId]);
+
+    console.log("main-selectedGoalId", selectedGoalId);
+    console.log("main-selectedGoal", selectedGoal);
+
     return (
         <div>
-            <TopBar></TopBar>
+            <TopBar
+                goals={goals}
+                selectedGoalId={selectedGoalId}
+                username={username}
+            ></TopBar>
             <HexagonGraphBox></HexagonGraphBox>
-            <Goals></Goals>
+            <Goals
+                goals={goals}
+                selectedGoalId={selectedGoalId}
+                setSelectedGoalId={setSelectedGoalId}
+            ></Goals>
             <Navigation></Navigation>
         </div>
     );
