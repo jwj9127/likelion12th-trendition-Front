@@ -462,9 +462,7 @@ function TargetTag() {
                     
                     localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
 
-                    // cookies.set("titleIdMap", JSON.stringify(titleIdMap), {
-                    //     path: "/",
-                    // });
+                    
                     window.location.reload();
                 });
             } catch (err) {

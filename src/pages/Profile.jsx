@@ -74,13 +74,14 @@ export default function Profile() {
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
     const awsIP = process.env.REACT_APP_BACKEND_URL;
+    const token = window.localStorage.getItem('token');
     useEffect(() => {
         try{
             axios({
                 method: 'get',
                 url: awsIP+`/join/search_user/?keyword=${username}`,
                 headers: {
-                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                    Authorization: `Bearer ${token}`
               }
             }).then((result) => {
                 console.log(result.data);
@@ -90,7 +91,7 @@ export default function Profile() {
                 method: 'get',
                 url: awsIP+`/join/follow/${username}/`,
                 headers: {
-                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                    Authorization: `Bearer ${token}`
                   }
             }).then((result) => {
                 console.log(result.data)
@@ -113,7 +114,7 @@ export default function Profile() {
                 method: 'post',
                 url: awsIP+`/join/follow/${username}/`,
                 headers: {
-                    Authorization: `Bearer 45756420a4182dcc60ceaaabf2934d6ee79ea1ee`
+                    Authorization: `Bearer ${token}`
                   }
             }).then((result) => {
                 console.log(result.data);
