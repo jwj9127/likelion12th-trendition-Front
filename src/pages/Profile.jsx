@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from "react";
 import Navigation from "../component/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import logo2 from "../imgs/logo2.png";
 import "../css/Profile.css";
@@ -10,7 +11,7 @@ import axios from "axios";
 function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
     const [subgoals, setSubGoals] = useState([]);
-    const username = window.localStorage.getItem('usernameProfile');
+    const username = window.localStorage.getItem("usernameProfile");
 
     const handleGoalChange = async (e) => {
         e.preventDefault();
@@ -115,19 +116,17 @@ function GoalCheck({ level, subgoals, goalTitle }) {
                             height: "43px",
                             marginRight: "3%",
                         }}
-                    >
-                    </div>
+                    ></div>
                 </div>
             </div>
         </div>
     );
 }
 
-
 export default function Profile() {
     const location = useLocation();
-    window.localStorage.setItem('usernameProfile', location.state.username);
-    const username = window.localStorage.getItem('usernameProfile');
+    window.localStorage.setItem("usernameProfile", location.state.username);
+    const username = window.localStorage.getItem("usernameProfile");
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
     const [goals, setGoals] = useState([]);
@@ -135,10 +134,10 @@ export default function Profile() {
     const [selectedGoal, setSelectedGoal] = useState([]);
     const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
-    const token = window.localStorage.getItem('token');
-    
+    const token = window.localStorage.getItem("token");
+
     useEffect(() => {
-        try{
+        try {
             axios({
                 method: "get",
                 url: awsIP + `/home/goal/${username}`,
@@ -146,7 +145,7 @@ export default function Profile() {
                     Authorization: `Token ${token}`,
                 },
             }).then((result) => {
-                console.log(result.data)
+                console.log(result.data);
                 if (result.data && result.data.length > 0) {
                     setGoals(result.data);
                     if (selectedGoalId) {
@@ -155,76 +154,106 @@ export default function Profile() {
                 }
             });
             axios({
-                method: 'get',
-                url: awsIP+`/join/search_user/?keyword=${username}`,
+                method: "get",
+                url: awsIP + `/join/search_user/?keyword=${username}`,
                 headers: {
-                    Authorization: `Bearer ${token}`
-              }
+                    Authorization: `Bearer ${token}`,
+                },
             }).then((result) => {
                 console.log(result.data);
                 setData(result.data[0]);
-            })
+            });
             axios({
-                method: 'get',
-                url: awsIP+`/join/follow/${username}/`,
+                method: "get",
+                url: awsIP + `/join/follow/${username}/`,
                 headers: {
-                    Authorization: `Bearer ${token}`
-                  }
-            }).then((result) => {
-                console.log(result.data)
-                if(result.data === '팔로우 상태입니다.'){
-                    setFollow(true);
-                }
-                if(result.data === '언팔로우 상태입니다.'){
-                    setFollow(false);
-                }
-            })
-        }catch(err){
-            console.error(err);
-        }
-    },[])
-    
-    const handleFollow = (username) => {
-        const awsIP = process.env.REACT_APP_BACKEND_URL;
-        try{
-            axios({
-                method: 'post',
-                url: awsIP+`/join/follow/${username}/`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                  }
+                    Authorization: `Bearer ${token}`,
+                },
             }).then((result) => {
                 console.log(result.data);
-                if(result.data === '팔로우 했습니다.'){
+                if (result.data === "팔로우 상태입니다.") {
                     setFollow(true);
                 }
-                if(result.data === '언팔로우 했습니다.'){
+                if (result.data === "언팔로우 상태입니다.") {
                     setFollow(false);
                 }
-            })
-            }catch(err){
+            });
+        } catch (err) {
             console.error(err);
-            }
+        }
+    }, []);
+
+    const handleFollow = (username) => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
+        try {
+            axios({
+                method: "post",
+                url: awsIP + `/join/follow/${username}/`,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }).then((result) => {
+                console.log(result.data);
+                if (result.data === "팔로우 했습니다.") {
+                    setFollow(true);
+                }
+                if (result.data === "언팔로우 했습니다.") {
+                    setFollow(false);
+                }
+            });
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
         <div>
             <div className="mypage_top_setting">
-                <div className="profile_top_setting_flex">
-                    <div>
-                        <img className="logo2" src={logo2} alt="logo"></img>
-                        <p className="logo2-name">식스펙</p>
+                <div className="TopBar">
+                    <div className="TopBar-top">
+                        <div className="sublogo">
+                            <img className="logo2" src={logo2}></img>
+                            <div className="logo2-name">식스펙</div>
+                        </div>
+                        <p
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                textAlign: "center",
+                                fontSize: "13px",
+                                marginTop: "4vh",
+                            }}
+                        >
+                            @{data.username}
+                        </p>
+                        <Link to={"/Setting"}>
+                            <FontAwesomeIcon
+                                icon={faGear}
+                                style={{
+                                    fontSize: "25px",
+                                    color: "#ffffff",
+                                    margin: "3vh 20px 0.5vh 50px",
+                                }}
+                            />
+                        </Link>
                     </div>
-                    <p style={{ fontSize: "15px" }}>@{data.username}</p>
                 </div>
                 <div className="mypage_main_profile">
                     <div className="mypage_main_img"></div>
                     <p>{data.username}</p>
                 </div>
                 <div className="profile_middle_box">
-                    <FontAwesomeIcon className="profile_message_img" icon={faPaperPlane} />
-                    <button className={follow ? "profile_button" : "profile_button_follow"} onClick={() => handleFollow(data.username)}>
-                        {follow ? '팔로워' : '팔로잉'}
+                    <FontAwesomeIcon
+                        className="profile_message_img"
+                        icon={faPaperPlane}
+                    />
+                    <button
+                        className={
+                            follow ? "profile_button" : "profile_button_follow"
+                        }
+                        onClick={() => handleFollow(data.username)}
+                    >
+                        {follow ? "팔로워" : "팔로잉"}
                     </button>
                 </div>
             </div>

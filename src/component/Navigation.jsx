@@ -10,9 +10,12 @@ import myPurple from "../imgs/my_p.png";
 
 const Navigation = () => {
     const location = useLocation();
-    const searchIconSrc = location.pathname === '/search' ? searchPurple : searchGray;
-    const homeIconSrc = location.pathname === '/main' ? homePurple : homeGray;
-    const myIconSrc = location.pathname === '/mypage' || location.pathname === '/profile' ? myPurple : myGray;
+    const searchIconSrc =
+        location.pathname === "/search" || location.pathname === "/profile"
+            ? searchPurple
+            : searchGray;
+    const homeIconSrc = location.pathname === "/main" ? homePurple : homeGray;
+    const myIconSrc = location.pathname === "/mypage" ? myPurple : myGray;
 
     return (
         <div className="Nav">
