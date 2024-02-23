@@ -7,13 +7,13 @@ import ProfileImg from "../imgs/profile.png";
 
 const awsIP = process.env.REACT_APP_BACKEND_URL;
 
-const Following = () => {
+const Followers = () => {
   const [data, setData] = useState([]);
   const [login_token, setLoginToken] = useState(localStorage.getItem('token') || '');
-  const username = window.localStorage.getItem("username");
+  const username = window.localStorage.getItem("usernameProfile");
 
   useEffect(() => {
-    fetch(awsIP+`/join/following/${username}`, {
+    fetch(`${awsIP}/join/follower/${username}`, {
     })
       .then(response => {
         if (!response.ok) {
@@ -33,6 +33,7 @@ const Following = () => {
 
 
   const onFollow = (username) => {
+    console.log(username);
     fetch(awsIP+`/join/follow/${username}/`, {
       method: 'POST', // 요청을 POST 메소드로 변경
       headers: {
@@ -40,9 +41,8 @@ const Following = () => {
         'Content-Type': 'application/json' // 요청 본문의 타입을 JSON으로 지정 (만약 JSON이 아니라면 적절한 타입으로 변경)
       },
       body: JSON.stringify({}) // POST 요청의 경우 필요한 경우에 요청 본문을 지정
-    }).then(response => { console.log(response.text); })
+    }).then(response => {console.log(response.text);})
   }
-
 
   const handleFollow = (username) => {
     setData(data.map((i) => {
@@ -59,12 +59,16 @@ const Following = () => {
     }));
   };
 
+  const BackProfile = () => {
+    window.history.back();
+  }
+
   return (
     <div className="main">
       <div className="top-nav">
-        <Link to="/mypage" className="font-gray">
+        <div className="font-gray" onClick={() => BackProfile()}>
           <img src={backIcon} alt="뒤로가기" />
-        </Link>
+        </div>
         <h2 className="title">팔로우</h2>
         <div></div>
       </div>
@@ -86,4 +90,4 @@ const Following = () => {
   );
 };
 
-export default Following;
+export default Followers;

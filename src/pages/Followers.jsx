@@ -10,12 +10,10 @@ const awsIP = process.env.REACT_APP_BACKEND_URL;
 const Followers = () => {
   const [data, setData] = useState([]);
   const [login_token, setLoginToken] = useState(localStorage.getItem('token') || '');
+  const username = window.localStorage.getItem("username");
 
   useEffect(() => {
-    fetch(`${awsIP}/join/follower/`, {
-      headers: {
-        Authorization: `Bearer ${login_token}`
-      }
+    fetch(`${awsIP}/join/follower/${username}`, {
     })
       .then(response => {
         if (!response.ok) {

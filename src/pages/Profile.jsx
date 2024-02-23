@@ -87,12 +87,8 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     );
 }
 
-function GoalCheck({ level, subgoals, goalTitle }) {
-    const [isChecked, setIsChecked] = useState(false);
+function GoalCheck({ level, subgoals }) {
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-
-    const token = localStorage.getItem("token");
-    const awsIP = process.env.REACT_APP_BACKEND_URL;
 
     if (!subgoal) {
         return (
@@ -108,6 +104,15 @@ function GoalCheck({ level, subgoals, goalTitle }) {
 
     return (
         <div className="subGoal">
+            <input
+                className={
+                    subgoal.is_completed
+                        ? "subGoal-check-checked"
+                        : "subGoal-check"
+                }
+                type="checkbox"
+                disabled={subgoal.is_completed}
+            />
             <div className="subGoal-text">
                 <div key={level}>
                     {`Lv - ${level} : ${subgoal.title}`}
@@ -133,7 +138,6 @@ export default function Profile() {
     const [follow, setFollow] = useState();
     const [goals, setGoals] = useState([]);
     const [completed, setCompleted] = useState([]);
-    const [selectedGoal, setSelectedGoal] = useState([]);
     const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const token = window.localStorage.getItem("token");
@@ -163,9 +167,6 @@ export default function Profile() {
                 console.log(result.data);
                 if (result.data && result.data.length > 0) {
                     setGoals(result.data);
-                    if (selectedGoalId) {
-                        setSelectedGoal(goals[selectedGoalId]);
-                    }
                 }
             });
             axios({
@@ -254,7 +255,10 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className="mypage_main_profile">
-                    <div className="mypage_main_img"></div>
+                    <img
+                        className="mypage_main_img"
+                        src={data.profileImage}
+                    />
                     <p>{data.username}</p>
                 </div>
                 <div className="profile_middle_box">
@@ -275,13 +279,13 @@ export default function Profile() {
             <div className="mypage_followBox">
                 <p>
                     {data.followers}
-                    <Link to="/followers" className="font-gray">
+                    <Link to="/profilefollowers" className="font-gray">
                         Followers
                     </Link>
                 </p>
                 <p>
                     {data.followings}
-                    <Link to="/following" className="font-gray">
+                    <Link to="/profilefollowing" className="font-gray">
                         Following
                     </Link>
                 </p>

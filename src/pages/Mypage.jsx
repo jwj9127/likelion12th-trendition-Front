@@ -85,11 +85,8 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     );
 }
 
-function GoalCheck({ level, subgoals, goalTitle }) {
+function GoalCheck({ level, subgoals }) {
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-
-    const token = localStorage.getItem("token");
-    const awsIP = process.env.REACT_APP_BACKEND_URL;
 
     if (!subgoal) {
         return (
@@ -105,6 +102,15 @@ function GoalCheck({ level, subgoals, goalTitle }) {
 
     return (
         <div className="subGoal">
+            <input
+                className={
+                    subgoal.is_completed
+                        ? "subGoal-check-checked"
+                        : "subGoal-check"
+                }
+                type="checkbox"
+                disabled={subgoal.is_completed}
+            />
             <div className="subGoal-text">
                 <div key={level}>
                     {`Lv - ${level} : ${subgoal.title}`}

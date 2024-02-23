@@ -194,20 +194,28 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
     }, [selectGoal]);
 
     const checkBox = (level, subgoalId) => {
-        axios({
-            method: "put",
-            url: awsIP + `/home/subgoal/update/${subgoalId}`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: { is_completed: true },
-        })
-            .then(() => {
-                window.location.reload(); // 페이지 새로고침
-            })
-            .catch((error) => {
-                console.error("Error updating subgoal:", error);
-            });
+        Swal.fire({
+            title: "목표 완료",
+            showCancelButton: true,
+            confirmButtonText: "잠굼",
+            cancelButtonText: "취소",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios({
+                    method: "put",
+                    url: awsIP + `/home/subgoal/update/${subgoalId}`,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    data: { is_completed: true },
+                })
+                    .then(() => {
+                        window.location.reload(); // 페이지 새로고침
+                    })
+                    .catch((error) => {
+                        console.error("Error updating subgoal:", error);
+                    });
+            }})
     };
 
     if (!selectGoal) {

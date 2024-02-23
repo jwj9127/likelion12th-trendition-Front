@@ -4,13 +4,17 @@ import rightIcon from "../imgs/Right_Arrow_Icon.png";
 import backIcon from "../imgs/backIcon.png";
 import { Link } from "react-router-dom";
 
+const BackProfile = () => {
+    window.history.back();
+  }
+
 const Setting = () => {
     return (
         <div className="main">
             <div className="top-nav">
-                <Link to="/mypage" className="font-gray">
+                <div className="font-gray" onClick={() => BackProfile()}>
                     <img src={backIcon} alt="뒤로가기" />
-                </Link>
+                </div>
                 <h2 className="title">옵션</h2>
                 <div></div>
             </div>

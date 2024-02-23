@@ -10,7 +10,7 @@ const awsIP = process.env.REACT_APP_BACKEND_URL;
 const Following = () => {
   const [data, setData] = useState([]);
   const [login_token, setLoginToken] = useState(localStorage.getItem('token') || '');
-  const username = window.localStorage.getItem("username");
+  const username = window.localStorage.getItem("usernameProfile");
 
   useEffect(() => {
     fetch(awsIP+`/join/following/${username}`, {
@@ -59,12 +59,16 @@ const Following = () => {
     }));
   };
 
+  const BackProfile = () => {
+    window.history.back();
+  }
+
   return (
     <div className="main">
       <div className="top-nav">
-        <Link to="/mypage" className="font-gray">
+        <div className="font-gray" onClick={() => BackProfile()}>
           <img src={backIcon} alt="뒤로가기" />
-        </Link>
+        </div>
         <h2 className="title">팔로우</h2>
         <div></div>
       </div>

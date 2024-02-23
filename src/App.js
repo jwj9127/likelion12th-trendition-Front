@@ -18,6 +18,8 @@ import Privacy from "./pages/setting/Privacy.jsx";
 import Block from "./pages/setting/Block.jsx";
 import Change_profile from "./pages/setting/Change_profile.jsx";
 import Test from "./pages/test.jsx";
+import ProfileFollowing from "./pages/ProfileFollowing.jsx";
+import ProfileFollowers from "./pages/ProfileFollowers.jsx";
 
 function App() {
     return (
@@ -33,6 +35,8 @@ function App() {
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/followers" element={<Followers />} />
                 <Route path="/following" element={<Following />} />
+                <Route path="/profilefollowing" element={<ProfileFollowing />} />
+                <Route path="/profilefollowers" element={<ProfileFollowers />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route
                     path="/setting/notification"
