@@ -14,6 +14,7 @@ import axios from "axios";
 
 function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
+    const [selectedGoal, setSelectedGoal] = useState("");
     const [subgoals, setSubGoals] = useState([]);
 
     const handleGoalChange = async (e) => {
@@ -34,16 +35,19 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
             },
         }).then((result) => {
             const result_selectedGoal = result.data[0].title;
+            const result_selectedGoalId = result.data[0].id;
             const result_subGoal = result.data[0].subgoals;
 
             if (!selectedGoalTitle.length) {
                 setSelectedGoalTitle(result_selectedGoal);
+                setSelectedGoal(result_selectedGoalId);
                 setSubGoals(result_subGoal);
             }
         });
 
         if (selectedGoalId || selectedGoalId === 0) {
             setSelectedGoalTitle(goals[selectedGoalId].title);
+            setSelectedGoal(goals[selectedGoalId].id);
             setSubGoals(goals[selectedGoalId].subgoals);
             console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
             console.log("Goals - subgoals", subgoals);
@@ -63,26 +67,31 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                 level={1}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
-            ></GoalCheck>
+                selectGoal={selectedGoal}
+                ></GoalCheck>
             <GoalCheck
                 level={2}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
-            ></GoalCheck>
+                selectGoal={selectedGoal}
+                ></GoalCheck>
             <GoalCheck
                 level={3}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
-            ></GoalCheck>
+                selectGoal={selectedGoal}
+                ></GoalCheck>
             <GoalCheck
                 level={4}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
-            ></GoalCheck>
+                selectGoal={selectedGoal}
+                ></GoalCheck>
             <GoalCheck
                 level={5}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
+                selectGoal={selectedGoal}
             ></GoalCheck>
         </div>
     );
@@ -103,10 +112,11 @@ function TopBar({ goals, selectedGoalId, username }) {
             },
         }).then((result) => {
             const result_selectedGoal = result.data[0].title;
+            const result_achievement = result.data[0].completion_rate;
 
             if (!selectedGoalTitle.length) {
                 setSelectedGoalTitle(result_selectedGoal);
-                setAchievement(0);
+                setAchievement(result_achievement);
             }
         });
 
@@ -155,40 +165,39 @@ function TopBar({ goals, selectedGoalId, username }) {
     );
 }
 
-function GoalCheck({ level, subgoals, goalTitle }) {
-    const [isChecked, setIsChecked] = useState(false);
+function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-
+    
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
-    const checkBox = (level) => {
-        Swal.fire({
-            title: "목표 완료",
-            showCancelButton: true,
-            confirmButtonText: "잠굼",
-            cancelButtonText: "취소",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const subGoalId = subgoals[level - 1].id;
-                try {
-                    axios({
-                        method: "put",
-                        url: awsIP + `/home/subgoal/update/${subGoalId}`,
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                        data: { is_completed: true },
-                    }).then(() => {
-                        setIsChecked(true);
-                        window.location.reload();
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-            if (!result.isConfirmed) {
-                setIsChecked(false);
-            }
+    useEffect(() =>{
+        if(selectGoal){
+            axios({
+                method: "get",
+                url: awsIP + `/home/subgoal/bygaol/${selectGoal}`,
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            }).then((result) => {
+                console.log(result.data);
+                const completedSubgoals = result.data.filter((subgoal) => subgoal.is_completed === true);
+                console.log("Completed subgoals:", completedSubgoals);
+            })
+        }
+    }, [selectGoal])
+
+    const checkBox = (level, subgoalId) => {
+        axios({
+            method: "put",
+            url: awsIP + `/home/subgoal/update/${subgoalId}`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: { is_completed: true },
+        }).then(() => {
+            window.location.reload(); // 페이지 새로고침
+        }).catch((error) => {
+            console.error("Error updating subgoal:", error);
         });
     };
 
@@ -221,11 +230,11 @@ function GoalCheck({ level, subgoals, goalTitle }) {
         <div className="subGoal">
             <input
                 className={
-                    isChecked ? "subGoal-check-checked" : "subGoal-check"
+                    subgoal.is_completed ? "subGoal-check-checked" : "subGoal-check"
                 }
                 type="checkbox"
-                onClick={() => checkBox(level, goalTitle)}
-                disabled={isChecked}
+                onClick={() => checkBox(level, subgoal.id)}
+                disabled={subgoal.is_completed}
             ></input>
             <div className="subGoal-text">
                 <div key={level}>

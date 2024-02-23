@@ -5,206 +5,147 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import logo2 from "../imgs/logo2.png";
 import "../css/Mypage.css";
 import { Link } from "react-router-dom";
-import pencil from "../imgs/pencil.png";
-import garbage from "../imgs/garbage.png";
-import Swal from "sweetalert2";
 import axios from "axios";
 
-function GoalCheck({ level }) {
-    const [isChecked, setIsChecked] = useState(false);
-    const subgoals = window.localStorage.getItem("subgoals");
+function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
+    const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
+    const [subgoals, setSubGoals] = useState([]);
 
-    const checkBox = () => {
-        const completed = document.getElementById(
-            "subGoal-check-completed"
-        ).value;
-
-        Swal.fire({
-            title: "목표 완료",
-            showCancelButton: true,
-            confirmButtonText: "잠굼",
-            cancelButtonText: "취소",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                try {
-                    axios({
-                        method: "post",
-                        url: "/home/goal/create",
-                        data: { completed: true },
-                    }).then(() => {
-                        setIsChecked(true);
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-            if (!result.isConfirmed) {
-                setIsChecked(false);
-            }
-        });
+    const handleGoalChange = async (e) => {
+        e.preventDefault();
+        setSelectedGoalId(e.target.value - 1);
+        console.log("selected Spec id :", e.target.value);
     };
 
-    // try{
-    //     axios({
-    //         method: 'get',
-    //         url: '/home'
-    //     }).then((result) => {
-    //         window.localStorage.setItem('subgoals', result.data.subgoals);
-    //     })
-    // }catch(err){
-    //     console.error(err);
-    // }
+    useEffect(() => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
+        const token = localStorage.getItem("token");
+
+        axios({
+            method: "get",
+            url: awsIP + "/home/",
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        }).then((result) => {
+            const result_selectedGoal = result.data[0].title;
+            const result_subGoal = result.data[0].subgoals;
+
+            if (!selectedGoalTitle.length) {
+                setSelectedGoalTitle(result_selectedGoal);
+                setSubGoals(result_subGoal);
+            }
+        });
+
+        if (selectedGoalId || selectedGoalId === 0) {
+            setSelectedGoalTitle(goals[selectedGoalId].title);
+            setSubGoals(goals[selectedGoalId].subgoals);
+            console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+            console.log("Goals - subgoals", subgoals);
+        }
+    }, [selectedGoalId]);
+
     return (
-        <div className="subGoal">
-            <input
-                id="subGoal-check-completed"
-                className={
-                    isChecked ? "subGoal-check-checked" : "subGoal-check"
-                }
-                type="checkbox"
-                onClick={checkBox}
-                disabled={isChecked}
-            ></input>
-            <div className="subGoal-text">
-                {`Lv - ${level} : ${subgoals ? subgoals.detail : "목표 설정"}`}
-                <img
-                    className="subGoal-pencil"
-                    src={pencil}
-                    onClick={TargetGoals}
-                    style={{ marginLeft: subgoals === null ? "60%" : "50%" }}
-                />
-                {subgoals && (
-                    <img
-                        className="subGoal-garbage"
-                        src={garbage}
-                        onClick={DeleteGoals}
-                    />
-                )}
-            </div>
+        <div className="Goals">
+            <select className="mainGoal-text" onChange={handleGoalChange}>
+                {goals.map((goal, index) => (
+                    <option key={index} value={index + 1}>
+                        {`SPEC ${index + 1} : ${goal.title}`}
+                    </option>
+                ))}
+            </select>
+            <GoalCheck
+                level={1}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={2}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={3}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={4}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={5}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
         </div>
     );
 }
 
-function DeleteGoals() {
-    const subgoals = window.localStorage.getItem("subgoals");
-    Swal.fire({
-        title: "삭제 하시겠습니까?",
-        showCancelButton: true,
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            try {
-                axios({
-                    method: "post",
-                    url: "/home/subgoal/delete",
-                    data: subgoals.subgoal_id,
-                });
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    });
-}
+function GoalCheck({ level, subgoals, goalTitle }) {
+    const [isChecked, setIsChecked] = useState(false);
+    const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
 
-function TargetGoals() {
-    const subgoals = window.localStorage.getItem("subgoals");
+    const token = localStorage.getItem("token");
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
 
-    if (subgoals) {
-        Swal.fire({
-            html: `
-            <div class="spec-modal">
-            <div class="spec-content">
-                <input id="stack" class="swal2-input" style="outline: none;" placeholder="목표를 수정해주세요">
+    if (!subgoal) {
+        return (
+            <div className="subGoal">
+                <div className="subGoal-text">
+                    <div key={level}>
+                        {`Lv - ${level} : 세부 목표가 설정되지 않았습니다`}
+                    </div>
+                </div>
             </div>
-        </div>
-            `,
-            showCancelButton: true,
-            confirmButtonText: "목표 수정",
-            cancelButtonText: "취소",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const stack = document.getElementById("stack").value;
-                try {
-                    axios({
-                        method: "put",
-                        url: "/home/subgoal/update/",
-                        data: stack,
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-        });
+        );
     }
 
-    if (!subgoals) {
-        Swal.fire({
-            html: `
-            <div class="spec-modal">
-            <div class="spec-content">
-                <input id="stack" class="swal2-input" style="outline: none;" placeholder="목표를 설정해주세요">
-            </div>
-        </div>
-            `,
-            showCancelButton: true,
-            confirmButtonText: "목표 설정",
-            cancelButtonText: "취소",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const stack = document.getElementById("stack").value;
-
-                try {
-                    axios({
-                        method: "post",
-                        url: "/home/subgoal/create/",
-                        data: stack,
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-        });
-    }
-}
-
-function Goals() {
-    const id = window.localStorage.getItem("id");
-    const title = window.localStorage.getItem("title");
-    // try{
-    //     axios({
-    //         method: 'get',
-    //         url: '/home'
-    //     }).then((result) => {
-    //         window.localStorage.setItem('id', result.data.id);
-    //         window.localStorage.setItem('title', result.data.title);
-    //     })
-    // }catch(err){
-    //     console.error(err);
-    // }
     return (
-        <div className="Goals">
-            <select className="mainGoal-text">
-                <option>스펙 : 마라톤</option>
-                <option>스펙 : 필라테스</option>
-                <option>스펙 : 블로그 운영</option>
-                <option>스펙 : 영어 회화</option>
-                <option>스펙 : 요리</option>
-                <option>스펙 : 수영</option>
-            </select>
-            {[1, 2, 3, 4, 5].map((level) => (
-                <GoalCheck key={level} level={level}></GoalCheck>
-            ))}
+        <div className="subGoal">
+            <div className="subGoal-text">
+                <div key={level}>
+                    {`Lv - ${level} : ${subgoal.title}`}
+                    <div
+                        className="subgoal_imgBtn"
+                        style={{
+                            width: "70px",
+                            height: "43px",
+                            marginRight: "3%",
+                        }}
+                    >
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
 
 export default function Mypage() {
     const [data, setData] = useState([]);
+    const [goals, setGoals] = useState([]);
+    const [selectedGoal, setSelectedGoal] = useState([]);
+    const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+        axios({
+            method: "get",
+            url: awsIP + "/home/",
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        }).then((result) => {
+            if (result.data && result.data.length > 0) {
+                setGoals(result.data);
+                console.log("goals", goals);
+                if (selectedGoalId) {
+                    setSelectedGoal(goals[selectedGoalId]);
+                }
+            }
+        });
         fetch(awsIP + "/join/mypage/", {
             headers: {
                 Authorization: `Bearer  ${token}`,
@@ -285,7 +226,11 @@ export default function Mypage() {
             <div>
                 <button className="mypage_doneBtn">15 done</button>
             </div>
-            <Goals />
+            <Goals
+                goals={goals}
+                selectedGoalId={selectedGoalId}
+                setSelectedGoalId={setSelectedGoalId}
+            ></Goals>
             <Navigation></Navigation>
         </div>
     );

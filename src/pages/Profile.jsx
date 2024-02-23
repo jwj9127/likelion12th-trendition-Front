@@ -1,67 +1,123 @@
 import { React, useEffect, useState } from "react";
 import Navigation from "../component/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import logo2 from "../imgs/logo2.png";
 import "../css/Profile.css";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function GoalCheck({ level }) {
-    const [isChecked, setIsChecked] = useState(false);
-    const subgoals = window.localStorage.getItem('subgoals');
+function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
+    const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
+    const [subgoals, setSubGoals] = useState([]);
 
-    // try{
-    //     axios({
-    //         method: 'get',
-    //         url: '/home'
-    //     }).then((result) => {
-    //         window.localStorage.setItem('subgoals', result.data.subgoals);
-    //     })
-    // }catch(err){
-    //     console.error(err);
-    // }
+    const handleGoalChange = async (e) => {
+        e.preventDefault();
+        setSelectedGoalId(e.target.value - 1);
+        console.log("selected Spec id :", e.target.value);
+    };
 
-    // if(subgoals.is_completed){
-    //     setIsChecked(true);
-    // }
+    useEffect(() => {
+        const awsIP = process.env.REACT_APP_BACKEND_URL;
+        const token = localStorage.getItem("token");
+
+        axios({
+            method: "get",
+            url: awsIP + "/home/",
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        }).then((result) => {
+            const result_selectedGoal = result.data[0].title;
+            const result_subGoal = result.data[0].subgoals;
+
+            if (!selectedGoalTitle.length) {
+                setSelectedGoalTitle(result_selectedGoal);
+                setSubGoals(result_subGoal);
+            }
+        });
+
+        if (selectedGoalId || selectedGoalId === 0) {
+            setSelectedGoalTitle(goals[selectedGoalId].title);
+            setSubGoals(goals[selectedGoalId].subgoals);
+            console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+            console.log("Goals - subgoals", subgoals);
+        }
+    }, [selectedGoalId]);
+
     return (
-        <div className="subGoal">
-            <input id="subGoal-check-completed" className={isChecked ? "subGoal-check-checked" : "subGoal-check"} type="checkbox" disabled={isChecked}></input>
-            <div className="subGoal-text">
-                {/* {`Lv - ${level} : ${subgoals.detail}`} */}
-            </div>
+        <div className="Goals">
+            <select className="mainGoal-text" onChange={handleGoalChange}>
+                {goals.map((goal, index) => (
+                    <option key={index} value={index + 1}>
+                        {`SPEC ${index + 1} : ${goal.title}`}
+                    </option>
+                ))}
+            </select>
+            <GoalCheck
+                level={1}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={2}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={3}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={4}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
+            <GoalCheck
+                level={5}
+                subgoals={subgoals}
+                goalTitle={selectedGoalTitle}
+            ></GoalCheck>
         </div>
     );
 }
 
-function Goals() {
-    const id = window.localStorage.getItem('id');
-    const title = window.localStorage.getItem('title');
-    // try{
-    //     axios({
-    //         method: 'get',
-    //         url: '/home'
-    //     }).then((result) => {
-    //         window.localStorage.setItem('id', result.data.id);
-    //         window.localStorage.setItem('title', result.data.title);
-    //     })
-    // }catch(err){
-    //     console.error(err);
-    // }
+function GoalCheck({ level, subgoals, goalTitle }) {
+    const [isChecked, setIsChecked] = useState(false);
+    const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
+
+    const token = localStorage.getItem("token");
+    const awsIP = process.env.REACT_APP_BACKEND_URL;
+
+    if (!subgoal) {
+        return (
+            <div className="subGoal">
+                <div className="subGoal-text">
+                    <div key={level}>
+                        {`Lv - ${level} : 세부 목표가 설정되지 않았습니다`}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="Goals">
-            <select className="mainGoal-text">
-                <option>스펙 : 마라톤</option>
-                <option>스펙 : 필라테스</option>
-                <option>스펙 : 블로그 운영</option>
-                <option>스펙 : 영어 회화</option>
-                <option>스펙 : 요리</option>
-                <option>스펙 : 수영</option>
-            </select>
-            {[1, 2, 3, 4, 5].map((level) => (
-                <GoalCheck key={level} level={level}></GoalCheck>
-            ))}
+        <div className="subGoal">
+            <div className="subGoal-text">
+                <div key={level}>
+                    {`Lv - ${level} : ${subgoal.title}`}
+                    <div
+                        className="subgoal_imgBtn"
+                        style={{
+                            width: "70px",
+                            height: "43px",
+                            marginRight: "3%",
+                        }}
+                    >
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
@@ -73,10 +129,28 @@ export default function Profile() {
     const username = window.localStorage.getItem('usernameProfile');
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
+    const [goals, setGoals] = useState([]);
+    const [selectedGoal, setSelectedGoal] = useState([]);
+    const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const token = window.localStorage.getItem('token');
     useEffect(() => {
         try{
+            axios({
+                method: "get",
+                url: awsIP + `/home/goal/${username}`,
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            }).then((result) => {
+                console.log(result.data)
+                if (result.data && result.data.length > 0) {
+                    setGoals(result.data);
+                    if (selectedGoalId) {
+                        setSelectedGoal(goals[selectedGoalId]);
+                    }
+                }
+            });
             axios({
                 method: 'get',
                 url: awsIP+`/join/search_user/?keyword=${username}`,
@@ -168,7 +242,11 @@ export default function Profile() {
             <div>
                 <button className="mypage_doneBtn">15 done</button>
             </div>
-            <Goals />
+            <Goals
+                goals={goals}
+                selectedGoalId={selectedGoalId}
+                setSelectedGoalId={setSelectedGoalId}
+            ></Goals>
             <Navigation></Navigation>
         </div>
     );
