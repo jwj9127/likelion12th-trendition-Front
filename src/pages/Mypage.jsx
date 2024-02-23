@@ -134,15 +134,19 @@ export default function Mypage() {
     const username = localStorage.getItem("username");
 
     useEffect(() => {
-        // axios({
-        //     method: "get",
-        //     url: awsIP + `/home/subgoal/completed/${username}`,
-        //     headers: {
-        //         Authorization: `Token ${token}`,
-        //     },
-        // }).then((result) => {
-        //     // is_completed 가 true인 애들 갯수 세어서 completed에 저장, 만약에 갯수가 없으면 디폴트 값이 0, 프로필에도 똑같이 적용
-        // });
+        axios({
+            method: "get",
+            url: awsIP + `/home/subgoal/completed/${username}`,
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        }).then((result) => {
+            console.log(result.data)
+            const completedCount = result.data.reduce((count, subgoal) => {
+                return subgoal.is_completed ? count + 1 : count;
+            }, 0);
+            setCompleted(completedCount || 0)
+        });
         axios({
             method: "get",
             url: awsIP + "/home/",

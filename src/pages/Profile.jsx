@@ -142,6 +142,19 @@ export default function Profile() {
         try {
             axios({
                 method: "get",
+                url: awsIP + `/home/subgoal/completed/${username}`,
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            }).then((result) => {
+                console.log(result.data)
+                const completedCount = result.data.reduce((count, subgoal) => {
+                    return subgoal.is_completed ? count + 1 : count;
+                }, 0);
+                setCompleted(completedCount || 0)
+            });
+            axios({
+                method: "get",
                 url: awsIP + `/home/goal/${username}`,
                 headers: {
                     Authorization: `Token ${token}`,
