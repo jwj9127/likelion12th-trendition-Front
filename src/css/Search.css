@@ -49,12 +49,13 @@
 }
 
 .search_searchBox {
-    width: 65%;
+    width: 68%;
     display: flex;
     align-items: center;
     background-color: white;
     border-radius: 1rem;
     padding: 13px;
+    margin-left: 3%;
 }
 
 .search_messageBox {
@@ -64,8 +65,9 @@
     background-color: white;
     border: none;
     border-radius: 50%;
-    padding: 13px;
+    padding: 11px;
     color: #5e47d2;
+    margin-right: 3%;
 }
 
 .search_message_img {
@@ -78,6 +80,7 @@
     border: none;
     outline: none;
     background-color: white;
+    margin-left: 7px;
 }
 
 .search_navBox {
@@ -117,7 +120,7 @@
     display: flex;
     flex-direction: column;
     height: 63.8vh;
-    margin-bottom: 1.53vh;
+    margin-bottom: 1.7vh;
 }
 
 .search_account_titles_main {

@@ -148,10 +148,19 @@
 }
 
 .subGoal-check-checked {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
     background-image: url("../imgs/Click.png");
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 100% 100%;
     border: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 12px 10px 12px 0px;
 }
 
 .subGoal-text {

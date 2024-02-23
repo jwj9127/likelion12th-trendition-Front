@@ -34,11 +34,11 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                 Authorization: `Token ${token}`,
             },
         }).then((result) => {
-            if(result.data.length > 0){
+            if (result.data.length > 0) {
                 const result_selectedGoal = result.data[0].title;
                 const result_selectedGoalId = result.data[0].id;
                 const result_subGoal = result.data[0].subgoals;
-    
+
                 if (!selectedGoalTitle.length) {
                     setSelectedGoalTitle(result_selectedGoal);
                     setSelectedGoal(result_selectedGoalId);
@@ -48,12 +48,14 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                     setSelectedGoalTitle(goals[selectedGoalId].title);
                     setSelectedGoal(goals[selectedGoalId].id);
                     setSubGoals(goals[selectedGoalId].subgoals);
-                    console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+                    console.log(
+                        "Goals - setSelectedGoalTitle",
+                        selectedGoalTitle
+                    );
                     console.log("Goals - subgoals", subgoals);
                 }
             }
         });
-
     }, [selectedGoalId]);
 
     return (
@@ -70,25 +72,25 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
                 selectGoal={selectedGoal}
-                ></GoalCheck>
+            ></GoalCheck>
             <GoalCheck
                 level={2}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
                 selectGoal={selectedGoal}
-                ></GoalCheck>
+            ></GoalCheck>
             <GoalCheck
                 level={3}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
                 selectGoal={selectedGoal}
-                ></GoalCheck>
+            ></GoalCheck>
             <GoalCheck
                 level={4}
                 subgoals={subgoals}
                 goalTitle={selectedGoalTitle}
                 selectGoal={selectedGoal}
-                ></GoalCheck>
+            ></GoalCheck>
             <GoalCheck
                 level={5}
                 subgoals={subgoals}
@@ -113,10 +115,10 @@ function TopBar({ goals, selectedGoalId, username }) {
                 Authorization: `Token ${token}`,
             },
         }).then((result) => {
-            if(result.data.length > 0){
+            if (result.data.length > 0) {
                 const result_selectedGoal = result.data[0].title;
                 const result_achievement = result.data[0].completion_rate;
-    
+
                 if (!selectedGoalTitle.length) {
                     setSelectedGoalTitle(result_selectedGoal);
                     setAchievement(result_achievement);
@@ -128,7 +130,6 @@ function TopBar({ goals, selectedGoalId, username }) {
                 }
             }
         });
-
     }, [selectedGoalId]);
     return (
         <div className="TopBar">
@@ -171,11 +172,11 @@ function TopBar({ goals, selectedGoalId, username }) {
 
 function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
-    
+
     const token = localStorage.getItem("token");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
-    useEffect(() =>{
-        if(selectGoal){
+    useEffect(() => {
+        if (selectGoal) {
             axios({
                 method: "get",
                 url: awsIP + `/home/subgoal/bygaol/${selectGoal}`,
@@ -184,11 +185,13 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
                 },
             }).then((result) => {
                 console.log(result.data);
-                const completedSubgoals = result.data.filter((subgoal) => subgoal.is_completed === true);
+                const completedSubgoals = result.data.filter(
+                    (subgoal) => subgoal.is_completed === true
+                );
                 console.log("Completed subgoals:", completedSubgoals);
-            })
+            });
         }
-    }, [selectGoal])
+    }, [selectGoal]);
 
     const checkBox = (level, subgoalId) => {
         axios({
@@ -198,15 +201,17 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
                 Authorization: `Bearer ${token}`,
             },
             data: { is_completed: true },
-        }).then(() => {
-            window.location.reload(); // 페이지 새로고침
-        }).catch((error) => {
-            console.error("Error updating subgoal:", error);
-        });
+        })
+            .then(() => {
+                window.location.reload(); // 페이지 새로고침
+            })
+            .catch((error) => {
+                console.error("Error updating subgoal:", error);
+            });
     };
 
-    if(!selectGoal){
-        return(
+    if (!selectGoal) {
+        return (
             <div className="subGoal">
                 <div className="subGoal-text">
                     <div key={level}>
@@ -227,7 +232,7 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     if (!subgoal) {
@@ -259,7 +264,9 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
         <div className="subGoal">
             <input
                 className={
-                    subgoal.is_completed ? "subGoal-check-checked" : "subGoal-check"
+                    subgoal.is_completed
+                        ? "subGoal-check-checked"
+                        : "subGoal-check"
                 }
                 type="checkbox"
                 onClick={() => checkBox(level, subgoal.id)}
