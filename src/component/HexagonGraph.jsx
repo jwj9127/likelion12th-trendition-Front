@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../css/HexagonGraph.css";
 import axios from "axios";
 
@@ -6,6 +6,7 @@ function HexagonGraph() {
     const [achievements, setAchievements] = useState([]);
     const [goalTitles, setGoalTitles] = useState([]);
     const [graphData, setGraphData] = useState([]);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -37,6 +38,12 @@ function HexagonGraph() {
         setGraphData(data);
         drawGraph();
     }, [achievements]);
+
+    useEffect(() => {
+        if (canvasRef.current) {
+            drawGraph();
+        }
+    }, [graphData, canvasRef]);
 
     const drawGraph = () => {
         const CANVAS_SIZE = 280;
@@ -129,8 +136,8 @@ function HexagonGraph() {
     // 버튼의 선택 여부를 추적하는 상태
     const [selectedSpec, setSelectedSpec] = useState(null);
 
-    // 버튼 클릭 시 호출되는 함수
-    const handleSpecClick = (index) => {
+    // 버튼 터치 시 호출되는 함수
+    const handleTouchStart  = (index) => {
         // 클릭된 버튼의 인덱스를 선택된 상태로 설정
         setSelectedSpec(index);
     };
@@ -141,6 +148,7 @@ function HexagonGraph() {
             style={{ position: "relative", width: "100vw", height: "38vh" }}
         >
             <canvas
+                ref={canvasRef}
                 id="canvas"
                 width="280"
                 height="280"
@@ -151,11 +159,12 @@ function HexagonGraph() {
                     right: "0",
                     bottom: "0",
                     margin: "auto",
+                    zIndex: "0"
                 }}
             ></canvas>
             <button
                 className={`spec ${selectedSpec === 1 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(1)}
+                onClick={() => handleTouchStart(1)}
                 style={{
                     position: "absolute",
                     left: "50%",
@@ -167,7 +176,7 @@ function HexagonGraph() {
             </button>
             <button
                 className={`spec ${selectedSpec === 2 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(2)}
+                onClick={() => handleTouchStart(2)}
                 style={{
                     position: "absolute",
                     left: "85%",
@@ -179,7 +188,7 @@ function HexagonGraph() {
             </button>
             <button
                 className={`spec ${selectedSpec === 3 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(3)}
+                onClick={() => handleTouchStart(3)}
                 style={{
                     position: "absolute",
                     left: "85%",
@@ -192,7 +201,7 @@ function HexagonGraph() {
 
             <button
                 className={`spec ${selectedSpec === 4 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(4)}
+                onClick={() => handleTouchStart(4)}
                 style={{
                     position: "absolute",
                     left: "50%",
@@ -204,7 +213,7 @@ function HexagonGraph() {
             </button>
             <button
                 className={`spec ${selectedSpec === 5 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(5)}
+                onClick={() => handleTouchStart(5)}
                 style={{
                     position: "absolute",
                     left: "12%",
@@ -216,7 +225,7 @@ function HexagonGraph() {
             </button>
             <button
                 className={`spec ${selectedSpec === 6 ? "selected" : ""}`}
-                onClick={() => handleSpecClick(6)}
+                onClick={() => handleTouchStart(6)}
                 style={{
                     position: "absolute",
                     left: "12%",
