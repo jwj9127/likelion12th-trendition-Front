@@ -28,21 +28,23 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                 Authorization: `Token ${token}`,
             },
         }).then((result) => {
-            const result_selectedGoal = result.data[0].title;
-            const result_subGoal = result.data[0].subgoals;
-
-            if (!selectedGoalTitle.length) {
-                setSelectedGoalTitle(result_selectedGoal);
-                setSubGoals(result_subGoal);
+            if(result.data.length > 0){
+                const result_selectedGoal = result.data[0].title;
+                const result_subGoal = result.data[0].subgoals;
+    
+                if (!selectedGoalTitle.length) {
+                    setSelectedGoalTitle(result_selectedGoal);
+                    setSubGoals(result_subGoal);
+                }
+                if (selectedGoalId || selectedGoalId === 0) {
+                    setSelectedGoalTitle(goals[selectedGoalId].title);
+                    setSubGoals(goals[selectedGoalId].subgoals);
+                    console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+                    console.log("Goals - subgoals", subgoals);
+                }
             }
         });
 
-        if (selectedGoalId || selectedGoalId === 0) {
-            setSelectedGoalTitle(goals[selectedGoalId].title);
-            setSubGoals(goals[selectedGoalId].subgoals);
-            console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
-            console.log("Goals - subgoals", subgoals);
-        }
     }, [selectedGoalId]);
 
     return (
@@ -84,7 +86,6 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
 }
 
 function GoalCheck({ level, subgoals, goalTitle }) {
-    const [isChecked, setIsChecked] = useState(false);
     const subgoal = subgoals ? subgoals[level - 1] : undefined; // subgoal 가져오기
 
     const token = localStorage.getItem("token");
@@ -135,7 +136,7 @@ export default function Mypage() {
     useEffect(() => {
         // axios({
         //     method: "get",
-        //     url: awsIP + `home/subgoal/completed/${username}`,
+        //     url: awsIP + `/home/subgoal/completed/${username}`,
         //     headers: {
         //         Authorization: `Token ${token}`,
         //     },
