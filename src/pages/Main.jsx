@@ -34,24 +34,26 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
                 Authorization: `Token ${token}`,
             },
         }).then((result) => {
-            const result_selectedGoal = result.data[0].title;
-            const result_selectedGoalId = result.data[0].id;
-            const result_subGoal = result.data[0].subgoals;
-
-            if (!selectedGoalTitle.length) {
-                setSelectedGoalTitle(result_selectedGoal);
-                setSelectedGoal(result_selectedGoalId);
-                setSubGoals(result_subGoal);
+            if(result.data.length > 0){
+                const result_selectedGoal = result.data[0].title;
+                const result_selectedGoalId = result.data[0].id;
+                const result_subGoal = result.data[0].subgoals;
+    
+                if (!selectedGoalTitle.length) {
+                    setSelectedGoalTitle(result_selectedGoal);
+                    setSelectedGoal(result_selectedGoalId);
+                    setSubGoals(result_subGoal);
+                }
+                if (selectedGoalId || selectedGoalId === 0) {
+                    setSelectedGoalTitle(goals[selectedGoalId].title);
+                    setSelectedGoal(goals[selectedGoalId].id);
+                    setSubGoals(goals[selectedGoalId].subgoals);
+                    console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
+                    console.log("Goals - subgoals", subgoals);
+                }
             }
         });
 
-        if (selectedGoalId || selectedGoalId === 0) {
-            setSelectedGoalTitle(goals[selectedGoalId].title);
-            setSelectedGoal(goals[selectedGoalId].id);
-            setSubGoals(goals[selectedGoalId].subgoals);
-            console.log("Goals - setSelectedGoalTitle", selectedGoalTitle);
-            console.log("Goals - subgoals", subgoals);
-        }
     }, [selectedGoalId]);
 
     return (
@@ -111,20 +113,22 @@ function TopBar({ goals, selectedGoalId, username }) {
                 Authorization: `Token ${token}`,
             },
         }).then((result) => {
-            const result_selectedGoal = result.data[0].title;
-            const result_achievement = result.data[0].completion_rate;
-
-            if (!selectedGoalTitle.length) {
-                setSelectedGoalTitle(result_selectedGoal);
-                setAchievement(result_achievement);
+            if(result.data.length > 0){
+                const result_selectedGoal = result.data[0].title;
+                const result_achievement = result.data[0].completion_rate;
+    
+                if (!selectedGoalTitle.length) {
+                    setSelectedGoalTitle(result_selectedGoal);
+                    setAchievement(result_achievement);
+                }
+                if (selectedGoalId || selectedGoalId === 0) {
+                    setSelectedGoalTitle(goals[selectedGoalId].title);
+                    setAchievement(goals[selectedGoalId].completion_rate);
+                    console.log("TopBar - achievement changed:", achievement);
+                }
             }
         });
 
-        if (selectedGoalId || selectedGoalId === 0) {
-            setSelectedGoalTitle(goals[selectedGoalId].title);
-            setAchievement(goals[selectedGoalId].completion_rate);
-            console.log("TopBar - achievement changed:", achievement);
-        }
     }, [selectedGoalId]);
     return (
         <div className="TopBar">
@@ -200,6 +204,31 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
             console.error("Error updating subgoal:", error);
         });
     };
+
+    if(!selectGoal){
+        return(
+            <div className="subGoal">
+                <div className="subGoal-text">
+                    <div key={level}>
+                        {`Lv - ${level} : 스펙을 설정해주세요`}
+                        {goalTitle.length > 0 && (
+                            <img
+                                className="subGoal-pencil"
+                                src={pencil}
+                                onClick={() => TargetGoals(subgoal, goalTitle)}
+                                style={{
+                                    marginLeft: "25%",
+                                    marginRight: "5%",
+                                    width: "25px",
+                                    height: "25px",
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     if (!subgoal) {
         return (
