@@ -125,12 +125,23 @@ function GoalCheck({ level, subgoals, goalTitle }) {
 export default function Mypage() {
     const [data, setData] = useState([]);
     const [goals, setGoals] = useState([]);
+    const [completed, setCompleted] = useState([]);
     const [selectedGoal, setSelectedGoal] = useState([]);
     const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
 
     useEffect(() => {
+        // axios({
+        //     method: "get",
+        //     url: awsIP + `home/subgoal/completed/${username}`,
+        //     headers: {
+        //         Authorization: `Token ${token}`,
+        //     },
+        // }).then((result) => {
+        //     // is_completed 가 true인 애들 갯수 세어서 completed에 저장, 만약에 갯수가 없으면 디폴트 값이 0, 프로필에도 똑같이 적용
+        // });
         axios({
             method: "get",
             url: awsIP + "/home/",
@@ -207,6 +218,7 @@ export default function Mypage() {
                         className="mypage_main_img"
                         src={data.profileImage}
                     ></img>
+                    <p>{data.username}</p>
                 </div>
             </div>
             <div className="mypage_followBox">
@@ -224,7 +236,7 @@ export default function Mypage() {
                 </p>
             </div>
             <div>
-                <button className="mypage_doneBtn">15 done</button>
+                <button className="mypage_doneBtn">{completed} done</button>
             </div>
             <Goals
                 goals={goals}

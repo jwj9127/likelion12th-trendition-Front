@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from "react";
 import "../css/Search.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
 import {
     faMagnifyingGlass,
     faPaperPlane,
@@ -29,16 +28,29 @@ export default function Search() {
                     Authorization: `Bearer ${login_token}`,
                 },
             }).then((result) => {
-                if (
-                    result.data.error === "검색어가 없습니다." ||
-                    result.data.error == "해당 유저는 존재하지 않습니다."
-                ) {
+                if (Array.isArray(result.data)) {
+                    const username = localStorage.getItem("username");
+                    const filteredUsers = result.data.filter((user) => user.username !== username);
+                    setUser(filteredUsers);
+                    if (
+                        result.data.error === "검색어가 없습니다." ||
+                        result.data.error == "해당 유저는 존재하지 않습니다." ||
+                        filteredUsers.length === 0
+                    ) {
+                        Swal.fire({
+                            title: "해당 회원은 존재하지 않습니다.",
+                        }).then(()=>{
+                            window.location.reload();
+                        });
+                    }
+                } else {
                     Swal.fire({
                         title: "해당 회원은 존재하지 않습니다.",
+                    }).then(()=>{
+                        window.location.reload();
                     });
                 }
-                console.log(result.data);
-                setUser(result.data);
+                 
             });
         } catch (err) {
             console.error(err);
@@ -48,6 +60,7 @@ export default function Search() {
     useEffect(() => {
         const awsIP = process.env.REACT_APP_BACKEND_URL;
         try {
+            const username = localStorage.getItem("username");
             axios({
                 method: "get",
                 url: awsIP + "/join/search/",
@@ -56,7 +69,8 @@ export default function Search() {
                 },
             }).then((result) => {
                 console.log(result.data);
-                setUsers(result.data);
+                const filteredUsers = result.data.filter((user) => user.username !== username);
+                setUsers(filteredUsers);
                 console.log(result.data[0].profileImage);
             });
         } catch (err) {

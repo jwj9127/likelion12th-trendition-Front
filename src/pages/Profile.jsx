@@ -10,6 +10,7 @@ import axios from "axios";
 function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
     const [selectedGoalTitle, setSelectedGoalTitle] = useState("");
     const [subgoals, setSubGoals] = useState([]);
+    const username = window.localStorage.getItem('usernameProfile');
 
     const handleGoalChange = async (e) => {
         e.preventDefault();
@@ -23,7 +24,7 @@ function Goals({ goals, selectedGoalId, setSelectedGoalId }) {
 
         axios({
             method: "get",
-            url: awsIP + "/home/",
+            url: awsIP + `/home/goal/${username}`,
             headers: {
                 Authorization: `Token ${token}`,
             },
@@ -130,10 +131,12 @@ export default function Profile() {
     const [data, setData] = useState([]);
     const [follow, setFollow] = useState();
     const [goals, setGoals] = useState([]);
+    const [completed, setCompleted] = useState([]);
     const [selectedGoal, setSelectedGoal] = useState([]);
     const [selectedGoalId, setSelectedGoalId] = useState("");
     const awsIP = process.env.REACT_APP_BACKEND_URL;
     const token = window.localStorage.getItem('token');
+    
     useEffect(() => {
         try{
             axios({
@@ -212,7 +215,7 @@ export default function Profile() {
                         <img className="logo2" src={logo2} alt="logo"></img>
                         <p className="logo2-name">식스펙</p>
                     </div>
-                    <p style={{ fontSize: "15px" }}>{data.username}</p>
+                    <p style={{ fontSize: "15px" }}>@{data.username}</p>
                 </div>
                 <div className="mypage_main_profile">
                     <div className="mypage_main_img"></div>
@@ -240,7 +243,7 @@ export default function Profile() {
                 </p>
             </div>
             <div>
-                <button className="mypage_doneBtn">15 done</button>
+                <button className="mypage_doneBtn">{completed} done</button>
             </div>
             <Goals
                 goals={goals}
