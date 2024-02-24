@@ -69,8 +69,8 @@ const Followers = () => {
       </div>
       <ul className="list">
         {data.map((item) => (
-          <li key={item.username} className="list-item">
-            <img className="profile-image" src={ProfileImg} alt="" />
+          < li key={item.username} className="list-item" >
+            <img className="profile-image" src={item.profileImage} alt="없음" />
             <div className="info">
               <h3>{item.username}</h3>
               <p className="username">{item.username}</p>
@@ -86,7 +86,7 @@ const Followers = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </div >
   );
 };
 

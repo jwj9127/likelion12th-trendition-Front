@@ -197,7 +197,7 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
         Swal.fire({
             title: "목표 완료",
             showCancelButton: true,
-            confirmButtonText: "잠굼",
+            confirmButtonText: "잠금설정",
             cancelButtonText: "취소",
         }).then((result) => {
             if (result.isConfirmed) {
@@ -215,7 +215,8 @@ function GoalCheck({ level, subgoals, goalTitle, selectGoal }) {
                     .catch((error) => {
                         console.error("Error updating subgoal:", error);
                     });
-            }})
+            }
+        })
     };
 
     if (!selectGoal) {
