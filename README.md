@@ -1,9 +1,10 @@
-## 식스팩(SIXPEC)
+## 📛프로젝트명 - 식스팩(SIXPEC)
+
 #### 사회가 정한 기준이 아닌, “나다운 강점”을 일궈나가는 목표 달성 기록장
 
 <br/>
 
-## 프로젝트 소개
+## 🚧 프로젝트 소개
 
 💡 **키워드: 육각형 인간**
 
@@ -11,18 +12,10 @@
 더 자세한 설명은 [여기](https://github.com/likelion12th-trendition/likelion12th-trendition-Back/files/14405109/default.pdf)를 참고해주세요!
 <br/> 
 
-## 👩🏻‍💻 개발 팀원
+## 👩🏻‍💻 프로젝트 참여 인원
 
-#### Frontend
-| <center> 정원준</center> | <center> 정성윤 </center> | <center> 윤윤지</center> | 
-| --- | --- | --- |
-| <div align="center"> 목표 설정 모달창 / 계정 검색 <br/> 마이페이지 / 팔로우 창 <br/> 메인 홈 (스펙 설정 전 / 후)</div> | <div align="center">옵션 / 알림 설정 / 푸시 알림 창 <br/> 계정 정보 / 개인정보 보호</div> | <div align="center">스플래시 / 회원가입 / 로그인 <br/> 육각형 그래프</div> |
-| <div align="center">[jwj9127](https://github.com/jwj9127)</div> | <div align="center">[jungbug](https://github.com/jungbug)</div> | <div align="center">[Yunji-Yun](https://github.com/Yunji-Yun)</div> |
-
-#### Backend
-| <center> 박규리 </center> | <center> 이예나 </center> | <center> 이예령 </center> |
-| --- | --- | --- |
-| <div align="center">[gyurili](https://github.com/gyurili)</div> | <div align="center">[Yeinalee](https://github.com/Yeinalee)</div> | <div align="center">[LeeYeRyeong](https://github.com/LeeYeRyeong)</div> |
+#### Frontend - 3명
+#### Backend - 3명
 
 ## ✨ 기술 스택
 
@@ -38,6 +31,35 @@
 
 **`스플래시 / 로그인 / 회원가입`**
 
+  - url 진입 시 스플래시 화면을 제공합니다.
+  - 로그인 / 회원가입 기능을 제공합니다
+
+<br/>
+
+**`메인 페이지`**
+
+  - 6개의 최종 목표 카테고리를 설정할 수 있습니다.
+  - 최종 목표에 따른 단계별 체크 리스트를 작성 / 수정 / 삭제 / 완료 처리할 수 있습니다.
+
+<br/>
+
+**`계정 페이지`**
+
+  - 검색 기능을 활용하여 계정을 검색할 수 있습니다.
+  - 타인의 프로필을 확인하고 팔로우할 수 있습니다.
+
+<br/>
+
+**`마이 페이지`**
+
+  - 자신의 프로필을 확인할 수 있습니다.
+  - 내 현재 팔로우 , 팔로워 목록을 확인할 수 있습니다.
+
+<br/>
+
+## 🖼️ 디자인
+
+- 스플래시 / 로그인 / 회원가입
 <br/>
 <center><img src="https://github.com/user-attachments/assets/ed289170-5eb6-44ef-9f95-a6cbf579b56f" width="150"></center>
 <br/>
@@ -54,13 +76,7 @@
 <center><img src="https://github.com/user-attachments/assets/8ee0b20a-b157-4d85-b591-d779fbe0c17f" width="150"></center>
 <br/>
 
-  - url 진입 시 스플래시 화면을 제공합니다.
-  - 로그인 / 회원가입 기능을 제공합니다
-
-<br/>
-
-**`메인 페이지`**
-
+- 메인 페이지
 <br/>
 <center><img src="https://github.com/user-attachments/assets/4c57a392-8163-4a25-b6b6-a1d19a3ab8b3" width="150"></center>
 <br/>
@@ -69,13 +85,7 @@
 <center><img src="https://github.com/user-attachments/assets/7bfe7297-0538-4125-926f-aab70b9c3f6f" width="150"></center>
 <br/>
 
-  - 6개의 최종 목표 카테고리를 설정할 수 있습니다.
-  - 최종 목표에 따른 단계별 체크 리스트를 작성 / 수정 / 삭제 / 완료 처리할 수 있습니다.
-
-<br/>
-
-**`계정 페이지`**
-
+- 계정 페이지
 <br/>
 <center><img src="https://github.com/user-attachments/assets/392bd20d-d709-4ac1-afb8-890ac56f1ac2" width="150"></center>
 <br/>
@@ -84,13 +94,7 @@
 <center><img src="https://github.com/user-attachments/assets/b755a4d8-0a09-483a-a23e-ff1905ad7138" width="150"></center>
 <br/>
 
-  - 검색 기능을 활용하여 계정을 검색할 수 있습니다.
-  - 타인의 프로필을 확인하고 팔로우할 수 있습니다.
-
-<br/>
-
-**`마이 페이지`**
-
+- 마이 페이지
 <br/>
 <center><img src="https://github.com/user-attachments/assets/813baf36-6ea8-4a94-b230-fdce30a5b2e1" width="150"></center>
 <br/>
@@ -103,13 +107,7 @@
 <center><img src="https://github.com/user-attachments/assets/6306ea63-390a-4ef6-a25b-134000e642de" width="150"></center>
 <br/>
 
-  - 자신의 프로필을 확인할 수 있습니다.
-  - 내 현재 팔로우 , 팔로워 목록을 확인할 수 있습니다.
-
-<br/>
-
-**`부가 페이지`**
-
+- 부가 페이지
 <br/>
 <center><img src="https://github.com/user-attachments/assets/036c8dd2-17fa-4ebe-958d-7058ab9edbb9" width="150"></center>
 <br/>
@@ -126,10 +124,32 @@
 <center><img src="https://github.com/user-attachments/assets/9f169bb7-758b-402a-8d87-720e4133ceae" width="150"></center>
 <br/>
 
-<br/>
+## 🍆 본인이 구현한 기능
 
+- 목표 설정 모달창 / 계정 검색
 
-## 개발 환경 및 툴
-Linux(Ubuntu20.04) / Mac(Ventura 13.4) / Windows 10
+- 마이페이지 / 팔로우 창
 
-Visual Studio Code / GitHub / Discord / Notion / Figma
+- 메인 홈 (스펙 설정 전 / 후)
+
+## 🚩 트러블 슈팅
+
+### 1. 문제 - 로직이 복잡하여 꼬임 현상 발생
+#### 상황
+- 메인 페이지에서 카테고리 목표 CRUD와 세부 목표 CRUD의 로직이 복잡하여 꼬임 현상 발생
+
+#### 해결 방법
+- 카테고리 목표와 세부 목표를 컴포넌트로 분류하여 Main의 return 코드 15% 감소
+
+#### 배운 점 
+- 컴포넌트를 세부화 하는 이유에 대해서 이해가 되었고 가독성 있는 코드에 관심이 생김
+
+### 2. 문제 - 리렌더링으로 인해 그래프 UI가 사라지는 문제 발생
+#### 상황
+- 컴포넌트 분류와 react-hooks를 통해 렌더링, 리렌더링이 주기적으로 발생하여 그래프 데이터가 초기값(null) 설정됨에 따라 UI가 보이지 않는 문제 발생
+
+#### 해결 방법
+- useRef를 사용하여 react-canvas의 값이 변하지 않는다면 그래프 데이터가 초기화 되지 않게 설정
+
+#### 배운 점 
+- 렌더링, 리렌더링의 개념에 대해 조금은 이해하게 되었고, hooks에 관심을 가지게 되었다.
